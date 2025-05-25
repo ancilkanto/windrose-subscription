@@ -1,5 +1,7 @@
 <?php
 namespace WindroseSubscription\Includes;
+
+use stdClass;
 use WP_CLI;
 use WP_CLI_Command;
 use WC_Order_Item_Product;
@@ -66,21 +68,10 @@ class WindroseCLI extends WP_CLI_Command {
             }
 
             // Step 3: Set order billing and shipping details
-            $address = array(
-                'first_name' => 'John',
-                'last_name'  => 'Doe',
-                'company'    => 'Company Name',
-                'email'      => 'john.doe@example.com',
-                'phone'      => '123-456-7890',
-                'address_1'  => '123 Main St',
-                'address_2'  => '',
-                'city'       => 'Anytown',
-                'state'      => 'CA',
-                'postcode'   => '12345',
-                'country'    => 'US',
-            );
-            $order->set_address( $address, 'billing' );
-            $order->set_address( $address, 'shipping' );
+            $customer_data = $this->get_customer_data($subscription_order);                
+
+            $order->set_address( $customer_data->billing_address, 'billing' );
+            $order->set_address( $customer_data->shipping_address, 'shipping' );
 
             // Step 4: Set payment method
             $order->set_payment_method('cod'); // Replace with your desired payment method ID
@@ -111,13 +102,46 @@ class WindroseCLI extends WP_CLI_Command {
 
             // Recursive function call after removing the first item from the array
 
-            $this->create_WC_order(array_slice($subscription_order_data,1), $task_status);
+            $task_status = $this->create_WC_order(array_slice($subscription_order_data,1), $task_status);
 
         }
         
         
         return $task_status;
 
+    }
+
+    public function get_customer_data($subscription_order){
+        $customer_data = new stdClass();
+
+        $customer_data->billing_address = array(
+            'first_name' => get_user_meta($subscription_order->user_id, 'billing_first_name', true),
+            'last_name'  => get_user_meta($subscription_order->user_id, 'billing_last_name', true),
+            'company'    => get_user_meta($subscription_order->user_id, 'billing_company', true),
+            'address_1'  => get_user_meta($subscription_order->user_id, 'billing_address_1', true),
+            'address_2'  => get_user_meta($subscription_order->user_id, 'billing_address_2', true),
+            'city'       => get_user_meta($subscription_order->user_id, 'billing_city', true),
+            'state'      => get_user_meta($subscription_order->user_id, 'billing_state', true),
+            'postcode'   => get_user_meta($subscription_order->user_id, 'billing_postcode', true),
+            'country'    => get_user_meta($subscription_order->user_id, 'billing_country', true),
+            'email'      => get_user_meta($subscription_order->user_id, 'billing_email', true),
+            'phone'      => get_user_meta($subscription_order->user_id, 'billing_phone', true),
+        );
+
+        $customer_data->shipping_address = array(
+            'first_name' => get_user_meta($subscription_order->user_id, 'shipping_first_name', true),
+            'last_name'  => get_user_meta($subscription_order->user_id, 'shipping_last_name', true),
+            'company'    => get_user_meta($subscription_order->user_id, 'shipping_company', true),
+            'address_1'  => get_user_meta($subscription_order->user_id, 'shipping_address_1', true),
+            'address_2'  => get_user_meta($subscription_order->user_id, 'shipping_address_2', true),
+            'city'       => get_user_meta($subscription_order->user_id, 'shipping_city', true),
+            'state'      => get_user_meta($subscription_order->user_id, 'shipping_state', true),
+            'postcode'   => get_user_meta($subscription_order->user_id, 'shipping_postcode', true),
+            'country'    => get_user_meta($subscription_order->user_id, 'shipping_country', true),
+            'phone'      => get_user_meta($subscription_order->user_id, 'shipping_phone', true), // optional
+        );
+
+        return $customer_data;
     }
 
 

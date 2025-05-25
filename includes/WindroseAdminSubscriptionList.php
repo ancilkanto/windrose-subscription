@@ -49,7 +49,7 @@ class WindroseAdminSubscriptionList {
         <script type="text/javascript">
             jQuery(document).ready(function($) {
                 
-                if($('.bulkactions').length){
+                if($('.woocommerce_page_windrose-subscriptions .bulkactions').length){
                     var bulkActionMarkup = $('.bulkactions').html();
                     bulkActionMarkup = '<form method="post"><input type="hidden" name="subscriptions" class="subscription_ids">' + bulkActionMarkup + '</form>';
                     $('.bulkactions').html(bulkActionMarkup);
