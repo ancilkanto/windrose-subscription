@@ -67,31 +67,30 @@ class WindroseCLI extends WP_CLI_Command {
                 $order->add_item( $item );         // Add item to the order
             }
 
-            // Step 3: Set order billing and shipping details
+            // Set order billing and shipping details
             $customer_data = $this->get_customer_data($subscription_order);                
 
             $order->set_address( $customer_data->billing_address, 'billing' );
             $order->set_address( $customer_data->shipping_address, 'shipping' );
 
-            // Step 4: Set payment method
-            $order->set_payment_method('cod'); // Replace with your desired payment method ID
-            $order->set_payment_method_title('Cash on delivery');
+            // Set payment method
+            $order->set_payment_method('paymob-pixel');  // Replace with 'paymob-pixel'
+            $order->set_payment_method_title('Debit/Credit Card Payment');   // Replace with 'Debit/Credit Card Payment'
 
-            // $order->update_meta_data( '_wc_order_attribution_utm_source', 'Subscription Automation' );
-            
-            // $order->set_status('processing'); // Set to "processing" or "completed" as required
 
-            
-            // Step 7: Save the order
-            $order->save();
-            
-            // Step 6: Calculate and set totals
+            // Calculate and set totals
             $order->calculate_totals();
+            
+            // Save the order
+            $order->save();
 
-            $this->update_subscription_order_status($subscription_order->id, 'past');
+            // Explicitly set status to 'pending payment'
+            $order->update_status('pending'); // This ensures it's pending payment
+            
 
-            do_action('windrose_subscription_order_executed_successfully', $subscription_order->subscription_id);
+            
 
+            do_action( 'windrose_subscription_initiate_payment', $subscription_order, $order );
 
             $task_status['success'][] = array(
                 'order_id' => $order->get_id(),
@@ -145,24 +144,7 @@ class WindroseCLI extends WP_CLI_Command {
     }
 
 
-    public function update_subscription_order_status($subscription_order_id, $status){
-        global $wpdb;
-
-        $subscription_order_table = $wpdb->prefix . WINDROS_SUBSCRIPTION_ORDER_TABLE;
-
-        $order_status_data = array(
-            'status' => $status
-        );
-
-        $order_status_condition = array(
-            'id' => $subscription_order_id
-        );
-
-        $order_status_format = array('%s');
-        $order_status_where_format = array('%d');
-
-        $order_updated = $wpdb->update( $subscription_order_table, $order_status_data, $order_status_condition, $order_status_format, $order_status_where_format );
-    }
+    
 
 }
 
