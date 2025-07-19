@@ -311,7 +311,8 @@ class WindroseSubscriptionOrderPaymentInit {
             $this->update_subscription_order_status($subscription_order->id, 'past');
             do_action('windrose_subscription_order_executed_successfully', $subscription_order->subscription_id);
         } else {
-            $this->update_subscription_order_status($subscription_order->id, 'upcoming');
+            // Handle payment failure with attempt tracking and cancellation logic
+            $this->handle_payment_failure($subscription_order->id, $failed_reason);
             do_action('windrose_subscription_order_execution_failed', $subscription_order->subscription_id, $failed_reason);
         }
     }
@@ -492,6 +493,166 @@ class WindroseSubscriptionOrderPaymentInit {
         }
         
         return 'Unknown payment error';
+    }
+
+    /**
+     * Handle payment failure with attempt tracking and cancellation logic
+     */
+    public function handle_payment_failure($subscription_order_id, $failed_reason = '') {
+        global $wpdb;
+        $subscription_order_table = $wpdb->prefix . WINDROS_SUBSCRIPTION_ORDER_TABLE;
+        
+        // Get current subscription order data
+        $subscription_order = $wpdb->get_row($wpdb->prepare(
+            "SELECT * FROM $subscription_order_table WHERE id = %d",
+            $subscription_order_id
+        ));
+        
+        if (!$subscription_order) {
+            error_log('Windrose Payment: Subscription order not found for ID: ' . $subscription_order_id);
+            return false;
+        }
+        
+        // Get current attempts count
+        $current_attempts = intval($subscription_order->attempts);
+        $new_attempts = $current_attempts + 1;
+        
+        // Get configurable attempt threshold from settings
+        $attempt_threshold = intval(get_option('windrose_payment_attempt_threshold', '3'));
+        
+        error_log('Windrose Payment: Handling payment failure for subscription order ' . $subscription_order_id . '. Current attempts: ' . $current_attempts . ', New attempts: ' . $new_attempts . ', Threshold: ' . $attempt_threshold);
+        
+        // Check if max attempts reached (configurable threshold)
+        if ($new_attempts >= $attempt_threshold) {
+            // Cancel the subscription
+            $this->cancel_subscription_order($subscription_order_id, $failed_reason);
+            return true;
+        } else {
+            // Increment attempts and keep status as 'upcoming' for retry
+            $wpdb->update(
+                $subscription_order_table,
+                array(
+                    'attempts' => $new_attempts,
+                    'status' => 'upcoming'
+                ),
+                array('id' => $subscription_order_id),
+                array('%d', '%s'),
+                array('%d')
+            );
+            
+            error_log('Windrose Payment: Payment failed for subscription order ' . $subscription_order_id . '. Attempts incremented to ' . $new_attempts . ' (threshold: ' . $attempt_threshold . '). Will retry on next cron run.');
+            
+            // Add note to main subscription if it exists
+            $this->add_subscription_failure_note($subscription_order->subscription_id, $new_attempts, $attempt_threshold, $failed_reason);
+            
+            return true;
+        }
+    }
+    
+    /**
+     * Cancel subscription order after max attempts reached
+     */
+    public function cancel_subscription_order($subscription_order_id, $failed_reason = '') {
+        global $wpdb;
+        $subscription_order_table = $wpdb->prefix . WINDROS_SUBSCRIPTION_ORDER_TABLE;
+        $subscription_main_table = $wpdb->prefix . WINDROS_SUBSCRIPTION_MAIN_TABLE;
+        
+        // Get subscription order data
+        $subscription_order = $wpdb->get_row($wpdb->prepare(
+            "SELECT * FROM $subscription_order_table WHERE id = %d",
+            $subscription_order_id
+        ));
+        
+        if (!$subscription_order) {
+            error_log('Windrose Payment: Subscription order not found for cancellation: ' . $subscription_order_id);
+            return false;
+        }
+        
+        // Get configurable attempt threshold from settings
+        $attempt_threshold = intval(get_option('windrose_payment_attempt_threshold', '3'));
+        
+        // Update subscription order status to cancelled
+        $wpdb->update(
+            $subscription_order_table,
+            array(
+                'status' => 'cancelled',
+                'attempts' => $attempt_threshold
+            ),
+            array('id' => $subscription_order_id),
+            array('%s', '%d'),
+            array('%d')
+        );
+        
+        // Update main subscription status to expired
+        $wpdb->update(
+            $subscription_main_table,
+            array('status' => 'expired'),
+            array('id' => $subscription_order->subscription_id),
+            array('%s'),
+            array('%d')
+        );
+        
+        error_log('Windrose Payment: Subscription order ' . $subscription_order_id . ' cancelled and main subscription ' . $subscription_order->subscription_id . ' marked as expired due to max failed attempts (' . $attempt_threshold . ').');
+        
+        // Add cancellation note to main subscription
+        $this->add_subscription_cancellation_note($subscription_order->subscription_id, $attempt_threshold, $failed_reason);
+        
+        // Trigger action for external integrations
+        do_action('windrose_subscription_cancelled_due_to_failed_payments', $subscription_order->subscription_id, $subscription_order_id, $failed_reason);
+        
+        return true;
+    }
+    
+    /**
+     * Add failure note to main subscription
+     */
+    private function add_subscription_failure_note($subscription_id, $attempts, $threshold, $failed_reason = '') {
+        global $wpdb;
+        $subscription_main_table = $wpdb->prefix . WINDROS_SUBSCRIPTION_MAIN_TABLE;
+        
+        $note = sprintf(
+            'Payment failed (Attempt %d/%d). %s',
+            $attempts,
+            $threshold,
+            $failed_reason ? 'Reason: ' . $failed_reason : ''
+        );
+        
+        // You can add this note to a notes field if you have one, or log it
+        error_log('Windrose Subscription ' . $subscription_id . ': ' . $note);
+    }
+    
+    /**
+     * Add cancellation note to main subscription
+     */
+    private function add_subscription_cancellation_note($subscription_id, $threshold, $failed_reason = '') {
+        global $wpdb;
+        $subscription_main_table = $wpdb->prefix . WINDROS_SUBSCRIPTION_MAIN_TABLE;
+        
+        $note = sprintf(
+            'Subscription cancelled due to %d failed payment attempts. %s',
+            $threshold,
+            $failed_reason ? 'Last failure reason: ' . $failed_reason : ''
+        );
+        
+        // You can add this note to a notes field if you have one, or log it
+        error_log('Windrose Subscription ' . $subscription_id . ': ' . $note);
+    }
+
+    /**
+     * Test payment failure handling (for debugging purposes)
+     */
+    public function test_payment_failure_handling($subscription_order_id) {
+        error_log('Windrose Payment: Testing payment failure handling for subscription order ' . $subscription_order_id);
+        
+        $result = $this->handle_payment_failure($subscription_order_id, 'Test failure reason');
+        
+        if ($result) {
+            error_log('Windrose Payment: Payment failure handling test completed successfully');
+        } else {
+            error_log('Windrose Payment: Payment failure handling test failed');
+        }
+        
+        return $result;
     }
 
 }

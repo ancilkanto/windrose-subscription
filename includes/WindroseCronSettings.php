@@ -33,6 +33,7 @@ class WindroseCronSettings {
         register_setting('windrose_cron_settings', 'windrose_live_integration_id');
         register_setting('windrose_cron_settings', 'windrose_test_integration_id');
         register_setting('windrose_cron_settings', 'windrose_daily_cron_time');
+        register_setting('windrose_cron_settings', 'windrose_payment_attempt_threshold');
     }
 
     /**
@@ -48,16 +49,19 @@ class WindroseCronSettings {
         $live_integration_id = get_option('windrose_live_integration_id', '');
         $test_integration_id = get_option('windrose_test_integration_id', '');
         $daily_cron_time = get_option('windrose_daily_cron_time', '02:00');
+        $payment_attempt_threshold = get_option('windrose_payment_attempt_threshold', '3');
         
         // Handle form submission
         if (isset($_POST['submit'])) {
             $live_integration_id = sanitize_text_field($_POST['windrose_live_integration_id']);
             $test_integration_id = sanitize_text_field($_POST['windrose_test_integration_id']);
             $daily_cron_time = sanitize_text_field($_POST['windrose_daily_cron_time']);
+            $payment_attempt_threshold = max(1, min(10, intval($_POST['windrose_payment_attempt_threshold'])));
             
             update_option('windrose_live_integration_id', $live_integration_id);
             update_option('windrose_test_integration_id', $test_integration_id);
             update_option('windrose_daily_cron_time', $daily_cron_time);
+            update_option('windrose_payment_attempt_threshold', $payment_attempt_threshold);
             
             // Reschedule crons based on new settings
             $cron_manager = new WindroseCronManager();
@@ -68,7 +72,7 @@ class WindroseCronSettings {
         
         ?>
         <div class="wrap">
-            <h1>Windrose Subscription Cron Settings</h1>
+            <h1>Windrose Subscription Settings</h1>
             
             <div class="notice notice-info">
                 <p><strong>Note:</strong> The cron system automatically processes subscription renewals. Daily processing is usually sufficient for most subscription types.</p>
@@ -236,6 +240,16 @@ class WindroseCronSettings {
                                         <p class="description">
                                             Set the time for the daily cron to run (WordPress timezone: <?php echo wp_timezone_string(); ?>). 
                                             Recommended: 02:00-04:00 AM for low traffic periods.
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Payment Attempt Threshold</th>
+                                    <td>
+                                        <input type="number" name="windrose_payment_attempt_threshold" value="<?php echo esc_attr($payment_attempt_threshold); ?>" class="small-text" min="1" max="10" />
+                                        <p class="description">
+                                            Maximum number of failed payment attempts before cancelling a subscription (1-10). 
+                                            Default: 3 attempts.
                                         </p>
                                     </td>
                                 </tr>
@@ -482,6 +496,30 @@ class WindroseCronSettings {
         .button-disabled {
             opacity: 0.6;
             cursor: not-allowed;
+        }
+        
+        /* Custom form table column widths */
+        .card .form-table th {
+            width: 35%; /* Increase first column width */
+        }
+        
+        .card .form-table td {
+            width: 65%; /* Decrease second column width */
+        }
+        
+        /* Override WordPress regular-text width for better fit */
+        .card .form-table .regular-text {
+            width: 200px !important; /* Reduce from default ~400px to 200px */
+        }
+        
+        /* Make time input slightly smaller */
+        .card .form-table input[type="time"].regular-text {
+            width: 120px !important;
+        }
+        
+        /* Make number input smaller */
+        .card .form-table input[type="number"].small-text {
+            width: 80px !important;
         }
         
         /* Responsive design for smaller screens */
