@@ -17,9 +17,28 @@ class WindroseCronManager {
      * Schedule cron events
      */
     public function schedule_cron_events() {
-        // Daily cron for subscription processing (primary)
+        // Get the custom daily cron time
+        $daily_cron_time = get_option('windrose_daily_cron_time', '02:00');
+        
+        // Parse the time to get hour and minute
+        $time_parts = explode(':', $daily_cron_time);
+        $hour = intval($time_parts[0]);
+        $minute = intval($time_parts[1]);
+        
+        // Calculate the next run time for today
+        $next_run = strtotime("today {$hour}:{$minute}:00");
+        
+        // If the time has already passed today, schedule for tomorrow
+        if ($next_run <= time()) {
+            $next_run = strtotime("tomorrow {$hour}:{$minute}:00");
+        }
+        
+        // Clear existing cron first
+        wp_clear_scheduled_hook('windrose_subscription_cron');
+        
+        // Schedule the daily cron at the custom time
         if (!wp_next_scheduled('windrose_subscription_cron')) {
-            wp_schedule_event(time(), 'daily', 'windrose_subscription_cron');
+            wp_schedule_event($next_run, 'daily', 'windrose_subscription_cron');
         }
     }
 

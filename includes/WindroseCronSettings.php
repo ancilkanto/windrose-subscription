@@ -32,6 +32,7 @@ class WindroseCronSettings {
         register_setting('windrose_cron_settings', 'windrose_cron_enabled');
         register_setting('windrose_cron_settings', 'windrose_live_integration_id');
         register_setting('windrose_cron_settings', 'windrose_test_integration_id');
+        register_setting('windrose_cron_settings', 'windrose_daily_cron_time');
     }
 
     /**
@@ -46,14 +47,17 @@ class WindroseCronSettings {
         $enabled = get_option('windrose_cron_enabled', 'yes');
         $live_integration_id = get_option('windrose_live_integration_id', '');
         $test_integration_id = get_option('windrose_test_integration_id', '');
+        $daily_cron_time = get_option('windrose_daily_cron_time', '02:00');
         
         // Handle form submission
         if (isset($_POST['submit'])) {
             $live_integration_id = sanitize_text_field($_POST['windrose_live_integration_id']);
             $test_integration_id = sanitize_text_field($_POST['windrose_test_integration_id']);
+            $daily_cron_time = sanitize_text_field($_POST['windrose_daily_cron_time']);
             
             update_option('windrose_live_integration_id', $live_integration_id);
             update_option('windrose_test_integration_id', $test_integration_id);
+            update_option('windrose_daily_cron_time', $daily_cron_time);
             
             // Reschedule crons based on new settings
             $cron_manager = new WindroseCronManager();
@@ -70,9 +74,9 @@ class WindroseCronSettings {
                 <p><strong>Note:</strong> The cron system automatically processes subscription renewals. Daily processing is usually sufficient for most subscription types.</p>
             </div>
 
-            <!-- Two Column Layout -->
+            <!-- Three Column Layout -->
             <div class="windrose-admin-grid">
-                <!-- Left Column -->
+                <!-- First Column -->
                 <div class="windrose-admin-column">
                     <!-- Real-time Status Dashboard -->
                     <div class="card">
@@ -102,9 +106,11 @@ class WindroseCronSettings {
                                     $daily_next = wp_next_scheduled('windrose_subscription_cron');
                                     if ($daily_next): ?>
                                         <span style="color: green;">✓ Scheduled</span><br>
-                                        <small>Next Run: <?php echo date('Y-m-d H:i:s', $daily_next); ?></small>
+                                        <small>Next Run: <?php echo date('Y-m-d H:i:s', $daily_next); ?></small><br>
+                                        <small>Configured Time: <?php echo esc_html($daily_cron_time); ?> daily</small>
                                     <?php else: ?>
-                                        <span style="color: red;">✗ Not Scheduled</span>
+                                        <span style="color: red;">✗ Not Scheduled</span><br>
+                                        <small>Configured Time: <?php echo esc_html($daily_cron_time); ?> daily</small>
                                     <?php endif; ?>
                                 </td>
                             </tr>
@@ -185,9 +191,20 @@ class WindroseCronSettings {
                             </a>
                         </p>
                     </div>
+
+                    <!-- WP-CLI Commands -->
+                    <div class="card">
+                        <h2>💻 WP-CLI Commands</h2>
+                        <p>You can also manage the cron system using WP-CLI commands:</p>
+                        <code>wp windrose-cli cron_status</code> - Check cron status<br>
+                        <code>wp windrose-cli run_cron</code> - Manually run cron<br>
+                        <code>wp windrose-cli create_subscription_order</code> - Create subscription orders<br>
+                        <code>wp windrose-cli pending_subscriptions</code> - Check pending subscriptions<br>
+                        <code>wp windrose-cli test_subscription [ID]</code> - Test specific subscription
+                    </div>
                 </div>
 
-                <!-- Right Column -->
+                <!-- Second Column -->
                 <div class="windrose-admin-column">
                     <!-- Configuration -->
                     <form method="post" action="">
@@ -209,6 +226,16 @@ class WindroseCronSettings {
                                         <input type="text" name="windrose_test_integration_id" value="<?php echo esc_attr($test_integration_id); ?>" class="regular-text" placeholder="e.g., 7009" />
                                         <p class="description">
                                             Enter your Test Integration ID from Paymob for testing payments.
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Daily Cron Time</th>
+                                    <td>
+                                        <input type="time" name="windrose_daily_cron_time" value="<?php echo esc_attr($daily_cron_time); ?>" class="regular-text" />
+                                        <p class="description">
+                                            Set the time for the daily cron to run (WordPress timezone: <?php echo wp_timezone_string(); ?>). 
+                                            Recommended: 02:00-04:00 AM for low traffic periods.
                                         </p>
                                     </td>
                                 </tr>
@@ -271,18 +298,10 @@ class WindroseCronSettings {
                             </tr>
                         </table>
                     </div>
+                </div>
 
-                    <!-- WP-CLI Commands -->
-                    <div class="card">
-                        <h2>💻 WP-CLI Commands</h2>
-                        <p>You can also manage the cron system using WP-CLI commands:</p>
-                        <code>wp windrose-cli cron_status</code> - Check cron status<br>
-                        <code>wp windrose-cli run_cron</code> - Manually run cron<br>
-                        <code>wp windrose-cli create_subscription_order</code> - Create subscription orders<br>
-                        <code>wp windrose-cli pending_subscriptions</code> - Check pending subscriptions<br>
-                        <code>wp windrose-cli test_subscription [ID]</code> - Test specific subscription
-                    </div>
-
+                <!-- Third Column -->
+                <div class="windrose-admin-column">
                     <!-- System Information -->
                     <div class="card">
                         <h2>🔧 System Information</h2>
@@ -419,7 +438,7 @@ class WindroseCronSettings {
                                 </tbody>
                             </table>
                             <p>
-                                <a href="<?php echo admin_url('admin.php?page=windrose-cron-settings&action=view_all_logs'); ?>" class="button button-secondary">
+                                <a href="<?php echo admin_url('admin.php?page=windrose-subscription-logs'); ?>" class="button button-secondary">
                                     View All Payment Logs
                                 </a>
                             </p>
@@ -436,11 +455,13 @@ class WindroseCronSettings {
             display: flex;
             gap: 20px;
             margin-top: 20px;
+            align-items: flex-start;
         }
         
         .windrose-admin-column {
             flex: 1;
             min-width: 0; /* Prevents flex items from overflowing */
+            max-width: calc(33.333% - 14px); /* Ensures equal width for three columns with gap consideration */
         }
         
         .card {
@@ -464,13 +485,15 @@ class WindroseCronSettings {
         }
         
         /* Responsive design for smaller screens */
-        @media (max-width: 1200px) {
+        @media (max-width: 1400px) {
             .windrose-admin-grid {
                 flex-direction: column;
+                gap: 20px;
             }
             
             .windrose-admin-column {
                 flex: none;
+                max-width: 100%;
             }
         }
         </style>
