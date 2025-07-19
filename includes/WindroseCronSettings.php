@@ -30,7 +30,6 @@ class WindroseCronSettings {
     public function init_settings() {
         register_setting('windrose_cron_settings', 'windrose_cron_frequency');
         register_setting('windrose_cron_settings', 'windrose_cron_enabled');
-        register_setting('windrose_cron_settings', 'windrose_enable_hourly_cron');
         register_setting('windrose_cron_settings', 'windrose_live_integration_id');
         register_setting('windrose_cron_settings', 'windrose_test_integration_id');
     }
@@ -45,17 +44,14 @@ class WindroseCronSettings {
         $today_due = WindroseCronManager::get_today_due_items();
         $frequency = get_option('windrose_cron_frequency', 'daily');
         $enabled = get_option('windrose_cron_enabled', 'yes');
-        $enable_hourly = get_option('windrose_enable_hourly_cron', 'no');
         $live_integration_id = get_option('windrose_live_integration_id', '');
         $test_integration_id = get_option('windrose_test_integration_id', '');
         
         // Handle form submission
         if (isset($_POST['submit'])) {
-            $enable_hourly = isset($_POST['windrose_enable_hourly_cron']) ? 'yes' : 'no';
             $live_integration_id = sanitize_text_field($_POST['windrose_live_integration_id']);
             $test_integration_id = sanitize_text_field($_POST['windrose_test_integration_id']);
             
-            update_option('windrose_enable_hourly_cron', $enable_hourly);
             update_option('windrose_live_integration_id', $live_integration_id);
             update_option('windrose_test_integration_id', $test_integration_id);
             
@@ -109,19 +105,6 @@ class WindroseCronSettings {
                                         <small>Next Run: <?php echo date('Y-m-d H:i:s', $daily_next); ?></small>
                                     <?php else: ?>
                                         <span style="color: red;">✗ Not Scheduled</span>
-                                    <?php endif; ?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Hourly Cron</th>
-                                <td>
-                                    <?php 
-                                    $hourly_next = wp_next_scheduled('windrose_subscription_hourly_cron');
-                                    if ($hourly_next): ?>
-                                        <span style="color: green;">✓ Scheduled</span><br>
-                                        <small>Next Run: <?php echo date('Y-m-d H:i:s', $hourly_next); ?></small>
-                                    <?php else: ?>
-                                        <span style="color: orange;">⚠ Not Scheduled (disabled)</span>
                                     <?php endif; ?>
                                 </td>
                             </tr>
@@ -211,19 +194,6 @@ class WindroseCronSettings {
                         <div class="card">
                             <h2>⚙️ Cron Configuration</h2>
                             <table class="form-table">
-                                <tr>
-                                    <th>Enable Hourly Cron</th>
-                                    <td>
-                                        <label>
-                                            <input type="checkbox" name="windrose_enable_hourly_cron" value="1" <?php checked($enable_hourly, 'yes'); ?> />
-                                            Enable hourly processing (not recommended for most use cases)
-                                        </label>
-                                        <p class="description">
-                                            Hourly cron is only needed for very frequent subscriptions or testing. 
-                                            Daily processing is sufficient for weekly, monthly, or yearly subscriptions.
-                                        </p>
-                                    </td>
-                                </tr>
                                 <tr>
                                     <th>Live Integration ID</th>
                                     <td>
@@ -508,7 +478,13 @@ class WindroseCronSettings {
         <script>
         // Auto-refresh the page every 30 seconds to show live status
         setTimeout(function() {
-            location.reload();
+            if (window.location.href.includes('action=run_cron')) {
+                // If on run_cron URL, redirect back to base settings page
+                window.location.href = 'admin.php?page=windrose-cron-settings';
+            } else {
+                // Otherwise just refresh current page
+                location.reload();
+            }
         }, 30000);
         </script>
         <?php

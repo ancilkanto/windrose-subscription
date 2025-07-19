@@ -1,0 +1,800 @@
+/* Windrose Subscription Logs Admin Styles */
+
+.windrose-logs-filters {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+.filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: flex-end;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 150px;
+}
+
+.filter-group label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #23282d;
+}
+
+.filter-group select,
+.filter-group input {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+}
+
+/* Statistics Cards */
+.windrose-logs-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,.15);
+}
+
+.stat-card h3 {
+    margin: 0 0 10px 0;
+    color: #666;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-number {
+    font-size: 28px;
+    font-weight: bold;
+    color: #2271b1;
+    display: block;
+}
+
+/* Logs Table */
+.windrose-logs-table {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+.windrose-logs-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.windrose-logs-table th {
+    background: #f6f7f7;
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    color: #23282d;
+    border-bottom: 1px solid #ccd0d4;
+}
+
+.windrose-logs-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f0f1;
+    vertical-align: top;
+}
+
+.windrose-logs-table tr:hover {
+    background-color: #f6f7f7;
+}
+
+/* Status Badges */
+.status-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-initiated {
+    background-color: #e7f3ff;
+    color: #0073aa;
+}
+
+.status-intention_created {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-payment_processing {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+.status-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-failed {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.status-token_error {
+    background-color: #f5c6cb;
+    color: #721c24;
+}
+
+/* Mode Badges */
+.mode-badge {
+    display: inline-block;
+    padding: 3px 6px;
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.mode-live {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.mode-test {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+/* Pagination */
+.windrose-pagination {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    padding: 20px;
+    background: #f6f7f7;
+    border-top: 1px solid #ccd0d4;
+}
+
+.windrose-pagination .button {
+    padding: 6px 12px;
+    min-width: 40px;
+    text-align: center;
+}
+
+/* Modal Styles */
+.windrose-modal {
+    position: fixed;
+    z-index: 100000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    display: block !important; /* Force display */
+}
+
+.windrose-modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.windrose-modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 900px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    transform: translateY(-50px) scale(0.9);
+    transition: transform 0.3s ease;
+    box-sizing: border-box;
+}
+
+.windrose-modal.show .windrose-modal-content {
+    transform: translateY(0) scale(1);
+}
+
+.windrose-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.windrose-modal-close:hover {
+    color: #000;
+}
+
+.windrose-modal h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #23282d;
+    border-bottom: 2px solid #2271b1;
+    padding-bottom: 10px;
+}
+
+/* Log Details */
+.log-details .form-table {
+    margin-top: 0;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.log-details .form-table th {
+    width: 150px;
+    padding: 12px 15px;
+    background: #f6f7f7;
+    border: 1px solid #ccd0d4;
+    font-weight: 600;
+    vertical-align: top;
+    word-wrap: break-word;
+}
+
+.log-details .form-table td {
+    padding: 12px 15px;
+    border: 1px solid #ccd0d4;
+    background: #fff;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 0;
+}
+
+.log-details pre {
+    background: #f6f7f7;
+    padding: 10px;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-size: 12px;
+    line-height: 1.4;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+/* JSON Response Styling */
+.json-response {
+    margin: 10px 0;
+}
+
+.json-formatted {
+    background: #1e1e1e !important;
+    color: #d4d4d4 !important;
+    padding: 15px !important;
+    border-radius: 6px !important;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace !important;
+    font-size: 11px !important;
+    line-height: 1.5 !important;
+    max-height: 300px !important;
+    overflow-y: auto !important;
+    border: 1px solid #333 !important;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.3) !important;
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    word-break: break-all !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+}
+
+.json-plain {
+    background: #f8f9fa !important;
+    color: #495057 !important;
+    padding: 12px !important;
+    border-radius: 4px !important;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace !important;
+    font-size: 11px !important;
+    line-height: 1.4 !important;
+    max-height: 200px !important;
+    overflow-y: auto !important;
+    border: 1px solid #dee2e6 !important;
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    word-break: break-all !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+}
+
+/* JSON Syntax Highlighting */
+.json-formatted .string { color: #ce9178; }
+.json-formatted .number { color: #b5cea8; }
+.json-formatted .boolean { color: #569cd6; }
+.json-formatted .null { color: #569cd6; }
+.json-formatted .key { color: #9cdcfe; }
+
+/* Scrollbar Styling for JSON */
+.json-formatted::-webkit-scrollbar,
+.json-plain::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.json-formatted::-webkit-scrollbar-track,
+.json-plain::-webkit-scrollbar-track {
+    background: #2d2d2d;
+    border-radius: 4px;
+}
+
+.json-formatted::-webkit-scrollbar-thumb,
+.json-plain::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 4px;
+}
+
+.json-formatted::-webkit-scrollbar-thumb:hover,
+.json-plain::-webkit-scrollbar-thumb:hover {
+    background: #777;
+}
+
+/* JSON Response Container */
+.json-response {
+    position: relative;
+}
+
+.json-response::before {
+    content: 'JSON Response';
+    position: absolute;
+    top: -8px;
+    left: 10px;
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 2px 8px;
+    font-size: 10px;
+    font-weight: 600;
+    border-radius: 3px;
+    z-index: 1;
+}
+
+/* Copy Button for JSON */
+.json-response {
+    position: relative;
+}
+
+.copy-json-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: #0073aa;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 10px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+    z-index: 2;
+}
+
+.copy-json-btn:hover {
+    opacity: 1;
+    background: #005a87;
+}
+
+.copy-json-btn.copied {
+    background: #46b450;
+}
+
+/* No Logs Message */
+.no-logs {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+}
+
+.no-logs p {
+    font-size: 16px;
+    margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .filter-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filter-group {
+        min-width: auto;
+    }
+    
+    .filter-actions {
+        justify-content: center;
+    }
+    
+    .windrose-logs-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .windrose-logs-table {
+        overflow-x: auto;
+    }
+    
+    .windrose-logs-table table {
+        min-width: 800px;
+    }
+    
+    .windrose-modal-content {
+        width: 95%;
+        margin: 10% auto;
+        padding: 20px;
+    }
+    
+    .log-details .form-table th,
+    .log-details .form-table td {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .log-details .form-table th {
+        border-bottom: none;
+    }
+    
+    .json-formatted,
+    .json-plain {
+        font-size: 10px !important;
+        padding: 10px !important;
+    }
+    
+    .copy-json-btn {
+        font-size: 9px;
+        padding: 3px 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    .windrose-logs-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .stat-card {
+        padding: 15px;
+    }
+    
+    .stat-number {
+        font-size: 24px;
+    }
+}
+
+/* Loading State */
+.windrose-loading {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
+.windrose-loading::after {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #2271b1;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Button Enhancements */
+.button.view-log-details {
+    background: #2271b1;
+    border-color: #2271b1;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.button.view-log-details:hover {
+    background: #135e96;
+    border-color: #135e96;
+    color: #fff;
+}
+
+/* Table Enhancements */
+.windrose-logs-table .wp-list-table {
+    border: none;
+}
+
+.windrose-logs-table .wp-list-table th {
+    border-bottom: 2px solid #ccd0d4;
+}
+
+.windrose-logs-table .wp-list-table td {
+    border-bottom: 1px solid #f0f0f1;
+}
+
+/* Link Styles */
+.windrose-logs-table a {
+    color: #2271b1;
+    text-decoration: none;
+}
+
+.windrose-logs-table a:hover {
+    color: #135e96;
+    text-decoration: underline;
+}
+
+/* Notification Styles */
+.windrose-notification {
+    position: fixed;
+    top: 32px;
+    right: 20px;
+    padding: 12px 20px;
+    border-radius: 4px;
+    color: #fff;
+    font-weight: 600;
+    z-index: 100001;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    max-width: 300px;
+    word-wrap: break-word;
+}
+
+.windrose-notification.show {
+    transform: translateX(0);
+}
+
+.windrose-notification-success {
+    background-color: #46b450;
+    border-left: 4px solid #389a43;
+}
+
+.windrose-notification-error {
+    background-color: #dc3232;
+    border-left: 4px solid #a00;
+}
+
+.windrose-notification-warning {
+    background-color: #ffb900;
+    border-left: 4px solid #dba617;
+    color: #333;
+}
+
+.windrose-notification-info {
+    background-color: #00a0d2;
+    border-left: 4px solid #0073aa;
+}
+
+/* Loading State for Table */
+.windrose-logs-table.loading {
+    position: relative;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.windrose-logs-table.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    margin: -20px 0 0 -20px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #2271b1;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    z-index: 10;
+}
+
+/* Responsive Table */
+.windrose-logs-table.responsive {
+    overflow-x: auto;
+}
+
+.windrose-logs-table.responsive table {
+    min-width: 800px;
+}
+
+/* Enhanced Hover Effects */
+.windrose-logs-table tbody tr.hover {
+    background-color: #f0f6fc !important;
+    box-shadow: inset 0 0 0 1px #2271b1;
+}
+
+/* Export and Action Buttons */
+.windrose-logs-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: flex-end;
+}
+
+.windrose-logs-actions .button {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.windrose-logs-actions .button::before {
+    font-family: dashicons;
+    font-size: 16px;
+}
+
+.button.export-logs[data-format="csv"]::before {
+    content: "\f316";
+}
+
+.button.export-logs[data-format="json"]::before {
+    content: "\f469";
+}
+
+.button.refresh-logs::before {
+    content: "\f463";
+}
+
+/* Enhanced Status Badges */
+.status-badge {
+    position: relative;
+    cursor: help;
+}
+
+.status-badge::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: currentColor;
+    transition: width 0.3s ease;
+}
+
+.status-badge:hover::after {
+    width: 100%;
+}
+
+/* Enhanced Modal */
+.windrose-modal-content {
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Enhanced Statistics Cards */
+.stat-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.stat-card:hover::before {
+    left: 100%;
+}
+
+/* Enhanced Pagination */
+.windrose-pagination .button {
+    transition: all 0.2s ease;
+    border-radius: 4px;
+}
+
+.windrose-pagination .button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.windrose-pagination .button.button-primary {
+    background: #2271b1;
+    border-color: #2271b1;
+}
+
+/* Enhanced Filters */
+.windrose-logs-filters {
+    position: relative;
+}
+
+.windrose-logs-filters::before {
+    content: '🔍';
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 16px;
+    opacity: 0.5;
+}
+
+.filter-group select:focus,
+.filter-group input:focus {
+    border-color: #2271b1;
+    box-shadow: 0 0 0 1px #2271b1;
+    outline: none;
+}
+
+/* Enhanced Table Headers */
+.windrose-logs-table th {
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+}
+
+.windrose-logs-table th[data-sortable]::after {
+    content: '↕';
+    position: absolute;
+    right: 8px;
+    opacity: 0.3;
+    transition: opacity 0.2s ease;
+}
+
+.windrose-logs-table th[data-sortable]:hover::after {
+    opacity: 0.7;
+}
+
+.windrose-logs-table th[data-sortable][data-order="asc"]::after {
+    content: '↑';
+    opacity: 1;
+}
+
+.windrose-logs-table th[data-sortable][data-order="desc"]::after {
+    content: '↓';
+    opacity: 1;
+} 

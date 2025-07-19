@@ -112,6 +112,8 @@ class MainWindroseClass {
         new WindroseSubscription\Includes\WindroseSubscriptionOrderPaymentInit();
         // payment logging
         new WindroseSubscription\Includes\WindrosePaymentLogger();
+        // subscription logs admin page
+        new WindroseSubscription\Includes\WindroseSubscriptionLogs();
         // database updater
         new WindroseSubscription\Includes\WindroseDatabaseUpdater();
     }

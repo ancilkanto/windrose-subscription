@@ -463,6 +463,10 @@ class WindroseSubscriptionOrderPaymentInit {
         $order->update_meta_data('_paymob_card_type', $payment_response['source_data']['sub_type'] ?? '');
         $order->update_meta_data('_paymob_amount_cents', $payment_response['amount_cents'] ?? '');
         $order->update_meta_data('_paymob_currency', $payment_response['currency'] ?? '');
+
+        $order->update_meta_data('PaymobTransactionId', $payment_response['id'] ?? '');
+        $order->update_meta_data('PaymobMerchantOrderID', $payment_response['merchant_order_id'] ?? '');
+        
         $order->save();
     }
 

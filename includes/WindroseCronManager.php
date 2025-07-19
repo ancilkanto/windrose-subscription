@@ -8,7 +8,6 @@ class WindroseCronManager {
     public function __construct() {
         add_action('init', [$this, 'schedule_cron_events']);
         add_action('windrose_subscription_cron', [$this, 'process_subscription_orders']);
-        add_action('windrose_subscription_hourly_cron', [$this, 'process_subscription_orders']);
         
         // Cleanup on plugin deactivation
         register_deactivation_hook(WINDROS_INIT, [$this, 'clear_cron_events']);
@@ -22,15 +21,6 @@ class WindroseCronManager {
         if (!wp_next_scheduled('windrose_subscription_cron')) {
             wp_schedule_event(time(), 'daily', 'windrose_subscription_cron');
         }
-        
-        // Hourly cron is optional and should be enabled only if needed
-        $enable_hourly = get_option('windrose_enable_hourly_cron', 'no');
-        if ($enable_hourly === 'yes' && !wp_next_scheduled('windrose_subscription_hourly_cron')) {
-            wp_schedule_event(time(), 'hourly', 'windrose_subscription_hourly_cron');
-        } elseif ($enable_hourly === 'no') {
-            // Clear hourly cron if disabled
-            wp_clear_scheduled_hook('windrose_subscription_hourly_cron');
-        }
     }
 
     /**
@@ -38,7 +28,6 @@ class WindroseCronManager {
      */
     public function clear_cron_events() {
         wp_clear_scheduled_hook('windrose_subscription_cron');
-        wp_clear_scheduled_hook('windrose_subscription_hourly_cron');
     }
 
     /**
@@ -461,15 +450,14 @@ class WindroseCronManager {
     public static function get_cron_status() {
         $last_run = get_option('windrose_last_cron_run', array());
         $daily_next = wp_next_scheduled('windrose_subscription_cron');
-        $hourly_next = wp_next_scheduled('windrose_subscription_hourly_cron');
         $enable_hourly = get_option('windrose_enable_hourly_cron', 'no');
         
         return array(
             'last_run' => $last_run,
             'daily_next' => $daily_next,
-            'hourly_next' => $hourly_next,
+            'hourly_next' => false, // No hourly cron scheduled
             'daily_scheduled' => $daily_next !== false,
-            'hourly_scheduled' => $hourly_next !== false,
+            'hourly_scheduled' => false,
             'hourly_enabled' => $enable_hourly === 'yes',
             'is_scheduled' => $daily_next !== false // Primary cron status
         );
@@ -486,7 +474,6 @@ class WindroseCronManager {
         
         // Clear any scheduled cron events
         wp_clear_scheduled_hook('windrose_subscription_cron');
-        wp_clear_scheduled_hook('windrose_subscription_hourly_cron');
         
         return true;
     }

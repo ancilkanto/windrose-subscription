@@ -2,6 +2,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $windros_subscription_frequencies = array(
+    '1' => __('Every 1 Day', 'windros-subscription'),
     '7' => __('Every 1 Week', 'windros-subscription'),
     '14' => __('Every 2 Weeks', 'windros-subscription'),
     '21' => __('Every 3 Weeks', 'windros-subscription'),
