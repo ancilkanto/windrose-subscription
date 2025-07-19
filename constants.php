@@ -28,4 +28,5 @@ $windros_subscription_frequencies = array(
 ));
 ! defined( 'WINDROS_SUBSCRIPTION_MAIN_TABLE' ) && define( 'WINDROS_SUBSCRIPTION_MAIN_TABLE', 'windrose_subscriptions' );
 ! defined( 'WINDROS_SUBSCRIPTION_ORDER_TABLE' ) && define( 'WINDROS_SUBSCRIPTION_ORDER_TABLE', 'windrose_subscription_orders' );
+! defined( 'WINDROS_SUBSCRIPTION_PAYMENT_LOGS_TABLE' ) && define( 'WINDROS_SUBSCRIPTION_PAYMENT_LOGS_TABLE', 'windrose_subscription_payment_logs' );
 ! defined( 'WINDROS_DROP_TABLES' ) && define( 'WINDROS_DROP_TABLES', true );

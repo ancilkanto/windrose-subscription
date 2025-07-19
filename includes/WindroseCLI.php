@@ -8,143 +8,172 @@ use WC_Order_Item_Product;
 
 defined( 'WINDROS_INIT' ) || exit;  
 
-
 class WindroseCLI extends WP_CLI_Command {
 
-    public function create_subscription_order($args, $associative_args){
+    public function create_subscription_order($args, $associative_args) {
         WP_CLI::log("Started Subscription Order Creation");
 
+        // Use the same logic as the cron manager
+        $cron_manager = new WindroseCronManager();
+        $task_status = $cron_manager->process_subscription_orders();
+
+        // Show detailed results
+        if (isset($task_status['total_due']) && $task_status['total_due'] > 0) {
+            WP_CLI::log("Total due subscriptions: " . $task_status['total_due']);
+            WP_CLI::log("Successfully processed: " . count($task_status['success']));
+            WP_CLI::log("Failed to process: " . count($task_status['error']));
+        }
+
+        if (empty($task_status['error'])) {
+            $success_count = count($task_status['success']);
+            if ($success_count > 0) {
+                WP_CLI::success($success_count . " Subscription Orders Created Successfully.");
+            } else {
+                WP_CLI::success("No subscription orders were due for processing.");
+            }
+        } else {
+            $error_count = count($task_status['error']);
+            WP_CLI::warning($error_count . " orders failed to create.");
+            
+            // Log detailed errors
+            foreach ($task_status['error'] as $error) {
+                WP_CLI::log("Error for subscription #{$error['subscription_id']}: {$error['error']}");
+            }
+        }
+
+        // Show summary
+        $total_processed = count($task_status['success']) + count($task_status['error']);
+        WP_CLI::log("Summary: " . count($task_status['success']) . " successful, " . count($task_status['error']) . " failed (Total: $total_processed)");
+    }
+
+    /**
+     * Check cron status
+     */
+    public function cron_status($args, $associative_args) {
+        $status = WindroseCronManager::get_cron_status();
+        
+        WP_CLI::log("Windrose Subscription Cron Status:");
+        WP_CLI::log("Scheduled: " . ($status['is_scheduled'] ? 'Yes' : 'No'));
+        
+        if ($status['next_run']) {
+            WP_CLI::log("Next Run: " . date('Y-m-d H:i:s', $status['next_run']));
+        }
+        
+        if (!empty($status['last_run'])) {
+            WP_CLI::log("Last Run: " . date('Y-m-d H:i:s', $status['last_run']['timestamp']));
+            WP_CLI::log("Last Results: " . count($status['last_run']['results']['success']) . " successful, " . count($status['last_run']['results']['error']) . " failed");
+        } else {
+            WP_CLI::log("Last Run: Never");
+        }
+    }
+
+    /**
+     * Manually trigger cron processing
+     */
+    public function run_cron($args, $associative_args) {
+        WP_CLI::log("Manually triggering subscription cron...");
+        
+        $cron_manager = new WindroseCronManager();
+        $task_status = $cron_manager->process_subscription_orders();
+        
+        WP_CLI::success("Cron completed: " . count($task_status['success']) . " successful, " . count($task_status['error']) . " failed");
+    }
+
+    /**
+     * Test subscription creation (for debugging)
+     */
+    public function test_subscription($args, $associative_args) {
+        if (empty($args[0])) {
+            WP_CLI::error("Please provide a subscription ID to test");
+            return;
+        }
+
+        $subscription_id = intval($args[0]);
+        
+        WP_CLI::log("Testing subscription #{$subscription_id}");
+        
         global $wpdb;
         $subscription_order_table = $wpdb->prefix . WINDROS_SUBSCRIPTION_ORDER_TABLE;
+        
+        $subscription = $wpdb->get_row($wpdb->prepare(
+            "SELECT * FROM $subscription_order_table WHERE id = %d",
+            $subscription_id
+        ));
 
+        if (!$subscription) {
+            WP_CLI::error("Subscription not found");
+            return;
+        }
+
+        WP_CLI::log("Found subscription: " . json_encode($subscription, JSON_PRETTY_PRINT));
+    }
+
+    /**
+     * Check pending subscriptions
+     */
+    public function pending_subscriptions($args, $associative_args) {
+        global $wpdb;
+        $subscription_order_table = $wpdb->prefix . WINDROS_SUBSCRIPTION_ORDER_TABLE;
+        
         $current_timestamp = windrose_get_timestamp_object(0)->timestamp;
         
-        $upcoming_order_data = $wpdb->get_results( 
-            $wpdb->prepare( "SELECT * FROM $subscription_order_table WHERE time_stamp <= $current_timestamp AND status = 'upcoming'" ),
-            ARRAY_A
-        );
-        $task_status = array(
-            'success' => array(),
-            'error' => array()
-        );
-        if(!empty($upcoming_order_data)) {
-            // Create order with the data
-            $task_status = $this->create_WC_order($upcoming_order_data, $task_status);
+        // Get total count of due orders
+        $total_due = $wpdb->get_var($wpdb->prepare(
+            "SELECT COUNT(*) FROM $subscription_order_table 
+             WHERE time_stamp <= %d AND status = 'upcoming'",
+            $current_timestamp
+        ));
 
-            if(empty($task_status['error'])){
-                $success_count = count($task_status['success']);
-                WP_CLI::success($success_count . " Subscription Orders Created Successfully.");
-            }else{
-                WP_CLI::error("Subscription Orders Not Created.");
+        // Get upcoming orders (next 7 days)
+        $upcoming_7_days = $wpdb->get_var($wpdb->prepare(
+            "SELECT COUNT(*) FROM $subscription_order_table 
+             WHERE time_stamp > %d AND time_stamp <= %d AND status = 'upcoming'",
+            $current_timestamp,
+            $current_timestamp + (7 * 24 * 60 * 60)
+        ));
+
+        // Get upcoming orders (next 30 days)
+        $upcoming_30_days = $wpdb->get_var($wpdb->prepare(
+            "SELECT COUNT(*) FROM $subscription_order_table 
+             WHERE time_stamp > %d AND time_stamp <= %d AND status = 'upcoming'",
+            $current_timestamp,
+            $current_timestamp + (30 * 24 * 60 * 60)
+        ));
+
+        WP_CLI::log("Windrose Subscription Status:");
+        WP_CLI::log("Due for processing now: " . $total_due);
+        WP_CLI::log("Due in next 7 days: " . $upcoming_7_days);
+        WP_CLI::log("Due in next 30 days: " . $upcoming_30_days);
+
+        if ($total_due > 0) {
+            WP_CLI::warning("There are $total_due subscriptions due for processing. Run 'wp windrose-cli create_subscription_order' to process them.");
+        } else {
+            WP_CLI::success("No subscriptions are currently due for processing.");
+        }
+
+        // Show sample of due subscriptions if any
+        if ($total_due > 0) {
+            $sample_subscriptions = $wpdb->get_results($wpdb->prepare(
+                "SELECT id, subscription_id, user_id, product_id, time_stamp 
+                 FROM $subscription_order_table 
+                 WHERE time_stamp <= %d AND status = 'upcoming' 
+                 ORDER BY time_stamp ASC 
+                 LIMIT 5",
+                $current_timestamp
+            ));
+
+            WP_CLI::log("\nSample of due subscriptions:");
+            foreach ($sample_subscriptions as $sub) {
+                $product = wc_get_product($sub->product_id);
+                $product_name = $product ? $product->get_name() : 'Unknown Product';
+                $due_date = date('Y-m-d H:i:s', $sub->time_stamp);
+                WP_CLI::log("  - ID: {$sub->id}, Product: $product_name, Due: $due_date");
             }
-        }else{
-            WP_CLI::success("No subscriptions were found for today.");
+
+            if ($total_due > 5) {
+                WP_CLI::log("  ... and " . ($total_due - 5) . " more");
+            }
         }
     }
-
-    public function create_WC_order($subscription_order_data, $task_status){
-
-        if(!empty($subscription_order_data)){
-
-            // Extract first item from the array
-            $subscription_order = (object) reset($subscription_order_data);
-
-            WP_CLI::log("Creating order for subscription #".$subscription_order->subscription_id);
-
-            $order = wc_create_order();
-
-            
-            $product_id = intval($subscription_order->product_id);
-            $quantity = intval($subscription_order->quantity);     // Define the quantity
-            $product = wc_get_product( $product_id );
-
-            if ( $product ) {
-                $item = new WC_Order_Item_Product();
-                $item->set_product( $product );    // Set the product
-                $item->set_quantity( $quantity );  // Set the quantity
-                $item->set_subtotal( $product->get_price() * $quantity );   // Set the line item subtotal
-                $item->set_total( $product->get_price() * $quantity );  // Set the line item total
-                $order->add_item( $item );         // Add item to the order
-            }
-
-            // Set order billing and shipping details
-            $customer_data = $this->get_customer_data($subscription_order);                
-
-            $order->set_address( $customer_data->billing_address, 'billing' );
-            $order->set_address( $customer_data->shipping_address, 'shipping' );
-
-            // Set payment method
-            $order->set_payment_method('paymob-pixel');  // Replace with 'paymob-pixel'
-            $order->set_payment_method_title('Debit/Credit Card Payment');   // Replace with 'Debit/Credit Card Payment'
-
-
-            // Calculate and set totals
-            $order->calculate_totals();
-            
-            // Save the order
-            $order->save();
-
-            // Explicitly set status to 'pending payment'
-            $order->update_status('pending'); // This ensures it's pending payment
-            
-
-            
-
-            do_action( 'windrose_subscription_initiate_payment', $subscription_order, $order );
-
-            $task_status['success'][] = array(
-                'order_id' => $order->get_id(),
-                'subscription_id' => $subscription_order->id
-            );
-
-            WP_CLI::log("New order #".$order->get_id()." has been created for subscription #".$subscription_order->subscription_id);
-
-            // Recursive function call after removing the first item from the array
-
-            $task_status = $this->create_WC_order(array_slice($subscription_order_data,1), $task_status);
-
-        }
-        
-        
-        return $task_status;
-
-    }
-
-    public function get_customer_data($subscription_order){
-        $customer_data = new stdClass();
-
-        $customer_data->billing_address = array(
-            'first_name' => get_user_meta($subscription_order->user_id, 'billing_first_name', true),
-            'last_name'  => get_user_meta($subscription_order->user_id, 'billing_last_name', true),
-            'company'    => get_user_meta($subscription_order->user_id, 'billing_company', true),
-            'address_1'  => get_user_meta($subscription_order->user_id, 'billing_address_1', true),
-            'address_2'  => get_user_meta($subscription_order->user_id, 'billing_address_2', true),
-            'city'       => get_user_meta($subscription_order->user_id, 'billing_city', true),
-            'state'      => get_user_meta($subscription_order->user_id, 'billing_state', true),
-            'postcode'   => get_user_meta($subscription_order->user_id, 'billing_postcode', true),
-            'country'    => get_user_meta($subscription_order->user_id, 'billing_country', true),
-            'email'      => get_user_meta($subscription_order->user_id, 'billing_email', true),
-            'phone'      => get_user_meta($subscription_order->user_id, 'billing_phone', true),
-        );
-
-        $customer_data->shipping_address = array(
-            'first_name' => get_user_meta($subscription_order->user_id, 'shipping_first_name', true),
-            'last_name'  => get_user_meta($subscription_order->user_id, 'shipping_last_name', true),
-            'company'    => get_user_meta($subscription_order->user_id, 'shipping_company', true),
-            'address_1'  => get_user_meta($subscription_order->user_id, 'shipping_address_1', true),
-            'address_2'  => get_user_meta($subscription_order->user_id, 'shipping_address_2', true),
-            'city'       => get_user_meta($subscription_order->user_id, 'shipping_city', true),
-            'state'      => get_user_meta($subscription_order->user_id, 'shipping_state', true),
-            'postcode'   => get_user_meta($subscription_order->user_id, 'shipping_postcode', true),
-            'country'    => get_user_meta($subscription_order->user_id, 'shipping_country', true),
-            'phone'      => get_user_meta($subscription_order->user_id, 'shipping_phone', true), // optional
-        );
-
-        return $customer_data;
-    }
-
-
-    
-
 }
 
