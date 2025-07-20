@@ -251,5 +251,21 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
     WP_CLI::add_command('windrose-cli', 'WindroseSubscription\Includes\WindroseCLI');
 }
 
+add_filter('woocommerce_email_classes', function($emails) {
+    require_once __DIR__ . '/includes/class-wc-email-windrose-subscription-activated.php';
+    require_once __DIR__ . '/includes/class-wc-email-windrose-subscription-order-processed.php';
+    require_once __DIR__ . '/includes/class-wc-email-windrose-subscription-order-failed.php';
+    require_once __DIR__ . '/includes/class-wc-email-windrose-subscription-paused.php';
+    require_once __DIR__ . '/includes/class-wc-email-windrose-subscription-cancelled.php';
+    require_once __DIR__ . '/includes/class-wc-email-windrose-subscription-skipped.php';
+    $emails['WC_Email_Windrose_Subscription_Activated'] = new WindroseSubscription\Includes\WC_Email_Windrose_Subscription_Activated();
+    $emails['WC_Email_Windrose_Subscription_Order_Processed'] = new WindroseSubscription\Includes\WC_Email_Windrose_Subscription_Order_Processed();
+    $emails['WC_Email_Windrose_Subscription_Order_Failed'] = new WindroseSubscription\Includes\WC_Email_Windrose_Subscription_Order_Failed();
+    $emails['WC_Email_Windrose_Subscription_Paused'] = new WindroseSubscription\Includes\WC_Email_Windrose_Subscription_Paused();
+    $emails['WC_Email_Windrose_Subscription_Cancelled'] = new WindroseSubscription\Includes\WC_Email_Windrose_Subscription_Cancelled();
+    $emails['WC_Email_Windrose_Subscription_Skipped'] = new WindroseSubscription\Includes\WC_Email_Windrose_Subscription_Skipped();
+    return $emails;
+});
+
 
 
