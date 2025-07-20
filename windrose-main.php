@@ -116,6 +116,9 @@ class MainWindroseClass {
         new WindroseSubscription\Includes\WindroseSubscriptionLogs();
         // database updater
         new WindroseSubscription\Includes\WindroseDatabaseUpdater();
+        new WindroseSubscription\Includes\WindroseSubscriptionNotification();
+
+        
     }
 
     
@@ -247,4 +250,6 @@ function windrose_get_timestamp_object($offest = 0) {
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
     WP_CLI::add_command('windrose-cli', 'WindroseSubscription\Includes\WindroseCLI');
 }
+
+
 
