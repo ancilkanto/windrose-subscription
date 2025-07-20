@@ -2,6 +2,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $windros_subscription_frequencies = array(
+    '1' => __('Every 1 Day', 'windros-subscription'),
     '7' => __('Every 1 Week', 'windros-subscription'),
     '14' => __('Every 2 Weeks', 'windros-subscription'),
     '21' => __('Every 3 Weeks', 'windros-subscription'),
@@ -28,4 +29,5 @@ $windros_subscription_frequencies = array(
 ));
 ! defined( 'WINDROS_SUBSCRIPTION_MAIN_TABLE' ) && define( 'WINDROS_SUBSCRIPTION_MAIN_TABLE', 'windrose_subscriptions' );
 ! defined( 'WINDROS_SUBSCRIPTION_ORDER_TABLE' ) && define( 'WINDROS_SUBSCRIPTION_ORDER_TABLE', 'windrose_subscription_orders' );
+! defined( 'WINDROS_SUBSCRIPTION_PAYMENT_LOGS_TABLE' ) && define( 'WINDROS_SUBSCRIPTION_PAYMENT_LOGS_TABLE', 'windrose_subscription_payment_logs' );
 ! defined( 'WINDROS_DROP_TABLES' ) && define( 'WINDROS_DROP_TABLES', true );

@@ -3,7 +3,7 @@
 * Plugin URI: https://github.com/ancilkanto/windros-subscription
  * Description: <code><strong>Windrose Subscription</strong></code> allows enabling automatic recurring payments on your products. Once you buy a subscription-based product, the plugin will renew the payment automatically based on your own settings.
  * Version: 1.0
- * Author: Ancil
+ * Author: Ancil K Anto
  * Author URI: https://ancil.dev/
  * Text Domain: windros-subscription
  * Domain Path: /languages/
@@ -15,6 +15,57 @@ defined( 'ABSPATH' ) || exit;
 
 // Define Plugin Constants
 require_once plugin_dir_path( __FILE__ ).'constants.php';
+
+// Check and update database if needed
+add_action('plugins_loaded', 'windrose_check_database_version');
+
+function windrose_check_database_version() {
+    $current_db_version = get_option('windrose_db_version', '1.0');
+    $plugin_db_version = '1.2'; // New version with fixed payment logs table indexes
+    
+    if (version_compare($current_db_version, $plugin_db_version, '<')) {
+        windrose_create_payment_logs_table();
+        update_option('windrose_db_version', $plugin_db_version);
+    }
+}
+
+function windrose_create_payment_logs_table() {
+    global $wpdb;
+    $charset_collate = $wpdb->get_charset_collate();
+
+    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+
+    // Create subscription payment logs table
+    $subscription_payment_logs_table = $wpdb->prefix . WINDROS_SUBSCRIPTION_PAYMENT_LOGS_TABLE;
+
+    $create_payment_logs_table_query = "CREATE TABLE $subscription_payment_logs_table (
+        id bigint(9) NOT NULL AUTO_INCREMENT,
+        subscription_order_id bigint(9) NOT NULL,
+        wc_order_id bigint(9) NOT NULL,
+        user_id bigint(9) NOT NULL,
+        payment_token_id bigint(9) NULL,
+        payment_token text NULL,
+        payment_mode text NOT NULL,
+        integration_id text NULL,
+        intention_id text NULL,
+        transaction_id text NULL,
+        amount_cents bigint(9) NOT NULL,
+        currency text NOT NULL,
+        status text NOT NULL,
+        error_message text NULL,
+        paymob_response text NULL,
+        created_at datetime NOT NULL,
+        updated_at datetime NOT NULL,
+        PRIMARY KEY  (id),
+        KEY subscription_order_id (subscription_order_id),
+        KEY wc_order_id (wc_order_id),
+        KEY user_id (user_id),
+        KEY status (status(50)),
+        KEY created_at (created_at)
+    ) $charset_collate;";
+
+    dbDelta($create_payment_logs_table_query);
+}
 
 
 // Register the activation hook
@@ -55,6 +106,16 @@ class MainWindroseClass {
         // admin side
         new WindroseSubscription\Includes\WindroseAdminSubscriptionList();
         new WindroseSubscription\Includes\WindroseAdminSubscriptionDetailView();
+        // cron management
+        new WindroseSubscription\Includes\WindroseCronManager();
+        new WindroseSubscription\Includes\WindroseCronSettings();
+        new WindroseSubscription\Includes\WindroseSubscriptionOrderPaymentInit();
+        // payment logging
+        new WindroseSubscription\Includes\WindrosePaymentLogger();
+        // subscription logs admin page
+        new WindroseSubscription\Includes\WindroseSubscriptionLogs();
+        // database updater
+        new WindroseSubscription\Includes\WindroseDatabaseUpdater();
     }
 
     

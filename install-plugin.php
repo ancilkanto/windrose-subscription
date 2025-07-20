@@ -52,6 +52,40 @@ function windrose_plugin_activate() {
 
     dbDelta($create_order_table_query);
 
+    // Create subscription payment logs table
+    $subscription_payment_logs_table = $wpdb->prefix . WINDROS_SUBSCRIPTION_PAYMENT_LOGS_TABLE;
+
+    $create_payment_logs_table_query = "CREATE TABLE $subscription_payment_logs_table (
+        id bigint(9) NOT NULL AUTO_INCREMENT,
+        subscription_order_id bigint(9) NOT NULL,
+        wc_order_id bigint(9) NOT NULL,
+        user_id bigint(9) NOT NULL,
+        payment_token_id bigint(9) NULL,
+        payment_token text NULL,
+        payment_mode text NOT NULL,
+        integration_id text NULL,
+        intention_id text NULL,
+        transaction_id text NULL,
+        amount_cents bigint(9) NOT NULL,
+        currency text NOT NULL,
+        status text NOT NULL,
+        error_message text NULL,
+        paymob_response text NULL,
+        created_at datetime NOT NULL,
+        updated_at datetime NOT NULL,
+        PRIMARY KEY  (id),
+        KEY subscription_order_id (subscription_order_id),
+        KEY wc_order_id (wc_order_id),
+        KEY user_id (user_id),
+        KEY status (status(50)),
+        KEY created_at (created_at)
+    ) $charset_collate;";
+
+    dbDelta($create_payment_logs_table_query);
+
+    // Set initial database version
+    add_option('windrose_db_version', '1.2');
+
     flush_rewrite_rules();
     
 }

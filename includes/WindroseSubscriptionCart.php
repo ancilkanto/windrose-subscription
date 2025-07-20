@@ -23,6 +23,13 @@ class WindroseSubscriptionCart {
             return false;
         }
 
+        if ( !is_user_logged_in() ) {
+            if( isset( $_POST['subscription-schedule'] ) && !empty( $_POST['subscription-schedule'] ) ) {
+                wc_add_notice( __( 'Please login to subscribe a product.', 'windros-subscription' ), 'error' );
+                return false;
+            }
+        }
+
         return $passed;
         
     }
