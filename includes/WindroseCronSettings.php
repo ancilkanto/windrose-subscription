@@ -111,7 +111,7 @@ class WindroseCronSettings {
                                     if ($daily_next): ?>
                                         <span style="color: green;">✓ Scheduled</span><br>
                                         <small>Next Run: <?php echo date('Y-m-d H:i:s', $daily_next); ?></small><br>
-                                        <small>Configured Time: <?php echo esc_html($daily_cron_time); ?> daily</small>
+                                        <small>Configured Time: <?php echo esc_html($daily_cron_time); ?> daily (Server Time)</small>
                                     <?php else: ?>
                                         <span style="color: red;">✗ Not Scheduled</span><br>
                                         <small>Configured Time: <?php echo esc_html($daily_cron_time); ?> daily</small>
@@ -353,8 +353,8 @@ class WindroseCronSettings {
                                 </td>
                             </tr>
                             <tr>
-                                <th>Server Time</th>
-                                <td><?php echo date('Y-m-d H:i:s'); ?></td>
+                                <th>Server Time (UTC)</th>
+                                <td><?php echo gmdate('Y-m-d H:i:s'); ?></td>
                             </tr>
                             <tr>
                                 <th>WordPress Time</th>

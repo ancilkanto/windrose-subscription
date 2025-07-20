@@ -6,7 +6,6 @@ defined( 'WINDROS_INIT' ) || exit;
 class WindroseCronManager {
     
     public function __construct() {
-        add_action('init', [$this, 'schedule_cron_events']);
         add_action('windrose_subscription_cron', [$this, 'process_subscription_orders']);
         
         // Cleanup on plugin deactivation
