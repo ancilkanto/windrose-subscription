@@ -82,8 +82,17 @@ require_once 'vendor/autoload.php';
 
 class MainWindroseClass {
     public function __construct() {
+        // Load text domain early to prevent translation loading errors
+        add_action('plugins_loaded', array($this, 'load_textdomain'));
+        add_action('init', array($this, 'init'));
+    }
+    
+    public function load_textdomain() {
+        load_plugin_textdomain('windros-subscription', false, dirname(plugin_basename(__FILE__)) . '/languages');
+    }
+    
+    public function init() {
         $this->load_includes();
-        
     }
 
     public function load_includes() {
@@ -218,25 +227,38 @@ function windrose_get_customers() {
 
 
 function windrose_get_timestamp_object($offest = 0) {
-    // Get the timezone setting from WordPress
-    $timezone = get_option('timezone_string');  // e.g., 'America/New_York'
-
-    // If 'timezone_string' is empty, fall back to 'gmt_offset'
-    if (empty($timezone)) {
-        $gmt_offset = get_option('gmt_offset'); // e.g., -5 for UTC-5
-        $timezone = sprintf('Etc/GMT%+d', $gmt_offset); // e.g., 'Etc/GMT-5'
-    }
-
-    // Set the PHP timezone to match WordPress
+    // Always use GMT+0
+    $timezone = 'Etc/GMT';
     date_default_timezone_set($timezone);
 
-    $date = date("Y-m-d H:i:s");
+    // Get today's date in GMT+0
+    $date = date('Y-m-d H:i:s');
 
+    // Get the daily cron time option (format: 'HH:MM')
+    $cron_time = get_option('windrose_daily_cron_time', '03:00');
+    list($cron_hour, $cron_minute) = explode(':', $cron_time);
+    $cron_hour = intval($cron_hour);
+    $cron_minute = intval($cron_minute);
 
+    // Subtract 3 hours for subscription trigger timestamp
+    $target_hour = ($offest == 0) ? $cron_hour : ($cron_hour - 3);
+    if ($target_hour < 0) {
+        $target_hour += 24;
+    }
+
+    // Build the timestamp for today at (cron_time - 3 hours)
+    $target_time = sprintf('%02d:%02d:00', $target_hour, $cron_minute);
+    $target_datetime = date('Y-m-d') . ' ' . $target_time;
+    $timestamp = strtotime($target_datetime);
+
+    // Add offset days if needed
+    if ($offest != 0) {
+        $timestamp = strtotime("+{$offest} days", $timestamp);
+    }
 
     return (object) array(
         'date' => $date,
-        'timestamp' => strtotime($date . ' +'.esc_html($offest).' days')
+        'timestamp' => $timestamp
     );
 }
 

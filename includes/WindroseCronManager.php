@@ -219,8 +219,32 @@ class WindroseCronManager {
                 $order->set_address($customer_data->billing_address, 'billing');
                 $order->set_address($customer_data->shipping_address, 'shipping');
 
+                // Calculate and add Aramex shipping
+                $aramex_rate = $this->calculate_aramex_shipping($order, $customer_data);
+                if ($aramex_rate) {
+                    // Calculate Discount if any
+                    $discount = $this->calculate_discount($order, $aramex_rate['amount']);
+                    if ($discount > 0) {
+                        $fee_item = new \WC_Order_Item_Fee();
+                        $fee_item->set_name('Discount');
+                        $fee_item->set_amount(floatval(-1 * ($discount)));
+                        $order->add_item($fee_item);
+                    }
+
+                    // Set Shipping Cost
+                    $shipping_item = new \WC_Order_Item_Shipping();
+                    $shipping_item->set_method_title($aramex_rate['label']);
+                    $shipping_item->set_method_id('aramex');
+                    $shipping_item->set_total($aramex_rate['amount']);
+                    $order->add_item($shipping_item);
+
+                    
+                }
+
+                
+
                 // Set payment method
-                $order->set_payment_method('paymob-pixel');
+                $order->set_payment_method('subscription-paymob-pixel');
                 $order->set_payment_method_title('Debit/Credit Card Payment');
 
                 // Calculate totals and save
@@ -292,6 +316,67 @@ class WindroseCronManager {
         );
 
         return $customer_data;
+    }
+
+    /**
+     * Calculate Aramex shipping rate for a given order and customer data using the Aramex plugin's model directly
+     * @param WC_Order $order
+     * @param object $customer_data
+     * @return object|null Array with rate info or null
+     */
+    private function calculate_aramex_shipping($order, $customer_data) {
+        try {
+            // Load the Aramex calculator model
+            if (!class_exists('Aramex_Aramecalculator_Method_Model')) {
+                require_once WP_PLUGIN_DIR . '/aramex-shipping-woocommerce/includes/aramexcalculator/class-aramex-woocommerce-aramexcalculator_model.php';
+            }
+            
+            $items = $order->get_items('line_item');
+            if (empty($items)) return null;
+            
+            $first_item = reset($items);
+            $product = $first_item->get_product();
+            $product_id = $product ? $product->get_id() : 0;
+            $currency = get_woocommerce_currency();
+                        
+            
+            $post = array(
+                'country_code' => $customer_data->shipping_address['country'],
+                'city' => $customer_data->shipping_address['city'],
+                'post_code' => $customer_data->shipping_address['postcode'],
+                'product_id' => $product_id,
+                'currency' => $currency,
+                'current_product_quantity' => $first_item->get_quantity(),
+                'no-die' => true,
+            );
+            
+            $model = new \Aramex_Aramecalculator_Method_Model();
+            
+            // Capture output since the model prints and dies
+            ob_start();
+            $model->rateCalculator($post);
+            $output = ob_get_contents();
+            ob_end_clean();
+            
+            
+            
+            $rates = json_decode($output, true);
+            
+            if (is_array($rates)) {
+                // Find the first valid rate (success type)                
+                foreach ($rates as $rate) {
+                    if (is_array($rate) && isset($rate['amount'])) {                        
+                        return $rate;
+                    }
+                }
+            }
+            
+            return null;
+            
+        } catch (Exception $e) {
+            error_log('Aramex shipping calculation error: ' . $e->getMessage());
+            return null;
+        }
     }
 
     /**
@@ -494,5 +579,44 @@ class WindroseCronManager {
         wp_clear_scheduled_hook('windrose_subscription_cron');
         
         return true;
+    }
+
+    private function calculate_discount($order, $shipping_cost) {
+        // Get discount threshold from options
+        $discount_threshold = intval(get_option('windrose_shipping_discount_threshold'));
+
+        // Get shipping country from order
+        $shipping_address = $order->get_address('shipping');
+        $shipping_country = isset($shipping_address['country']) ? $shipping_address['country'] : '';
+
+        // Get cart subtotal
+        $cart_subtotal = $order->get_subtotal();
+
+        error_log('Order: ' . json_encode($order));
+        error_log('Discount Threshold: ' . $discount_threshold);
+        error_log('Shipping Country: ' . $shipping_country);
+        error_log('Cart Subtotal: ' . $cart_subtotal);
+
+        // Check if country belongs to "GCC" zone
+        $is_gcc_country = false;
+        $zones = \WC_Shipping_Zones::get_zones();
+        foreach ($zones as $zone) {
+            if ($zone['zone_name'] === 'GCC') {
+                foreach ($zone['zone_locations'] as $location) {
+                    if (isset($location->type) && isset($location->code) && $location->type === 'country' && $location->code === $shipping_country) {
+                        $is_gcc_country = true;
+                        break 2; // Exit both loops
+                    }
+                }
+            }
+        }
+
+        error_log('Is GCC Country: ' . $is_gcc_country);
+
+        // If threshold met and country is GCC, apply discount (e.g., 10)
+        if ($discount_threshold > 0 && $cart_subtotal >= $discount_threshold && $is_gcc_country) {
+            return $shipping_cost;
+        }
+        return 0;
     }
 } 
