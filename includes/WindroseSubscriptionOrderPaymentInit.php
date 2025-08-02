@@ -6,7 +6,6 @@ defined( 'WINDROS_INIT' ) || exit;
 class WindroseSubscriptionOrderPaymentInit {
     public function __construct() {
         add_action( 'windrose_subscription_initiate_payment', [$this, 'subscription_order_payment_init'], 10, 2 );
-        add_action( 'windrose_subscription_order_executed_successfully', [$this, 'create_subscription_order'], 10, 1 );
     }
 
     public function subscription_order_payment_init($subscription_order, $order_id){
@@ -49,8 +48,8 @@ class WindroseSubscriptionOrderPaymentInit {
             foreach ( $subscription_items as $item_id => $item ) {                
                 $order_items[] = array(
                     'name' => $item->get_name(),
-                    'amount' => $item->get_total() * 1000,
-                    'quantity' => $item->get_quantity(),
+                    'amount' => $order->get_total() * 1000,
+                    'quantity' => 1,
                     'description' => 'Subscription Product'
                 );
             }
