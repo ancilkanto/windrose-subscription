@@ -73,8 +73,82 @@ register_activation_hook(__FILE__, 'windrose_plugin_activate');
 require_once WINDROS_DIR.'install-plugin.php';
 
 // Register the deactivation hook
+register_deactivation_hook(__FILE__, 'windrose_plugin_deactivate');
 register_uninstall_hook( __FILE__, 'windrose_plugin_uninstall' );
 require_once WINDROS_DIR.'uninstall-plugin.php';
+
+// Deactivation function
+function windrose_plugin_deactivate() {
+    // Flush rewrite rules to remove custom endpoints
+    flush_rewrite_rules();
+    
+    // Delete the endpoints flushed option
+    delete_option( 'windrose_endpoints_flushed' );
+}
+
+// Manual flush rewrite rules function
+function windrose_manual_flush_rewrite_rules() {
+    if ( isset( $_GET['windrose_flush_rules'] ) && current_user_can( 'manage_options' ) ) {
+        flush_rewrite_rules();
+        delete_option( 'windrose_endpoints_flushed' );
+        wp_redirect( admin_url( 'admin.php?page=wc-settings&windrose_flushed=1' ) );
+        exit;
+    }
+}
+add_action( 'admin_init', 'windrose_manual_flush_rewrite_rules' );
+
+// Test subscription activation email function
+function windrose_test_subscription_email() {
+    if ( isset( $_GET['windrose_test_email'] ) && current_user_can( 'manage_options' ) ) {
+        $subscription_id = intval( $_GET['subscription_id'] ?? 1 );
+        WindroseSubscription\Includes\WindroseSubscriptionNotification::test_subscription_activation_email($subscription_id);
+        wp_redirect( admin_url( 'admin.php?page=wc-settings&windrose_email_tested=1' ) );
+        exit;
+    }
+}
+add_action( 'admin_init', 'windrose_test_subscription_email' );
+
+// Test all subscription email types
+function windrose_test_all_subscription_emails() {
+    if ( isset( $_GET['windrose_test_all_emails'] ) && current_user_can( 'manage_options' ) ) {
+        $subscription_id = intval( $_GET['subscription_id'] ?? 1 );
+        $subscription_order_id = intval( $_GET['subscription_order_id'] ?? 1 );
+        
+        // Test all email types
+        WindroseSubscription\Includes\WindroseSubscriptionNotification::test_subscription_activation_email($subscription_id);
+        WindroseSubscription\Includes\WindroseSubscriptionNotification::test_subscription_order_processed_email($subscription_id);
+        WindroseSubscription\Includes\WindroseSubscriptionNotification::test_subscription_order_failed_email($subscription_id, 'Test failure reason');
+        WindroseSubscription\Includes\WindroseSubscriptionNotification::test_subscription_paused_email($subscription_id);
+        WindroseSubscription\Includes\WindroseSubscriptionNotification::test_subscription_cancelled_email($subscription_id);
+        WindroseSubscription\Includes\WindroseSubscriptionNotification::test_subscription_skipped_email($subscription_order_id);
+        
+        wp_redirect( admin_url( 'admin.php?page=wc-settings&windrose_all_emails_tested=1' ) );
+        exit;
+    }
+}
+add_action( 'admin_init', 'windrose_test_all_subscription_emails' );
+
+// Test email system directly
+function windrose_test_email_system_directly() {
+    if ( isset( $_GET['windrose_test_email_direct'] ) && current_user_can( 'manage_options' ) ) {
+        $subscription_id = intval( $_GET['subscription_id'] ?? 1 );
+        WindroseSubscription\Includes\WindroseSubscriptionNotification::test_email_system_directly($subscription_id);
+        wp_redirect( admin_url( 'admin.php?page=wc-settings&windrose_email_direct_tested=1' ) );
+        exit;
+    }
+}
+add_action( 'admin_init', 'windrose_test_email_system_directly' );
+
+// Test HTML email specifically
+function windrose_test_html_email() {
+    if ( isset( $_GET['windrose_test_html_email'] ) && current_user_can( 'manage_options' ) ) {
+        $subscription_id = intval( $_GET['subscription_id'] ?? 1 );
+        WindroseSubscription\Includes\WindroseSubscriptionNotification::test_html_email_directly($subscription_id);
+        wp_redirect( admin_url( 'admin.php?page=wc-settings&windrose_html_email_tested=1' ) );
+        exit;
+    }
+}
+add_action( 'admin_init', 'windrose_test_html_email' );
 
 require_once 'vendor/autoload.php';
 

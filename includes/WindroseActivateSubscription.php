@@ -77,6 +77,7 @@ defined( 'WINDROS_INIT' ) || exit;
                 
                 // Hook to invoke on 
                 foreach($subscription_ids as $subscription_id){                    
+                    error_log('Windrose Subscription: Triggering windrose_subscription_main_order_activated action for subscription ID: ' . $subscription_id);
                     do_action('windrose_subscription_main_order_activated', $subscription_id);
                 }
             }

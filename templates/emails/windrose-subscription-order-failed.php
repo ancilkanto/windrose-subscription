@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 <p><?php printf( __( 'Payment for your subscription order (ID: %d) has <strong>failed</strong>.', 'windros-subscription' ), $subscription->id ); ?></p>
 <p><?php printf( __( 'Product: %s', 'windros-subscription' ), get_the_title($subscription->product_id) ); ?></p>
 <p><?php printf( __( 'Quantity: %d', 'windros-subscription' ), $subscription->quantity ); ?></p>
-<p><?php printf( __( 'Schedule: %s', 'windros-subscription' ), $subscription->schedule ); ?></p>
+<p><?php printf( __( 'Schedule: %s', 'windros-subscription' ), defined('WINDROS_FREQUENCY') && isset(WINDROS_FREQUENCY[$subscription->schedule]) ? WINDROS_FREQUENCY[$subscription->schedule] : $subscription->schedule ); ?></p>
 <?php if (!empty($fail_reason)) : ?>
 <p><strong><?php _e('Reason:', 'windros-subscription'); ?></strong> <?php echo esc_html($fail_reason); ?></p>
 <?php endif; ?>
