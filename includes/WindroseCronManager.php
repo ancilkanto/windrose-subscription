@@ -224,10 +224,14 @@ class WindroseCronManager {
                 if ($aramex_rate) {
                     // Calculate Discount if any
                     $discount = $this->calculate_discount($order, $aramex_rate['amount']);
+                    error_log('Discount Amount: ' . $discount);
+
                     if ($discount > 0) {
                         $fee_item = new \WC_Order_Item_Fee();
                         $fee_item->set_name('Discount');
-                        $fee_item->set_amount(floatval(-1 * ($discount)));
+                        $fee_item->set_amount(-1 * floatval($discount));
+                        $fee_item->set_total(-1 * floatval($discount));
+                        $fee_item->set_tax_status('none');
                         $order->add_item($fee_item);
                     }
 
@@ -244,13 +248,16 @@ class WindroseCronManager {
                 
 
                 // Set payment method
-                $order->set_payment_method('subscription-paymob-pixel');
+                $order->set_payment_method('paymob-pixel');
                 $order->set_payment_method_title('Debit/Credit Card Payment');
 
                 // Calculate totals and save
                 $order->calculate_totals();
                 $order->save();
                 $order->update_status('pending');
+                $order->update_meta_data('_order_attribution', [
+                    'origin' => 'subscription', 
+                ]);
                 
                 // Debug logging for order creation
                 error_log('Windrose Cron: WC order created with ID: ' . $order->get_id());
