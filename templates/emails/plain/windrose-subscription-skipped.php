@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 <?php printf( __( 'Product: %s', 'windros-subscription' ), get_the_title($subscription->product_id) ); ?>
 <?php printf( __( 'Quantity: %d', 'windros-subscription' ), $subscription->quantity ); ?>
 <?php printf( __( 'Schedule: %s', 'windros-subscription' ), defined('WINDROS_FREQUENCY') && isset(WINDROS_FREQUENCY[$subscription->schedule]) ? WINDROS_FREQUENCY[$subscription->schedule] : $subscription->schedule ); ?>
+<?php printf( __( 'Next Delivery Date: %s', 'windros-subscription' ), windrose_get_next_delivery_date($subscription->id) ); ?>
 <?php printf( __( 'Sequence: %d', 'windros-subscription' ), $email->subscription_order->sequence ); ?>
 
 <?php echo apply_filters( 'woocommerce_email_footer_text', get_option( 'woocommerce_email_footer_text' ) ); ?> 
