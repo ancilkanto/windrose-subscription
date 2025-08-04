@@ -55,24 +55,49 @@ class WC_Email_Windrose_Subscription_Skipped extends \WC_Email {
         $this->recipient = $user ? $user->user_email : '';
         $this->object = $subscription;
         $this->subscription_order = $subscription_order;
+        
+        // Explicitly set heading and subject
+        $this->heading = __( 'Your subscription order has been skipped', 'windros-subscription' );
+        $this->subject = __( 'Your subscription order has been skipped', 'windros-subscription' );
+        
         error_log('Windrose Subscription: Skipped email recipient: ' . $this->recipient);
         error_log('Windrose Subscription: Skipped email enabled: ' . ($this->is_enabled() ? 'Yes' : 'No'));
+        error_log('Windrose Subscription: Skipped email heading: ' . $this->heading);
+        error_log('Windrose Subscription: Skipped email subject: ' . $this->subject);
         if ( ! $this->is_enabled() || ! $this->get_recipient() ) {
             error_log('Windrose Subscription: Skipped email not sent - disabled or no recipient');
             return;
         }
         error_log('Windrose Subscription: Sending skipped email to: ' . $this->get_recipient());
+        
+        // Force HTML content type
+        add_filter('wp_mail_content_type', function() {
+            return 'text/html';
+        });
+        
         $this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
+        
+        // Remove the filter after sending
+        remove_all_filters('wp_mail_content_type');
     }
 
     public function get_content_html() {
         $template_path = plugin_dir_path(__DIR__) . 'templates/';
-        return wc_get_template_html( $this->template_html, array(
+        error_log('Windrose Subscription: Skipped HTML template path: ' . $template_path . $this->template_html);
+        error_log('Windrose Subscription: Skipped current heading: ' . $this->heading);
+        error_log('Windrose Subscription: Skipped current subject: ' . $this->subject);
+        error_log('Windrose Subscription: Skipped subscription order ID: ' . $this->subscription_order->id);
+        error_log('Windrose Subscription: Skipped subscription ID: ' . $this->subscription_order->subscription_id);
+        
+        $content = wc_get_template_html( $this->template_html, array(
             'subscription' => $this->object,
             'subscription_order' => $this->subscription_order,
             'email_heading' => $this->get_heading(),
             'email' => $this,
         ), '', $template_path );
+        
+        error_log('Windrose Subscription: Skipped generated HTML content length: ' . strlen($content));
+        return $content;
     }
 
     public function get_content_plain() {
@@ -83,5 +108,19 @@ class WC_Email_Windrose_Subscription_Skipped extends \WC_Email {
             'email_heading' => $this->get_heading(),
             'email' => $this,
         ), '', $template_path );
+    }
+
+    public function get_headers() {
+        $headers = parent::get_headers();
+        
+        // Ensure headers is an array
+        if (!is_array($headers)) {
+            $headers = array();
+        }
+        
+        // Ensure HTML content type
+        $headers[] = 'Content-Type: text/html; charset=UTF-8';
+        error_log('Windrose Subscription: Skipped email headers set to HTML: ' . print_r($headers, true));
+        return $headers;
     }
 } 
