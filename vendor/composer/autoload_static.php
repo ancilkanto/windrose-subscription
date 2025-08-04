@@ -9,16 +9,11 @@ class ComposerStaticInit775a33a5703b64b6ab5b897753633572
     public static $prefixLengthsPsr4 = array (
         'W' => 
         array (
-            'WindroseSubscription\\Templates\\' => 31,
             'WindroseSubscription\\Includes\\' => 30,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'WindroseSubscription\\Templates\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/templates',
-        ),
         'WindroseSubscription\\Includes\\' => 
         array (
             0 => __DIR__ . '/../..' . '/includes',
