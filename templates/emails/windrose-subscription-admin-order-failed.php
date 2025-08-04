@@ -20,4 +20,5 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 <p><?php printf( __( 'Failure Reason: %s', 'windros-subscription' ), $reason ); ?></p>
 <?php endif; ?>
 <p><?php printf( __( 'Failure Date: %s', 'windros-subscription' ), date('Y-m-d H:i:s') ); ?></p>
+<p><?php printf( __( 'Next Delivery Date: %s', 'windros-subscription' ), windrose_get_next_delivery_date($subscription->id) ); ?></p>
 <?php do_action( 'woocommerce_email_footer', $email ); ?> 

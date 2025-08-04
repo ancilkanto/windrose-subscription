@@ -22,66 +22,66 @@ class WindroseSubscriptionNotification {
             switch ($event) {
                 case 'activated':
                     // Send customer email
-                    $email = $mailer->emails['WC_Email_Windrose_Subscription_Activated'] ?? null;
+                    $email = $mailer->emails['WindroseSubscriptionActivatedEmail'] ?? null;
                     if ($email) {
                         $email->trigger($id);
                     }
                     // Send admin email
-                    $admin_email = $mailer->emails['WC_Email_Windrose_Subscription_Admin_Activated'] ?? null;
+                    $admin_email = $mailer->emails['WindroseSubscriptionAdminActivatedEmail'] ?? null;
                     if ($admin_email) {
                         $admin_email->trigger($id);
                     }
                     break;
                 case 'order_processed':
-                    $email = $mailer->emails['WC_Email_Windrose_Subscription_Order_Processed'] ?? null;
+                    $email = $mailer->emails['WindroseSubscriptionOrderProcessedEmail'] ?? null;
                     if ($email) {
                         $email->trigger($id);
                     }
                     break;
                 case 'order_failed':
                     // Send customer email
-                    $email = $mailer->emails['WC_Email_Windrose_Subscription_Order_Failed'] ?? null;
+                    $email = $mailer->emails['WindroseSubscriptionOrderFailedEmail'] ?? null;
                     if ($email) {
                         $email->trigger($id, $extra);
                     }
                     // Send admin email
-                    $admin_email = $mailer->emails['WC_Email_Windrose_Subscription_Admin_Order_Failed'] ?? null;
+                    $admin_email = $mailer->emails['WindroseSubscriptionAdminOrderFailedEmail'] ?? null;
                     if ($admin_email) {
                         $admin_email->trigger($id, $extra);
                     }
                     break;
                 case 'paused':
                     // Send customer email
-                    $email = $mailer->emails['WC_Email_Windrose_Subscription_Paused'] ?? null;
+                    $email = $mailer->emails['WindroseSubscriptionPausedEmail'] ?? null;
                     if ($email) {
                         $email->trigger($id);
                     }
                     // Send admin email
-                    $admin_email = $mailer->emails['WC_Email_Windrose_Subscription_Admin_Paused'] ?? null;
+                    $admin_email = $mailer->emails['WindroseSubscriptionAdminPausedEmail'] ?? null;
                     if ($admin_email) {
                         $admin_email->trigger($id);
                     }
                     break;
                 case 'cancelled':
                     // Send customer email
-                    $email = $mailer->emails['WC_Email_Windrose_Subscription_Cancelled'] ?? null;
+                    $email = $mailer->emails['WindroseSubscriptionCancelledEmail'] ?? null;
                     if ($email) {
                         $email->trigger($id);
                     }
                     // Send admin email
-                    $admin_email = $mailer->emails['WC_Email_Windrose_Subscription_Admin_Cancelled'] ?? null;
+                    $admin_email = $mailer->emails['WindroseSubscriptionAdminCancelledEmail'] ?? null;
                     if ($admin_email) {
                         $admin_email->trigger($id);
                     }
                     break;
                 case 'skipped':
                     // Send customer email
-                    $email = $mailer->emails['WC_Email_Windrose_Subscription_Skipped'] ?? null;
+                    $email = $mailer->emails['WindroseSubscriptionSkippedEmail'] ?? null;
                     if ($email) {
                         $email->trigger($id);
                     }
                     // Send admin email
-                    $admin_email = $mailer->emails['WC_Email_Windrose_Subscription_Admin_Skipped'] ?? null;
+                    $admin_email = $mailer->emails['WindroseSubscriptionAdminSkippedEmail'] ?? null;
                     if ($admin_email) {
                         $admin_email->trigger($id);
                     }
@@ -130,7 +130,7 @@ class WindroseSubscriptionNotification {
         }
         
         // Test if our email class is registered
-        $email = $mailer->emails['WC_Email_Windrose_Subscription_Activated'] ?? null;
+        $email = $mailer->emails['WindroseSubscriptionActivatedEmail'] ?? null;
         if (!$email) {
             return false;
         }
@@ -160,7 +160,7 @@ class WindroseSubscriptionNotification {
         }
         
         // Test if our email class is registered
-        $email = $mailer->emails['WC_Email_Windrose_Subscription_Activated'] ?? null;
+        $email = $mailer->emails['WindroseSubscriptionActivatedEmail'] ?? null;
         if (!$email) {
             return false;
         }

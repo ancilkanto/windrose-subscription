@@ -19,12 +19,12 @@ class WindroseEmailFactory {
      */
     public static function getCustomerEmailClasses() {
         return [
-            'WC_Email_Windrose_Subscription_Activated',
-            'WC_Email_Windrose_Subscription_Order_Processed',
-            'WC_Email_Windrose_Subscription_Order_Failed',
-            'WC_Email_Windrose_Subscription_Paused',
-            'WC_Email_Windrose_Subscription_Cancelled',
-            'WC_Email_Windrose_Subscription_Skipped',
+            'WindroseSubscriptionActivatedEmail',
+            'WindroseSubscriptionOrderProcessedEmail',
+            'WindroseSubscriptionOrderFailedEmail',
+            'WindroseSubscriptionPausedEmail',
+            'WindroseSubscriptionCancelledEmail',
+            'WindroseSubscriptionSkippedEmail',
         ];
     }
     
@@ -33,11 +33,11 @@ class WindroseEmailFactory {
      */
     public static function getAdminEmailClasses() {
         return [
-            'WC_Email_Windrose_Subscription_Admin_Activated',
-            'WC_Email_Windrose_Subscription_Admin_Cancelled',
-            'WC_Email_Windrose_Subscription_Admin_Order_Failed',
-            'WC_Email_Windrose_Subscription_Admin_Paused',
-            'WC_Email_Windrose_Subscription_Admin_Skipped',
+            'WindroseSubscriptionAdminActivatedEmail',
+            'WindroseSubscriptionAdminCancelledEmail',
+            'WindroseSubscriptionAdminOrderFailedEmail',
+            'WindroseSubscriptionAdminPausedEmail',
+            'WindroseSubscriptionAdminSkippedEmail',
         ];
     }
     
@@ -63,7 +63,7 @@ class WindroseEmailFactory {
             return null;
         }
         
-        $full_class_name = 'WindroseSubscription\Includes\\' . $class_name;
+        $full_class_name = 'WindroseSubscription\Includes\Emails\\' . $class_name;
         
         try {
             return new $full_class_name();
@@ -79,6 +79,6 @@ class WindroseEmailFactory {
      * @return bool
      */
     public static function canCreateEmail($class_name) {
-        return class_exists('WC_Email') && class_exists('WindroseSubscription\Includes\\' . $class_name);
+        return class_exists('WC_Email') && class_exists('WindroseSubscription\Includes\Emails\\' . $class_name);
     }
 } 

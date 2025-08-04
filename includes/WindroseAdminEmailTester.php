@@ -59,20 +59,20 @@ class WindroseAdminEmailTester {
                 if (class_exists($full_class_name)) {
                     try {
                         $email = new $full_class_name();
-                        if ($class_name === 'WC_Email_Windrose_Subscription_Admin_Order_Failed') {
+                        if ($class_name === 'WindroseSubscriptionAdminOrderFailedEmail') {
                             $email->trigger($subscription_id, 'Test failure reason');
                         } else {
                             $email->trigger($subscription_id);
                         }
-                        $results[] = str_replace('WC_Email_Windrose_Subscription_Admin_', 'Admin ', $class_name) . ': Sent successfully';
+                        $results[] = str_replace('WindroseSubscriptionAdmin', 'Admin ', $class_name) . ': Sent successfully';
                     } catch (Exception $e) {
-                        $results[] = str_replace('WC_Email_Windrose_Subscription_Admin_', 'Admin ', $class_name) . ': Error - ' . $e->getMessage();
+                        $results[] = str_replace('WindroseSubscriptionAdmin', 'Admin ', $class_name) . ': Error - ' . $e->getMessage();
                     }
                 } else {
-                    $results[] = str_replace('WC_Email_Windrose_Subscription_Admin_', 'Admin ', $class_name) . ': Class not found after require';
+                    $results[] = str_replace('WindroseSubscriptionAdmin', 'Admin ', $class_name) . ': Class not found after require';
                 }
             } else {
-                $results[] = str_replace('WC_Email_Windrose_Subscription_Admin_', 'Admin ', $class_name) . ': File not found';
+                $results[] = str_replace('WindroseSubscriptionAdmin', 'Admin ', $class_name) . ': File not found';
             }
         }
         }
@@ -89,20 +89,20 @@ class WindroseAdminEmailTester {
                     if (class_exists($full_class_name)) {
                         try {
                             $email = new $full_class_name();
-                            if ($class_name === 'WC_Email_Windrose_Subscription_Order_Failed') {
+                            if ($class_name === 'WindroseSubscriptionOrderFailedEmail') {
                                 $email->trigger($subscription_id, 'Test failure reason');
                             } else {
                                 $email->trigger($subscription_id);
                             }
-                            $results[] = str_replace('WC_Email_Windrose_Subscription_', 'Customer ', $class_name) . ': Sent successfully';
+                            $results[] = str_replace('WindroseSubscription', 'Customer ', $class_name) . ': Sent successfully';
                         } catch (Exception $e) {
-                            $results[] = str_replace('WC_Email_Windrose_Subscription_', 'Customer ', $class_name) . ': Error - ' . $e->getMessage();
+                            $results[] = str_replace('WindroseSubscription', 'Customer ', $class_name) . ': Error - ' . $e->getMessage();
                         }
                     } else {
-                        $results[] = str_replace('WC_Email_Windrose_Subscription_', 'Customer ', $class_name) . ': Class not found after require';
+                        $results[] = str_replace('WindroseSubscription', 'Customer ', $class_name) . ': Class not found after require';
                     }
                 } else {
-                    $results[] = str_replace('WC_Email_Windrose_Subscription_', 'Customer ', $class_name) . ': File not found';
+                    $results[] = str_replace('WindroseSubscription', 'Customer ', $class_name) . ': File not found';
                 }
             }
         }

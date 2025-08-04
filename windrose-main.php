@@ -347,19 +347,50 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
     WP_CLI::add_command('windrose-cli', 'WindroseSubscription\Includes\WindroseCLI');
 }
 
+// Email template helper function
+if (!function_exists('windrose_get_email_template_path')) {
+    function windrose_get_email_template_path() {
+        return plugin_dir_path(__FILE__) . 'templates/';
+    }
+}
+
+// Helper function to get next delivery date for a subscription
+if (!function_exists('windrose_get_next_delivery_date')) {
+    function windrose_get_next_delivery_date($subscription_id) {
+        global $wpdb;
+        $subscription_order_table = $wpdb->prefix . (defined('WINDROS_SUBSCRIPTION_ORDER_TABLE') ? WINDROS_SUBSCRIPTION_ORDER_TABLE : 'windrose_subscription_order');
+        
+        $upcoming_order = $wpdb->get_row($wpdb->prepare(
+            "SELECT time_stamp FROM $subscription_order_table 
+             WHERE subscription_id = %d AND status = 'upcoming' 
+             ORDER BY time_stamp ASC LIMIT 1",
+            $subscription_id
+        ));
+        
+        if ($upcoming_order) {
+            return date('F d, Y', $upcoming_order->time_stamp);
+        }
+        
+        return __('No upcoming deliveries', 'windros-subscription');
+    }
+}
+
 add_filter('woocommerce_email_classes', function($emails) {
-    require_once __DIR__ . '/includes/class-wc-email-windrose-subscription-activated.php';
-    require_once __DIR__ . '/includes/class-wc-email-windrose-subscription-order-processed.php';
-    require_once __DIR__ . '/includes/class-wc-email-windrose-subscription-order-failed.php';
-    require_once __DIR__ . '/includes/class-wc-email-windrose-subscription-paused.php';
-    require_once __DIR__ . '/includes/class-wc-email-windrose-subscription-cancelled.php';
-    require_once __DIR__ . '/includes/class-wc-email-windrose-subscription-skipped.php';
-    $emails['WC_Email_Windrose_Subscription_Activated'] = new WindroseSubscription\Includes\WC_Email_Windrose_Subscription_Activated();
-    $emails['WC_Email_Windrose_Subscription_Order_Processed'] = new WindroseSubscription\Includes\WC_Email_Windrose_Subscription_Order_Processed();
-    $emails['WC_Email_Windrose_Subscription_Order_Failed'] = new WindroseSubscription\Includes\WC_Email_Windrose_Subscription_Order_Failed();
-    $emails['WC_Email_Windrose_Subscription_Paused'] = new WindroseSubscription\Includes\WC_Email_Windrose_Subscription_Paused();
-    $emails['WC_Email_Windrose_Subscription_Cancelled'] = new WindroseSubscription\Includes\WC_Email_Windrose_Subscription_Cancelled();
-    $emails['WC_Email_Windrose_Subscription_Skipped'] = new WindroseSubscription\Includes\WC_Email_Windrose_Subscription_Skipped();
+    // Customer emails
+    $emails['WindroseSubscriptionActivatedEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionActivatedEmail();
+    $emails['WindroseSubscriptionOrderProcessedEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionOrderProcessedEmail();
+    $emails['WindroseSubscriptionOrderFailedEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionOrderFailedEmail();
+    $emails['WindroseSubscriptionPausedEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionPausedEmail();
+    $emails['WindroseSubscriptionCancelledEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionCancelledEmail();
+    $emails['WindroseSubscriptionSkippedEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionSkippedEmail();
+    
+    // Admin emails
+    $emails['WindroseSubscriptionAdminActivatedEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionAdminActivatedEmail();
+    $emails['WindroseSubscriptionAdminOrderFailedEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionAdminOrderFailedEmail();
+    $emails['WindroseSubscriptionAdminPausedEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionAdminPausedEmail();
+    $emails['WindroseSubscriptionAdminCancelledEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionAdminCancelledEmail();
+    $emails['WindroseSubscriptionAdminSkippedEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionAdminSkippedEmail();
+    
     return $emails;
 });
 
