@@ -255,9 +255,10 @@ class WindroseCronManager {
                 $order->calculate_totals();
                 $order->save();
                 $order->update_status('pending');
-                $order->update_meta_data('_order_attribution', [
-                    'origin' => 'subscription', 
-                ]);
+                
+                // Set WooCommerce order attribution meta data
+                $order->update_meta_data('_wc_order_attribution_source_type', 'automated');
+                $order->update_meta_data('_wc_order_attribution_utm_source', 'Automated');
                 
                 // Debug logging for order creation
                 error_log('Windrose Cron: WC order created with ID: ' . $order->get_id());

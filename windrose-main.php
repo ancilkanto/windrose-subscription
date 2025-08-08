@@ -199,7 +199,13 @@ class MainWindroseClass {
         new WindroseSubscription\Includes\WindroseSubscriptionLogs();
         // database updater
         new WindroseSubscription\Includes\WindroseDatabaseUpdater();
+        // email notification
         new WindroseSubscription\Includes\WindroseSubscriptionNotification();
+        
+        // WPML integration
+        if (WindroseSubscription\Includes\WindroseWPMLIntegration::is_wpml_active()) {
+            // WPML is active, no need to instantiate the class as it's static
+        }
 
         
     }
@@ -393,6 +399,17 @@ add_filter('woocommerce_email_classes', function($emails) {
     
     return $emails;
 });
+
+// Filter to handle custom 'automated' source type for order attribution
+add_filter('wc_order_attribution_origin_label', function($label, $source_type, $source, $formatted_source) {
+    if ($source_type === 'automated') {
+        return 'Automated';
+    }
+    return $label;
+}, 10, 4);
+
+
+
 
 
 
