@@ -199,13 +199,7 @@ class MainWindroseClass {
         new WindroseSubscription\Includes\WindroseSubscriptionLogs();
         // database updater
         new WindroseSubscription\Includes\WindroseDatabaseUpdater();
-        // email notification
         new WindroseSubscription\Includes\WindroseSubscriptionNotification();
-        
-        // WPML integration
-        if (WindroseSubscription\Includes\WindroseWPMLIntegration::is_wpml_active()) {
-            // WPML is active, no need to instantiate the class as it's static
-        }
 
         
     }
@@ -381,6 +375,24 @@ if (!function_exists('windrose_get_next_delivery_date')) {
     }
 }
 
+// Enqueue checkout save card script
+function windrose_enqueue_checkout_scripts() {
+    // Only enqueue on checkout page
+    if (!is_checkout()) {
+        return;
+    }
+    
+    // Enqueue the checkout save card script
+    wp_enqueue_script(
+        'windrose-checkout-save-card',
+        plugin_dir_url(__FILE__) . 'assets/js/checkout-save-card.js',
+        array('jquery'),
+        '1.0.0',
+        true // Load in footer
+    );
+}
+add_action('wp_enqueue_scripts', 'windrose_enqueue_checkout_scripts');
+
 add_filter('woocommerce_email_classes', function($emails) {
     // Customer emails
     $emails['WindroseSubscriptionActivatedEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionActivatedEmail();
@@ -399,17 +411,5 @@ add_filter('woocommerce_email_classes', function($emails) {
     
     return $emails;
 });
-
-// Filter to handle custom 'automated' source type for order attribution
-add_filter('wc_order_attribution_origin_label', function($label, $source_type, $source, $formatted_source) {
-    if ($source_type === 'automated') {
-        return 'Automated';
-    }
-    return $label;
-}, 10, 4);
-
-
-
-
 
 
