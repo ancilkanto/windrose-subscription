@@ -393,7 +393,7 @@ function windrose_enqueue_checkout_scripts() {
 }
 add_action('wp_enqueue_scripts', 'windrose_enqueue_checkout_scripts');
 
-add_filter('woocommerce_email_classes', function($emails) {
+function windrose_register_email_classes($emails) {
     // Customer emails
     $emails['WindroseSubscriptionActivatedEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionActivatedEmail();
     $emails['WindroseSubscriptionOrderProcessedEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionOrderProcessedEmail();
@@ -402,7 +402,7 @@ add_filter('woocommerce_email_classes', function($emails) {
     $emails['WindroseSubscriptionCancelledEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionCancelledEmail();
     $emails['WindroseSubscriptionSkippedEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionSkippedEmail();
     
-    // Admin emails
+    // Admin emails — use class names as keys!
     $emails['WindroseSubscriptionAdminActivatedEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionAdminActivatedEmail();
     $emails['WindroseSubscriptionAdminOrderFailedEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionAdminOrderFailedEmail();
     $emails['WindroseSubscriptionAdminPausedEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionAdminPausedEmail();
@@ -410,6 +410,7 @@ add_filter('woocommerce_email_classes', function($emails) {
     $emails['WindroseSubscriptionAdminSkippedEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionAdminSkippedEmail();
     
     return $emails;
-});
+}
+add_filter('woocommerce_email_classes', 'windrose_register_email_classes');
 
 

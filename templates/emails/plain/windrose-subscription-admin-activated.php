@@ -20,3 +20,4 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 <?php printf( __( 'Activation Date: %s', 'windros-subscription' ), date('Y-m-d H:i:s', strtotime($subscription->created_at)) ); ?>
 
 <?php echo apply_filters( 'woocommerce_email_footer_text', get_option( 'woocommerce_email_footer_text' ) ); ?> 
+

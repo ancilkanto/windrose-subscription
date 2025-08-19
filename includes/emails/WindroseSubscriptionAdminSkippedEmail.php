@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if (class_exists('WC_Email')) {
-class WindroseSubscriptionAdminSkippedEmail extends \WC_Email {
+    class WindroseSubscriptionAdminSkippedEmail extends \WC_Email {
         public function __construct() {
             $this->id             = 'windrose_subscription_admin_skipped';
             $this->title          = __( 'Subscription Skipped (Admin)', 'windros-subscription' );
@@ -76,21 +76,86 @@ class WindroseSubscriptionAdminSkippedEmail extends \WC_Email {
         }
 
         public function get_content_html() {
-            return wc_get_template_html( $this->template_html, array(
-                'subscription' => $this->object,
-                'subscription_order' => $this->subscription_order,
-                'email_heading' => $this->get_heading(),
-                'email' => $this,
-            ) );
+            $subscription_order = (object) [
+                'id'             => 999,
+                'subscription_id' => 888,
+                'user_id'        => get_current_user_id(),
+                'product_id'     => wc_get_products(['limit' => 1 ])[0]->get_id() ?? 0,
+                'quantity'       => 1,
+                'created_at'     => current_time('mysql'),
+                'updated_at'     => current_time('mysql'),
+            ];
+        
+            ob_start();
+            wc_get_template(
+                $this->template_html,
+                [
+                    'subscription_order' => $subscription_order,
+                    'email_heading'      => $this->get_heading(),
+                    'email'              => $this,
+                ],
+                '', // keep empty to let WC search
+                $this->template_base // full path
+            );
+            return ob_get_clean();
         }
 
         public function get_content_plain() {
-            return wc_get_template_html( $this->template_plain, array(
-                'subscription' => $this->object,
-                'subscription_order' => $this->subscription_order,
-                'email_heading' => $this->get_heading(),
-                'email' => $this,
-            ) );
+            $subscription_order = (object) [
+                'id'             => 999,
+                'subscription_id' => 888,
+                'user_id'        => get_current_user_id(),
+                'product_id'     => wc_get_products(['limit' => 1 ])[0]->get_id() ?? 0,
+                'quantity'       => 1,
+                'created_at'     => current_time('mysql'),
+                'updated_at'     => current_time('mysql'),
+            ];
+        
+            ob_start();
+            wc_get_template(
+                $this->template_plain,
+                [
+                    'subscription_order' => $subscription_order,
+                    'email_heading'      => $this->get_heading(),
+                    'email'              => $this,
+                ],
+                '', // keep empty to let WC search
+                $this->template_base // full path
+            );
+            return ob_get_clean();
+        }
+
+        public function get_content() {
+            return $this->get_content_html();
+        }
+
+        public function setup_locale() {
+            parent::setup_locale();
+            
+            // Set up sample data for previews if no object is set
+            if (!$this->object) {
+                $this->object = (object) array(
+                    'id' => 123,
+                    'user_id' => 1,
+                    'product_id' => 1,
+                    'quantity' => 2,
+                    'schedule' => '7',
+                    'created_at' => current_time('mysql'),
+                    'updated_at' => current_time('mysql')
+                );
+            }
+            
+            // Set up sample subscription order if not set
+            if (!isset($this->subscription_order)) {
+                $this->subscription_order = (object) array(
+                    'id' => 456,
+                    'subscription_id' => 123,
+                    'user_id' => 1,
+                    'product_id' => 1,
+                    'quantity' => 2,
+                    'status' => 'skipped'
+                );
+            }
         }
     }
 }

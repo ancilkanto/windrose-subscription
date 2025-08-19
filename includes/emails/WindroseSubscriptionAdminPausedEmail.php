@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if (class_exists('WC_Email')) {
-class WindroseSubscriptionAdminPausedEmail extends \WC_Email {
+    class WindroseSubscriptionAdminPausedEmail extends \WC_Email {
         public function __construct() {
             $this->id             = 'windrose_subscription_admin_paused';
             $this->title          = __( 'Subscription Paused (Admin)', 'windros-subscription' );
@@ -67,19 +67,72 @@ class WindroseSubscriptionAdminPausedEmail extends \WC_Email {
         }
 
         public function get_content_html() {
-            return wc_get_template_html( $this->template_html, array(
-                'subscription' => $this->object,
-                'email_heading' => $this->get_heading(),
-                'email' => $this,
-            ) );
+            $subscription = (object) [
+                'id'         => 999,
+                'user_id'    => get_current_user_id(),
+                'product_id' => wc_get_products(['limit' => 1 ])[0]->get_id() ?? 0,
+                'quantity'   => 1,
+                'created_at' => current_time('mysql'),
+                'updated_at' => current_time('mysql'),
+            ];
+        
+            ob_start();
+            wc_get_template(
+                $this->template_html,
+                [
+                    'subscription'  => $subscription,
+                    'email_heading' => $this->get_heading(),
+                    'email'         => $this,
+                ],
+                '', // keep empty to let WC search
+                $this->template_base // full path
+            );
+            return ob_get_clean();
         }
 
         public function get_content_plain() {
-            return wc_get_template_html( $this->template_plain, array(
-                'subscription' => $this->object,
-                'email_heading' => $this->get_heading(),
-                'email' => $this,
-            ) );
+            $subscription = (object) [
+                'id'         => 999,
+                'user_id'    => get_current_user_id(),
+                'product_id' => wc_get_products(['limit' => 1 ])[0]->get_id() ?? 0,
+                'quantity'   => 1,
+                'created_at' => current_time('mysql'),
+                'updated_at' => current_time('mysql'),
+            ];
+        
+            ob_start();
+            wc_get_template(
+                $this->template_plain,
+                [
+                    'subscription'  => $subscription,
+                    'email_heading' => $this->get_heading(),
+                    'email'         => $this,
+                ],
+                '', // keep empty to let WC search
+                $this->template_base // full path
+            );
+            return ob_get_clean();
+        }
+
+        public function get_content() {
+            return $this->get_content_html();
+        }
+
+        public function setup_locale() {
+            parent::setup_locale();
+            
+            // Set up sample data for previews if no object is set
+            if (!$this->object) {
+                $this->object = (object) array(
+                    'id' => 123,
+                    'user_id' => 1,
+                    'product_id' => 1,
+                    'quantity' => 2,
+                    'schedule' => '7',
+                    'created_at' => current_time('mysql'),
+                    'updated_at' => current_time('mysql')
+                );
+            }
         }
     }
 }
