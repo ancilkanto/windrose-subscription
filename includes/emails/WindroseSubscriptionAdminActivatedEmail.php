@@ -81,10 +81,15 @@ if (class_exists('WC_Email')) {
         }
 
         public function get_content_html() {
+            // Generate safe sample data for previews
+            $products = wc_get_products(['limit' => 1, 'status' => 'publish']);
+            $product_id = !empty($products) ? $products[0]->get_id() : 1;
+            $user_id = get_current_user_id() ?: 1;
+            
             $subscription = (object) [
                 'id'         => 999,
-                'user_id'    => get_current_user_id(),
-                'product_id' => wc_get_products(['limit' => 1 ])[0]->get_id() ?? 0,
+                'user_id'    => $user_id,
+                'product_id' => $product_id,
                 'quantity'   => 1,
                 'created_at' => current_time('mysql'),
             ];
@@ -104,10 +109,15 @@ if (class_exists('WC_Email')) {
         }
 
         public function get_content_plain() {
+            // Generate safe sample data for previews
+            $products = wc_get_products(['limit' => 1, 'status' => 'publish']);
+            $product_id = !empty($products) ? $products[0]->get_id() : 1;
+            $user_id = get_current_user_id() ?: 1;
+            
             $subscription = (object) [
                 'id'         => 999,
-                'user_id'    => get_current_user_id(),
-                'product_id' => wc_get_products(['limit' => 1 ])[0]->get_id() ?? 0,
+                'user_id'    => $user_id,
+                'product_id' => $product_id,
                 'quantity'   => 1,
                 'created_at' => current_time('mysql'),
             ];
