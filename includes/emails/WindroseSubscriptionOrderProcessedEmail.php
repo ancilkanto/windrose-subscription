@@ -13,20 +13,85 @@ class WindroseSubscriptionOrderProcessedEmail extends \WC_Email {
         public function __construct() {
             $this->id             = 'windrose_subscription_order_processed';
             $this->title          = __( 'Subscription Order Processed', 'windros-subscription' );
-            $this->description    = __( 'This email is sent to the customer when their subscription order is processed after payment.', 'windros-subscription' );
+            $this->description    = __( 'This email is sent to the customer when their subscription order is processed after successful payment.', 'windros-subscription' );
             $this->template_html  = 'emails/windrose-subscription-order-processed.php';
             $this->template_plain = 'emails/plain/windrose-subscription-order-processed.php';
+            $this->template_base  = WINDROS_DIR . 'templates/';
             $this->customer_email = true;
             $this->placeholders   = array();
             
             // Set default heading and subject
-            $this->heading = __( 'Your subscription order has been processed!', 'windros-subscription' );
-            $this->subject = __( 'Your subscription order has been processed', 'windros-subscription' );
+            $this->heading = __( 'Your subscription order is being processed', 'windros-subscription' );
+            $this->subject = __( 'Your subscription order is being processed', 'windros-subscription' );
             
             parent::__construct();
             
             // Ensure the email is enabled
             $this->ensure_email_enabled();
+        }
+
+        /**
+         * Initialize form fields for WooCommerce email settings
+         */
+        public function init_form_fields() {
+            $this->form_fields = array(
+                'enabled' => array(
+                    'title'         => __( 'Enable/Disable', 'windros-subscription' ),
+                    'type'          => 'checkbox',
+                    'label'         => __( 'Enable this email notification', 'windros-subscription' ),
+                    'default'       => 'yes'
+                ),
+                'subject' => array(
+                    'title'         => __( 'Subject', 'windros-subscription' ),
+                    'type'          => 'text',
+                    'description'   => __( 'This controls the email subject line. Leave blank to use the default subject.', 'windros-subscription' ),
+                    'placeholder'   => $this->get_default_subject(),
+                    'default'       => ''
+                ),
+                'heading' => array(
+                    'title'         => __( 'Email Heading', 'windros-subscription' ),
+                    'type'          => 'text',
+                    'description'   => __( 'This controls the main heading contained within the email notification. Leave blank to use the default heading.', 'windros-subscription' ),
+                    'placeholder'   => $this->get_default_heading(),
+                    'default'       => ''
+                ),
+                'heading_arabic' => array(
+                    'title'         => __( 'Email Heading (Arabic)', 'windros-subscription' ),
+                    'type'          => 'text',
+                    'description'   => __( 'Arabic version of the email heading.', 'windros-subscription' ),
+                    'placeholder'   => __( 'طلب اشتراكك قيد المعالجة', 'windros-subscription' ),
+                    'default'       => __( 'طلب اشتراكك قيد المعالجة', 'windros-subscription' )
+                ),
+                'email_type' => array(
+                    'title'         => __( 'Email type', 'windros-subscription' ),
+                    'type'          => 'select',
+                    'description'   => __( 'Choose which format of email to send.', 'windros-subscription' ),
+                    'default'       => 'html',
+                    'class'         => 'email_type wc-enhanced-select',
+                    'options'       => $this->get_email_type_options()
+                )
+            );
+        }
+
+        /**
+         * Get default subject
+         */
+        public function get_default_subject() {
+            return __( 'Your subscription order is being processed', 'windros-subscription' );
+        }
+
+        /**
+         * Get default heading
+         */
+        public function get_default_heading() {
+            return __( 'Your subscription order is being processed', 'windros-subscription' );
+        }
+
+        /**
+         * Get Arabic heading
+         */
+        public function get_heading_arabic() {
+            return $this->get_option( 'heading_arabic', __( 'طلب اشتراكك قيد المعالجة', 'windros-subscription' ) );
         }
 
         private function ensure_email_enabled() {
@@ -66,6 +131,7 @@ class WindroseSubscriptionOrderProcessedEmail extends \WC_Email {
             return wc_get_template_html( $this->template_html, array(
                 'subscription' => $this->object,
                 'email_heading' => $this->get_heading(),
+                'email_heading_arabic' => $this->get_heading_arabic(),
                 'email' => $this,
             ), '', $template_path );
         }

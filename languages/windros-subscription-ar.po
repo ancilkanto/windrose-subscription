@@ -1,0 +1,152 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Windrose Subscription\n"
+"POT-Creation-Date: 2025-01-27 10:00+0000\n"
+"PO-Revision-Date: 2025-01-27 10:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+
+msgid "Subscription Activated"
+msgstr "تم تفعيل الاشتراك"
+
+msgid "This email is sent to the customer when their subscription is activated."
+msgstr "يتم إرسال هذا البريد الإلكتروني للعميل عند تفعيل اشتراكه."
+
+msgid "Your subscription is now active!"
+msgstr "اشتراكك نشط الآن!"
+
+msgid "Your subscription is now active"
+msgstr "اشتراكك نشط الآن"
+
+msgid "Enable/Disable"
+msgstr "تفعيل/إلغاء التفعيل"
+
+msgid "Enable this email notification"
+msgstr "تفعيل إشعار البريد الإلكتروني هذا"
+
+msgid "Subject"
+msgstr "الموضوع"
+
+msgid "This controls the email subject line. Leave blank to use the default subject."
+msgstr "يتحكم هذا في سطر موضوع البريد الإلكتروني. اتركه فارغاً لاستخدام الموضوع الافتراضي."
+
+msgid "Subject (Arabic)"
+msgstr "الموضوع (العربية)"
+
+msgid "Arabic version of the email subject line."
+msgstr "النسخة العربية من سطر موضوع البريد الإلكتروني."
+
+msgid "اشتراكك نشط الآن"
+msgstr "اشتراكك نشط الآن"
+
+msgid "Email Heading"
+msgstr "عنوان البريد الإلكتروني"
+
+msgid "This controls the main heading contained within the email notification. Leave blank to use the default heading."
+msgstr "يتحكم هذا في العنوان الرئيسي الموجود في إشعار البريد الإلكتروني. اتركه فارغاً لاستخدام العنوان الافتراضي."
+
+msgid "Email Heading (Arabic)"
+msgstr "عنوان البريد الإلكتروني (العربية)"
+
+msgid "Arabic version of the email heading."
+msgstr "النسخة العربية من عنوان البريد الإلكتروني."
+
+msgid "اشتراكك نشط الآن!"
+msgstr "اشتراكك نشط الآن!"
+
+msgid "Email type"
+msgstr "نوع البريد الإلكتروني"
+
+msgid "Choose which format of email to send."
+msgstr "اختر تنسيق البريد الإلكتروني المراد إرساله."
+
+msgid "مرحباً، اشتراكك (الرقم: %d) نشط الآن."
+msgstr "مرحباً، اشتراكك (الرقم: %d) نشط الآن."
+
+msgid "المنتج:"
+msgstr "المنتج:"
+
+msgid "الكمية:"
+msgstr "الكمية:"
+
+msgid "الجدول الزمني:"
+msgstr "الجدول الزمني:"
+
+msgid "تاريخ التوصيل القادم:"
+msgstr "تاريخ التوصيل القادم:"
+
+msgid "تم تفعيل اشتراكك بنجاح! ستتلقى تحديثات منتظمة حول حالة طلباتك."
+msgstr "تم تفعيل اشتراكك بنجاح! ستتلقى تحديثات منتظمة حول حالة طلباتك."
+
+msgid "شكراً لك على اختيار خدمة الاشتراك لدينا!"
+msgstr "شكراً لك على اختيار خدمة الاشتراك لدينا!"
+
+msgid "Hello, your subscription (ID: %d) is now <strong>active</strong>."
+msgstr "مرحباً، اشتراكك (الرقم: %d) نشط الآن."
+
+msgid "Product:"
+msgstr "المنتج:"
+
+msgid "Quantity:"
+msgstr "الكمية:"
+
+msgid "Schedule:"
+msgstr "الجدول الزمني:"
+
+msgid "Next Delivery Date:"
+msgstr "تاريخ التوصيل القادم:"
+
+msgid "Your subscription has been successfully activated! You will receive regular updates about your order status."
+msgstr "تم تفعيل اشتراكك بنجاح! ستتلقى تحديثات منتظمة حول حالة طلباتك."
+
+msgid "Thank you for choosing our subscription service!"
+msgstr "شكراً لك على اختيار خدمة الاشتراك لدينا!"
+
+# Cancelled Subscription Email
+msgid "تم <strong>إلغاء</strong> اشتراكك (الرقم: %d)."
+msgstr "تم <strong>إلغاء</strong> اشتراكك (الرقم: %d)."
+
+msgid "تم إلغاء اشتراكك. إذا كان لديك أي أسئلة، يرجى الاتصال بفريق الدعم لدينا."
+msgstr "تم إلغاء اشتراكك. إذا كان لديك أي أسئلة، يرجى الاتصال بفريق الدعم لدينا."
+
+# Order Failed Email
+msgid "فشل الدفع لطلب اشتراكك (الرقم: %d)."
+msgstr "فشل الدفع لطلب اشتراكك (الرقم: %d)."
+
+msgid "السبب:"
+msgstr "السبب:"
+
+msgid "يرجى مراجعة معلومات الدفع الخاصة بك والمحاولة مرة أخرى. إذا استمرت المشكلة، يرجى الاتصال بفريق الدعم لدينا."
+msgstr "يرجى مراجعة معلومات الدفع الخاصة بك والمحاولة مرة أخرى. إذا استمرت المشكلة، يرجى الاتصال بفريق الدعم لدينا."
+
+# Order Processed Email
+msgid "طلب اشتراكك (الرقم: %d) في حالة <strong>معالجة</strong> بعد الدفع الناجح."
+msgstr "طلب اشتراكك (الرقم: %d) في حالة <strong>معالجة</strong> بعد الدفع الناجح."
+
+msgid "تم استلام طلبك بنجاح وسيتم معالجته قريباً. ستتلقى تحديثات حول حالة طلبك."
+msgstr "تم استلام طلبك بنجاح وسيتم معالجته قريباً. ستتلقى تحديثات حول حالة طلبك."
+
+# Paused Subscription Email
+msgid "تم <strong>إيقاف</strong> اشتراكك (الرقم: %d) مؤقتاً."
+msgstr "تم <strong>إيقاف</strong> اشتراكك (الرقم: %d) مؤقتاً."
+
+msgid "تم إيقاف اشتراكك مؤقتاً. يمكنك إعادة تفعيله في أي وقت من لوحة التحكم الخاصة بك."
+msgstr "تم إيقاف اشتراكك مؤقتاً. يمكنك إعادة تفعيله في أي وقت من لوحة التحكم الخاصة بك."
+
+# Skipped Subscription Email
+msgid "تم <strong>تخطي</strong> طلب اشتراك (الرقم: %d)."
+msgstr "تم <strong>تخطي</strong> طلب اشتراك (الرقم: %d)."
+
+msgid "رقم الاشتراك:"
+msgstr "رقم الاشتراك:"
+
+msgid "الحالة:"
+msgstr "الحالة:"
+
+msgid "تم تخطي هذا الطلب. إذا كان لديك أي أسئلة حول سبب التخطي، يرجى الاتصال بفريق الدعم لدينا."
+msgstr "تم تخطي هذا الطلب. إذا كان لديك أي أسئلة حول سبب التخطي، يرجى الاتصال بفريق الدعم لدينا."

@@ -16,6 +16,7 @@ class WindroseSubscriptionActivatedEmail extends \WC_Email {
             $this->description    = __( 'This email is sent to the customer when their subscription is activated.', 'windros-subscription' );
             $this->template_html  = 'emails/windrose-subscription-activated.php';
             $this->template_plain = 'emails/plain/windrose-subscription-activated.php';
+            $this->template_base  = WINDROS_DIR . 'templates/';
             $this->customer_email = true;
             $this->placeholders   = array();
             
@@ -27,6 +28,72 @@ class WindroseSubscriptionActivatedEmail extends \WC_Email {
             
             // Ensure the email is enabled
             $this->ensure_email_enabled();
+        }
+
+        /**
+         * Initialize form fields for WooCommerce email settings
+         */
+        public function init_form_fields() {
+            $this->form_fields = array(
+                'enabled' => array(
+                    'title'         => __( 'Enable/Disable', 'windros-subscription' ),
+                    'type'          => 'checkbox',
+                    'label'         => __( 'Enable this email notification', 'windros-subscription' ),
+                    'default'       => 'yes'
+                ),
+                'subject' => array(
+                    'title'         => __( 'Subject', 'windros-subscription' ),
+                    'type'          => 'text',
+                    'description'   => __( 'This controls the email subject line. Leave blank to use the default subject.', 'windros-subscription' ),
+                    'placeholder'   => $this->get_default_subject(),
+                    'default'       => ''
+                ),
+
+                'heading' => array(
+                    'title'         => __( 'Email Heading', 'windros-subscription' ),
+                    'type'          => 'text',
+                    'description'   => __( 'This controls the main heading contained within the email notification. Leave blank to use the default heading.', 'windros-subscription' ),
+                    'placeholder'   => $this->get_default_heading(),
+                    'default'       => ''
+                ),
+                'heading_arabic' => array(
+                    'title'         => __( 'Email Heading (Arabic)', 'windros-subscription' ),
+                    'type'          => 'text',
+                    'description'   => __( 'Arabic version of the email heading.', 'windros-subscription' ),
+                    'placeholder'   => __( 'اشتراكك نشط الآن!', 'windros-subscription' ),
+                    'default'       => __( 'اشتراكك نشط الآن!', 'windros-subscription' )
+                ),
+                'email_type' => array(
+                    'title'         => __( 'Email type', 'windros-subscription' ),
+                    'type'          => 'select',
+                    'description'   => __( 'Choose which format of email to send.', 'windros-subscription' ),
+                    'default'       => 'html',
+                    'class'         => 'email_type wc-enhanced-select',
+                    'options'       => $this->get_email_type_options()
+                )
+            );
+        }
+
+        /**
+         * Get default subject
+         */
+        public function get_default_subject() {
+            return __( 'Your subscription is now active', 'windros-subscription' );
+        }
+
+        /**
+         * Get default heading
+         */
+        public function get_default_heading() {
+            return __( 'Your subscription is now active!', 'windros-subscription' );
+        }
+
+
+        /**
+         * Get Arabic heading
+         */
+        public function get_heading_arabic() {
+            return $this->get_option( 'heading_arabic', __( 'اشتراكك نشط الآن!', 'windros-subscription' ) );
         }
 
         private function ensure_email_enabled() {
@@ -70,9 +137,9 @@ class WindroseSubscriptionActivatedEmail extends \WC_Email {
             $this->recipient = $user ? $user->user_email : '';
             $this->object = $subscription;
             
-            // Explicitly set heading and subject
-            $this->heading = __( 'Your subscription is now active!', 'windros-subscription' );
-            $this->subject = __( 'Your subscription is now active', 'windros-subscription' );
+            // Set heading and subject (English and Arabic)
+            $this->heading = $this->get_heading();
+            $this->subject = $this->get_subject();
             
             error_log('Windrose Subscription: Email recipient: ' . $this->recipient);
             error_log('Windrose Subscription: Email enabled: ' . ($this->is_enabled() ? 'Yes' : 'No'));
@@ -119,6 +186,7 @@ class WindroseSubscriptionActivatedEmail extends \WC_Email {
             $content = wc_get_template_html( $this->template_html, array(
                 'subscription' => $this->object,
                 'email_heading' => $this->get_heading(),
+                'email_heading_arabic' => $this->get_heading_arabic(),
                 'email' => $this,
             ), '', $template_path );
             

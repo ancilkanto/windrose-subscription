@@ -16,6 +16,7 @@ class WindroseSubscriptionAdminCancelledEmail extends \WC_Email {
             $this->description    = __( 'This email is sent to the admin when a subscription is cancelled.', 'windros-subscription' );
             $this->template_html  = 'emails/windrose-subscription-admin-cancelled.php';
             $this->template_plain = 'emails/plain/windrose-subscription-admin-cancelled.php';
+            $this->template_base  = WINDROS_DIR . 'templates/';
             $this->customer_email = false; // This is an admin email
             $this->placeholders   = array();
             
@@ -66,21 +67,19 @@ class WindroseSubscriptionAdminCancelledEmail extends \WC_Email {
         }
 
         public function get_content_html() {
-            $template_path = windrose_get_email_template_path();
             return wc_get_template_html( $this->template_html, array(
                 'subscription' => $this->object,
                 'email_heading' => $this->get_heading(),
                 'email' => $this,
-            ), '', $template_path );
+            ) );
         }
 
         public function get_content_plain() {
-            $template_path = windrose_get_email_template_path();
             return wc_get_template_html( $this->template_plain, array(
                 'subscription' => $this->object,
                 'email_heading' => $this->get_heading(),
                 'email' => $this,
-            ), '', $template_path );
+            ) );
         }
     }
 }
