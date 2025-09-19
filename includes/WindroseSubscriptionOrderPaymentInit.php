@@ -10,8 +10,6 @@ class WindroseSubscriptionOrderPaymentInit {
 
     public function subscription_order_payment_init($subscription_order, $order_id){
         $order = wc_get_order( $order_id );
-        // Debug logging
-        error_log('Windrose Payment Init: Starting payment for subscription order ' . $subscription_order->id . ', WC order ' . $order->get_id());
         
         // Initiate Payment
         $payment_status = false;
@@ -20,11 +18,7 @@ class WindroseSubscriptionOrderPaymentInit {
 
         $payment_token = $this->get_payment_token($order_id);
 
-        error_log('Payment User Token: ' . json_encode($payment_token));
         
-        // Debug logging for payment token
-        error_log('Windrose Payment Init: Payment token found: ' . ($payment_token->status ? 'yes' : 'no'));
-
         if($payment_token){
             $token = $payment_token->token;
             $token_id = $payment_token->token_id;
@@ -37,12 +31,7 @@ class WindroseSubscriptionOrderPaymentInit {
 
             $integration_ids = $this->get_payment_integration_ids($paymob_settings['mode']);
 
-            // Debug logging for integration IDs
-            error_log('Windrose Payment Init: Payment mode: ' . ($paymob_settings['mode'] ?? 'unknown'));
-            error_log('Windrose Payment Init: Integration IDs: ' . json_encode($integration_ids));
-            error_log('Windrose Payment Init: Live Integration ID: ' . get_option('windrose_live_integration_id', 'not set'));
-            error_log('Windrose Payment Init: Test Integration ID: ' . get_option('windrose_test_integration_id', 'not set'));
-
+            
             // Log payment initiation
             $log_id = WindrosePaymentLogger::log_payment_initiation(
                 $subscription_order, 
@@ -52,9 +41,7 @@ class WindroseSubscriptionOrderPaymentInit {
                 $integration_ids
             );
             
-            // Debug logging for log creation
-            error_log('Windrose Payment Init: Log ID created: ' . ($log_id ? $log_id : 'failed'));
-
+            
             $subscription_items = $order->get_items();
             $order_items = array();
 
@@ -87,18 +74,18 @@ class WindroseSubscriptionOrderPaymentInit {
                     $billing_state_name = 'N/A';
                 }
             }
-
+            
             $billing_address = array(
                 'first_name' => $order->get_billing_first_name() ?: 'Customer',
                 'last_name' => $order->get_billing_last_name() ?: 'Name',
-                'phone_number' => '+91' . $order->get_billing_phone() ?: '0000000000',
+                'phone_number' => str_replace('-', '', $order->get_billing_phone()) ?: '0000000000',
                 'city' => $order->get_billing_city() ?: 'Unknown',
                 'country' => $billing_country_name,
                 'email' => $order->get_billing_email() ?: 'customer@example.com',
                 'state' => $billing_state_name,
                 'street' => $order->get_billing_address_1() ?: 'Unknown Street',
-                'building' => 'dummy',
-                'floor' => 'dummy',
+                'building' => 'NA',
+                'floor' => 'NA',
                 'apartment' => $order->get_billing_address_2() ?: 'dummy',
             );
             
@@ -116,13 +103,7 @@ class WindroseSubscriptionOrderPaymentInit {
                 'special_reference' => 'WINDROSE-SUBSCRIPTION-' . $order->get_id(),
             ];
 
-            // Debug logging for intention data
-            error_log('Windrose Payment Init: Intention data: ' . json_encode($intention_data));
-            error_log('Windrose Payment Init: Amount: ' . $intention_data['amount']);
-            error_log('Windrose Payment Init: Currency: ' . $intention_data['currency']);
-            error_log('Windrose Payment Init: Payment methods: ' . json_encode($intention_data['payment_methods']));
-            error_log('Windrose Payment Init: Billing data: ' . json_encode($intention_data['billing_data']));
-
+            
             // Validate required fields
             if (empty($intention_data['amount']) || $intention_data['amount'] <= 0) {
                 $failed_reason = 'Invalid amount: ' . $intention_data['amount'];
@@ -217,7 +198,7 @@ class WindroseSubscriptionOrderPaymentInit {
                     'payment_token' => $payment_key
                 );
 
-                error_log('Moto Request Body: ' . json_encode($payment_params));
+                
 
                 // Call Paymob Payment API
                 $payment_response = wp_remote_post('https://oman.paymob.com/api/acceptance/payments/pay', [
@@ -229,7 +210,7 @@ class WindroseSubscriptionOrderPaymentInit {
                     'timeout' => 45,
                 ]);
 
-                error_log('Moto Response: ' . json_encode($payment_response));
+                
 
                 if (is_wp_error($payment_response)) {
                     $failed_reason = 'Error connecting to payment gateway for payment processing.';
@@ -270,24 +251,22 @@ class WindroseSubscriptionOrderPaymentInit {
                     $this->add_payment_method_details($order, $payment_response_body);
                     
                 } else {
-                    $failed_reason = 'Payment was not successful.';
+                    $failed_reason = 'Payment was not successful. Error code: SUBPAYFL-003';
                     $order->add_order_note('Paymob Payment Failed: ' . $this->get_payment_error_message($payment_response_body));
                     $order->update_status('failed');
                 }
 
             } else {
-                $failed_reason = 'Failed to create payment intention.';
+                $failed_reason = 'Failed to create payment intention. Error code: SUBPAYFL-002';
                 $order->add_order_note('Paymob Intention Error: ' . json_encode($intention_body));
                 $order->update_status('failed');
             }
 
         } else {
-            $failed_reason = 'No payment token found for customer.';
+            $failed_reason = 'No payment token found for customer. Error code: SUBPAYFL-001';
             $order->add_order_note('Paymob Error: No saved payment token found for customer ID: ' . $order->get_customer_id());
             $order->update_status('failed');
             
-            // Debug logging for token error
-            error_log('Windrose Payment Init: No payment token found for customer ' . $order->get_customer_id());
             
             // Log token error
             $log_id = WindrosePaymentLogger::create_log(array(
@@ -301,8 +280,7 @@ class WindroseSubscriptionOrderPaymentInit {
                 'error_message' => $failed_reason
             ));
             
-            // Debug logging for token error log
-            error_log('Windrose Payment Init: Token error log ID created: ' . ($log_id ? $log_id : 'failed'));
+            
         }
 
         // Trigger appropriate actions based on payment status
@@ -322,7 +300,7 @@ class WindroseSubscriptionOrderPaymentInit {
 
         $customer_id = $order->get_customer_id();
         
-        error_log('Payment Customer ID: ' . json_encode($customer_id));
+        
 
         $result = $wpdb->get_row(
             $wpdb->prepare(
@@ -359,26 +337,18 @@ class WindroseSubscriptionOrderPaymentInit {
         $live_integration_id = intval(get_option('windrose_live_integration_id', 0));
         $test_integration_id = intval(get_option('windrose_test_integration_id', 0));
         
-        // Debug logging
-        error_log('Windrose Payment Init: Getting integration IDs for mode: ' . $payment_mode);
-        error_log('Windrose Payment Init: Live ID: ' . $live_integration_id);
-        error_log('Windrose Payment Init: Test ID: ' . $test_integration_id);
         
         // Return appropriate Integration ID based on payment mode
         if($payment_mode === 'test'){
             if (!empty($test_integration_id)) {
-                error_log('Windrose Payment Init: Using test integration ID: ' . $test_integration_id);
                 return array($test_integration_id);
             } else {
-                error_log('Windrose Payment Init: Test integration ID is empty');
                 return array();
             }
         } else {
             if (!empty($live_integration_id)) {
-                error_log('Windrose Payment Init: Using live integration ID: ' . $live_integration_id);
                 return array($live_integration_id);
             } else {
-                error_log('Windrose Payment Init: Live integration ID is empty');
                 return array();
             }
         }
@@ -467,6 +437,8 @@ class WindroseSubscriptionOrderPaymentInit {
         $order->update_meta_data('PaymobTransactionId', $payment_response['id'] ?? '');
         $order->update_meta_data('PaymobMerchantOrderID', $payment_response['merchant_order_id'] ?? '');
         
+        $order->set_created_via('Created via CRON');
+        
         $order->save();
     }
 
@@ -508,7 +480,6 @@ class WindroseSubscriptionOrderPaymentInit {
         ));
         
         if (!$subscription_order) {
-            error_log('Windrose Payment: Subscription order not found for ID: ' . $subscription_order_id);
             return false;
         }
         
@@ -519,7 +490,6 @@ class WindroseSubscriptionOrderPaymentInit {
         // Get configurable attempt threshold from settings
         $attempt_threshold = intval(get_option('windrose_payment_attempt_threshold', '3'));
         
-        error_log('Windrose Payment: Handling payment failure for subscription order ' . $subscription_order_id . '. Current attempts: ' . $current_attempts . ', New attempts: ' . $new_attempts . ', Threshold: ' . $attempt_threshold);
         
         // Check if max attempts reached (configurable threshold)
         if ($new_attempts >= $attempt_threshold) {
@@ -539,7 +509,6 @@ class WindroseSubscriptionOrderPaymentInit {
                 array('%d')
             );
             
-            error_log('Windrose Payment: Payment failed for subscription order ' . $subscription_order_id . '. Attempts incremented to ' . $new_attempts . ' (threshold: ' . $attempt_threshold . '). Will retry on next cron run.');
             
             // Add note to main subscription if it exists
             $this->add_subscription_failure_note($subscription_order->subscription_id, $new_attempts, $attempt_threshold, $failed_reason);
@@ -563,7 +532,6 @@ class WindroseSubscriptionOrderPaymentInit {
         ));
         
         if (!$subscription_order) {
-            error_log('Windrose Payment: Subscription order not found for cancellation: ' . $subscription_order_id);
             return false;
         }
         
@@ -591,7 +559,6 @@ class WindroseSubscriptionOrderPaymentInit {
             array('%d')
         );
         
-        error_log('Windrose Payment: Subscription order ' . $subscription_order_id . ' cancelled and main subscription ' . $subscription_order->subscription_id . ' marked as expired due to max failed attempts (' . $attempt_threshold . ').');
         
         // Add cancellation note to main subscription
         $this->add_subscription_cancellation_note($subscription_order->subscription_id, $attempt_threshold, $failed_reason);
@@ -617,7 +584,7 @@ class WindroseSubscriptionOrderPaymentInit {
         );
         
         // You can add this note to a notes field if you have one, or log it
-        error_log('Windrose Subscription ' . $subscription_id . ': ' . $note);
+        
     }
     
     /**
@@ -634,7 +601,7 @@ class WindroseSubscriptionOrderPaymentInit {
         );
         
         // You can add this note to a notes field if you have one, or log it
-        error_log('Windrose Subscription ' . $subscription_id . ': ' . $note);
+        
     }
 
     /**

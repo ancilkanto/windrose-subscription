@@ -26,6 +26,9 @@ function windrose_plugin_uninstall() {
 
     }
 
+    // Clean up options
+    delete_option( 'windrose_endpoints_flushed' );
+    delete_option( 'windrose_db_version' );
     
 }
 ?>

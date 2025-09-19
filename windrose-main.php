@@ -73,8 +73,31 @@ register_activation_hook(__FILE__, 'windrose_plugin_activate');
 require_once WINDROS_DIR.'install-plugin.php';
 
 // Register the deactivation hook
+register_deactivation_hook(__FILE__, 'windrose_plugin_deactivate');
 register_uninstall_hook( __FILE__, 'windrose_plugin_uninstall' );
 require_once WINDROS_DIR.'uninstall-plugin.php';
+
+// Deactivation function
+function windrose_plugin_deactivate() {
+    // Flush rewrite rules to remove custom endpoints
+    flush_rewrite_rules();
+    
+    // Delete the endpoints flushed option
+    delete_option( 'windrose_endpoints_flushed' );
+}
+
+// Manual flush rewrite rules function
+function windrose_manual_flush_rewrite_rules() {
+    if ( isset( $_GET['windrose_flush_rules'] ) && current_user_can( 'manage_options' ) ) {
+        flush_rewrite_rules();
+        delete_option( 'windrose_endpoints_flushed' );
+        wp_redirect( admin_url( 'admin.php?page=wc-settings&windrose_flushed=1' ) );
+        exit;
+    }
+}
+add_action( 'admin_init', 'windrose_manual_flush_rewrite_rules' );
+
+
 
 require_once 'vendor/autoload.php';
 
@@ -125,6 +148,9 @@ class MainWindroseClass {
         new WindroseSubscription\Includes\WindroseSubscriptionLogs();
         // database updater
         new WindroseSubscription\Includes\WindroseDatabaseUpdater();
+        new WindroseSubscription\Includes\WindroseSubscriptionNotification();
+
+        
     }
 
     
@@ -226,13 +252,14 @@ function windrose_get_customers() {
 }
 
 
-function windrose_get_timestamp_object($offest = 0) {
+function windrose_get_timestamp_object($offest = 0, $date = null) {
     // Always use GMT+0
     $timezone = 'Etc/GMT';
     date_default_timezone_set($timezone);
 
-    // Get today's date in GMT+0
-    $date = date('Y-m-d H:i:s');
+    // Get the base date - use provided date or current date
+    $base_date = $date ? $date : date('Y-m-d');
+    $current_date = date('Y-m-d H:i:s');
 
     // Get the daily cron time option (format: 'HH:MM')
     $cron_time = get_option('windrose_daily_cron_time', '03:00');
@@ -246,9 +273,9 @@ function windrose_get_timestamp_object($offest = 0) {
         $target_hour += 24;
     }
 
-    // Build the timestamp for today at (cron_time - 3 hours)
+    // Build the timestamp for the base date at (cron_time - 3 hours)
     $target_time = sprintf('%02d:%02d:00', $target_hour, $cron_minute);
-    $target_datetime = date('Y-m-d') . ' ' . $target_time;
+    $target_datetime = $base_date . ' ' . $target_time;
     $timestamp = strtotime($target_datetime);
 
     // Add offset days if needed
@@ -257,7 +284,7 @@ function windrose_get_timestamp_object($offest = 0) {
     }
 
     return (object) array(
-        'date' => $date,
+        'date' => $current_date,
         'timestamp' => $timestamp
     );
 }
@@ -270,3 +297,142 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
     WP_CLI::add_command('windrose-cli', 'WindroseSubscription\Includes\WindroseCLI');
 }
 
+// Email template helper function
+if (!function_exists('windrose_get_email_template_path')) {
+    function windrose_get_email_template_path() {
+        return plugin_dir_path(__FILE__) . 'templates/';
+    }
+}
+
+// Helper function to get next delivery date for a subscription
+if (!function_exists('windrose_get_next_delivery_date')) {
+    function windrose_get_next_delivery_date($subscription_id) {
+        global $wpdb;
+        $subscription_order_table = $wpdb->prefix . (defined('WINDROS_SUBSCRIPTION_ORDER_TABLE') ? WINDROS_SUBSCRIPTION_ORDER_TABLE : 'windrose_subscription_order');
+        
+        $upcoming_order = $wpdb->get_row($wpdb->prepare(
+            "SELECT time_stamp FROM $subscription_order_table 
+             WHERE subscription_id = %d AND status = 'upcoming' 
+             ORDER BY time_stamp ASC LIMIT 1",
+            $subscription_id
+        ));
+        
+        if ($upcoming_order) {
+            return date('F d, Y', $upcoming_order->time_stamp);
+        }
+        
+        return __('No upcoming deliveries', 'windros-subscription');
+    }
+}
+
+
+
+function windrose_register_email_classes($emails) {
+    // Customer emails
+    $emails['WindroseSubscriptionActivatedEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionActivatedEmail();
+    $emails['WindroseSubscriptionOrderProcessedEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionOrderProcessedEmail();
+    $emails['WindroseSubscriptionOrderFailedEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionOrderFailedEmail();
+    $emails['WindroseSubscriptionPausedEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionPausedEmail();
+    $emails['WindroseSubscriptionCancelledEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionCancelledEmail();
+    $emails['WindroseSubscriptionSkippedEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionSkippedEmail();
+    
+    // Admin emails — use class names as keys!
+    $emails['WindroseSubscriptionAdminActivatedEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionAdminActivatedEmail();
+    $emails['WindroseSubscriptionAdminOrderFailedEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionAdminOrderFailedEmail();
+    $emails['WindroseSubscriptionAdminPausedEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionAdminPausedEmail();
+    $emails['WindroseSubscriptionAdminCancelledEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionAdminCancelledEmail();
+    $emails['WindroseSubscriptionAdminSkippedEmail'] = new WindroseSubscription\Includes\Emails\WindroseSubscriptionAdminSkippedEmail();
+    
+    return $emails;
+}
+add_filter('woocommerce_email_classes', 'windrose_register_email_classes');
+
+
+function windrose_get_arabic_product_title($product_id) {
+    if ($product_id == null || $product_id == '12345'){
+        return null;
+    }
+
+    $product = wc_get_product($product_id);
+    if(!$product){
+        return null;
+    }
+
+    $sku = $product->get_sku();
+    $arabic_title = '';
+    if ($sku) {
+        // Get products with same SKU excluding current product ID
+        $args = array(
+            'post_type' => 'product',
+            'post_status' => 'publish',
+            'posts_per_page' => -1,
+            'post__not_in' => array($product_id),
+            'meta_query' => array(
+                array(
+                    'key' => '_sku',
+                    'value' => $sku,
+                    'compare' => '='
+                )
+            )
+        );
+        
+        $products = get_posts($args);
+        
+        // Get Arabic title from first matching product
+        if (!empty($products)) {
+            $arabic_title = get_the_title($products[0]->ID);
+        }
+    }
+    return $arabic_title;
+}
+
+function windrose_get_arabic_date($date_string) {
+    if ($date_string == null){
+        return $date_string;
+    }
+
+    if (class_exists('IntlDateFormatter')) {
+        $formatter = new IntlDateFormatter(
+            'ar', // Arabic locale
+            IntlDateFormatter::LONG, // Date type
+            IntlDateFormatter::NONE  // Time type
+        );
+        
+        $timestamp = strtotime($date_string);
+        return $formatter->format($timestamp);
+    }
+    
+    // Fallback to basic Arabic month names
+    $months = [
+        'January' => 'يناير',
+        'February' => 'فبراير',
+        'March' => 'مارس',
+        'April' => 'أبريل',
+        'May' => 'مايو',
+        'June' => 'يونيو',
+        'July' => 'يوليو',
+        'August' => 'أغسطس',
+        'September' => 'سبتمبر',
+        'October' => 'أكتوبر',
+        'November' => 'نوفمبر',
+        'December' => 'ديسمبر'
+    ];
+    
+    $date = date('j F Y', strtotime($date_string));
+    foreach ($months as $english => $arabic) {
+        $date = str_replace($english, $arabic, $date);
+    }
+    
+    // Convert numbers to Arabic numerals
+    $arabic_numerals = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+    $english_numerals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    
+    return str_replace($english_numerals, $arabic_numerals, $date);
+}
+
+add_filter('woocommerce_order_created_via', function($via, $order){
+    if ($order->get_created_via() === 'cron') {
+        return 'Created via CRON';
+    }
+    return $via;
+}, 10, 2);

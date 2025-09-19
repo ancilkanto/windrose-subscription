@@ -9,9 +9,7 @@ class WindroseSubscriptionListTemplate {
 	
 	public function subscription_list() {
 
-		echo '<h3>' . __( 'Subscriptions', 'windros-subscription' ) . '</h3>';
 		
-
 
 		wp_enqueue_style('windrose-myaccount', WINDROS_URL .'assets/stylesheets/my-account.css'); 
 
@@ -119,7 +117,8 @@ class WindroseSubscriptionListTemplate {
 			echo ob_get_clean();
 			
 		} else {
-			echo '<p>' . __( 'Sorry! No Subscriptions Available.', 'windros-subscription' ) . '</p>';
+			echo '<p style="padding-bottom: 20px;">' . __( 'Sorry! No Subscriptions Available.', 'windros-subscription' ) . '</p>';
+			echo '<a href="' . home_url() . '/subscription-products/" class="woocommerce-button button">' . __( 'View Subscription Products', 'windros-subscription' ) . '</a>';
 		}
 
 		

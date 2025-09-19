@@ -2,6 +2,7 @@
     "autoload": {
         "psr-4": {
             "WindroseSubscription\\Includes\\": "includes/",
+            "WindroseSubscription\\Includes\\Emails\\": "includes/emails/",
             "WindroseSubscription\\Templates\\": "templates/"
         }
     }

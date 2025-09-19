@@ -29,16 +29,8 @@ defined( 'WINDROS_INIT' ) || exit;
             global $wpdb;
 
 
-            // Get the timezone setting from WordPress
-            $timezone = get_option('timezone_string');  // e.g., 'America/New_York'
-
-            // If 'timezone_string' is empty, fall back to 'gmt_offset'
-            if (empty($timezone)) {
-                $gmt_offset = get_option('gmt_offset'); // e.g., -5 for UTC-5
-                $timezone = sprintf('Etc/GMT%+d', $gmt_offset); // e.g., 'Etc/GMT-5'
-            }
-
-            // Set the PHP timezone to match WordPress
+            // Always use GMT+0
+            $timezone = 'Etc/GMT';
             date_default_timezone_set($timezone);
 
 			// Define your custom table name (considering WordPress table prefix)
@@ -77,6 +69,7 @@ defined( 'WINDROS_INIT' ) || exit;
                 
                 // Hook to invoke on 
                 foreach($subscription_ids as $subscription_id){                    
+                    error_log('Windrose Subscription: Triggering windrose_subscription_main_order_activated action for subscription ID: ' . $subscription_id);
                     do_action('windrose_subscription_main_order_activated', $subscription_id);
                 }
             }

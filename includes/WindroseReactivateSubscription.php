@@ -59,7 +59,8 @@ class WindroseReactivateSubscription {
         if ( $subscription || $admin_action ) {
 
             $data = array(
-                'status' => 'active'
+                'status' => 'active',
+                'active_date' => date("Y-m-d H:i:s")
             );
 
             $condition = array(

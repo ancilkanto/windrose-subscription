@@ -24,22 +24,10 @@ class WindroseCreateSubscriptionOrder {
         );
 
         $schedule = $subscription['schedule'];
+        $active_date = $subscription['active_date'];
+        $active_date = date("Y-m-d", strtotime($active_date));
 
-        // // Get the timezone setting from WordPress
-        // $timezone = get_option('timezone_string');  // e.g., 'America/New_York'
-
-        // // If 'timezone_string' is empty, fall back to 'gmt_offset'
-        // if (empty($timezone)) {
-        //     $gmt_offset = get_option('gmt_offset'); // e.g., -5 for UTC-5
-        //     $timezone = sprintf('Etc/GMT%+d', $gmt_offset); // e.g., 'Etc/GMT-5'
-        // }
-
-        // // Set the PHP timezone to match WordPress
-        // date_default_timezone_set($timezone);
-
-        // $date = date("Y-m-d H:i:s");
-
-        $timestamp_obj = windrose_get_timestamp_object($schedule);
+        $timestamp_obj = windrose_get_timestamp_object($schedule, $active_date);
 
         $sequence = $subscription['total_orders'] + 1;
 

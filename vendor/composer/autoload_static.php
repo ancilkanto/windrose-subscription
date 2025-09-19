@@ -10,6 +10,7 @@ class ComposerStaticInit775a33a5703b64b6ab5b897753633572
         'W' => 
         array (
             'WindroseSubscription\\Templates\\' => 31,
+            'WindroseSubscription\\Includes\\Emails\\' => 37,
             'WindroseSubscription\\Includes\\' => 30,
         ),
     );
@@ -18,6 +19,10 @@ class ComposerStaticInit775a33a5703b64b6ab5b897753633572
         'WindroseSubscription\\Templates\\' => 
         array (
             0 => __DIR__ . '/../..' . '/templates',
+        ),
+        'WindroseSubscription\\Includes\\Emails\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/includes/emails',
         ),
         'WindroseSubscription\\Includes\\' => 
         array (

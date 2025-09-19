@@ -1,0 +1,154 @@
+/* Bilingual Email Template Styles for Windrose Subscription */
+
+/* WooCommerce Email Header Alignment */
+.woocommerce-email-header__heading {
+    text-align: center !important;
+    line-height: 1.5;
+    white-space: pre-line;
+}
+
+.bilingual-email-header {
+    text-align: center;
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #f8f8f8;
+    border-radius: 5px;
+}
+
+.bilingual-email-header .english-heading {
+    margin-bottom: 15px;
+}
+
+.bilingual-email-header .arabic-heading {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 2px solid #ddd;
+    direction: rtl;
+    text-align: center;
+    font-family: 'Arial', 'Tahoma', sans-serif;
+}
+
+.arabic-section {
+    text-align: right !important;
+    direction: rtl;
+    font-family: 'Arial', 'Tahoma', sans-serif;
+    margin-bottom: 40px;
+}
+
+.english-section {
+    text-align: left;
+    padding-top: 30px;
+    border-top: 3px solid #d0d0d0;
+}
+
+.arabic-heading {
+    text-align: right !important;
+    direction: rtl;
+    font-family: 'Arial', 'Tahoma', sans-serif;
+    font-size: 1.1em;
+    margin-bottom: 20px;
+}
+
+.arabic-heading h2 {
+    text-align: right !important;
+    direction: rtl;
+}
+
+/* Override any WooCommerce default styles */
+.arabic-section h2,
+.arabic-section h3,
+.arabic-section p,
+.arabic-section div {
+    text-align: right !important;
+    direction: rtl;
+}
+
+/* Ensure table headers in Arabic section are right-aligned */
+.arabic-section .td {
+    text-align: right !important;
+}
+
+.english-heading {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.arabic-content {
+    text-align: right;
+    direction: rtl;
+    font-family: 'Arial', 'Tahoma', sans-serif;
+    font-size: 0.95em;
+    margin-bottom: 15px;
+}
+
+.english-content {
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+/* Table cell styling for bilingual headers */
+.bilingual-content .english-content,
+.bilingual-content .arabic-content {
+    padding: 0;
+}
+
+/* Responsive design for mobile */
+@media (max-width: 600px) {
+    .arabic-section,
+    .english-section {
+        text-align: center;
+    }
+    
+    .arabic-heading,
+    .arabic-content {
+        direction: ltr;
+    }
+}
+
+/* Ensure proper spacing in table cells */
+.td .bilingual-content {
+    margin: 0;
+    padding: 0;
+}
+
+.td .bilingual-content .english-content,
+.td .bilingual-content .arabic-content {
+    padding: 0;
+    margin: 0;
+}
+
+/* Subscription-specific styling */
+.subscription-details {
+    margin: 20px 0;
+}
+
+.subscription-details .arabic-details {
+    text-align: right;
+    direction: rtl;
+    margin-bottom: 20px;
+}
+
+.subscription-details .english-details {
+    text-align: left;
+}
+
+.subscription-details .detail-row {
+    margin-bottom: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.subscription-details .detail-label {
+    font-weight: bold;
+    color: #333;
+}
+
+.subscription-details .detail-value {
+    color: #666;
+    margin-left: 10px;
+}
+
+.subscription-details .arabic-details .detail-value {
+    margin-left: 0;
+    margin-right: 10px;
+}

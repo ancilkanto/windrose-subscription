@@ -21,16 +21,8 @@ class WindroseCreateSubscription {
         $customer_id = $order->get_user_id(); 
         $status = 'processing';
 
-        // Get the timezone setting from WordPress
-        $timezone = get_option('timezone_string');  // e.g., 'America/New_York'
-
-        // If 'timezone_string' is empty, fall back to 'gmt_offset'
-        if (empty($timezone)) {
-            $gmt_offset = get_option('gmt_offset'); // e.g., -5 for UTC-5
-            $timezone = sprintf('Etc/GMT%+d', $gmt_offset); // e.g., 'Etc/GMT-5'
-        }
-
-        // Set the PHP timezone to match WordPress
+        // Always use GMT+0
+        $timezone = 'Etc/GMT';
         date_default_timezone_set($timezone);
 
 
@@ -70,6 +62,24 @@ class WindroseCreateSubscription {
             'payment_token' => 'PAYMENT-TOKEN-HERE', 
         );
 
+        if( !($this->is_saved_card($user_id) )){
+            $data['status'] = 'cancel';
+
+            $subscription_data = $wpdb->get_row(
+                $wpdb->prepare(
+                    "
+                    SELECT id
+                    FROM {$wpdb->prefix}windrose_subscription_main
+                    WHERE order_id = %d
+                    ",
+                    $order_id
+                )
+            );
+            do_action('windrose_subscription_main_order_cancelled', $subscription_data->id);
+            // Send notification that subscription was cancelled due to no saved card
+            do_action('windrose_subscription_order_execution_failed', $subscription_data->id, 'Subscription cancelled! Unable to find a saved payment card for recurring orders.');
+        }
+
         $where = array(
             'order_id' => $order_id,
         );
@@ -82,5 +92,29 @@ class WindroseCreateSubscription {
         
         // Hook to invoke on 
         do_action('windrose_subscription_main_order_created_successfully', $order);
+    }
+
+    public function is_saved_card($user_id){
+        global $wpdb;
+        
+
+        $result = $wpdb->get_row(
+            $wpdb->prepare(
+                "
+                SELECT id, token
+                FROM {$wpdb->prefix}paymob_cards_token
+                WHERE user_id = %d
+                ORDER BY id DESC
+                LIMIT 1
+                ",
+                $user_id
+            )
+        );
+
+        if ($result) {
+            return true;
+        } 
+
+        return false;
     }
 }

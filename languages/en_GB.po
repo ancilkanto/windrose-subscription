@@ -1,0 +1,1356 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Windrose-Subscription\n"
+"POT-Creation-Date: 2025-08-27 23:21+0530\n"
+"PO-Revision-Date: 2025-08-27 23:24+0530\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.7\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: _e;__;esc_htm__;esc_html_e;esc_attr__;esc_attr_e\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: assets\n"
+"X-Poedit-SearchPathExcluded-1: vendor\n"
+
+#: includes/AdminProductSubscriptionOptions.php:55
+msgid "Subscription settings"
+msgstr "Subscription settings"
+
+#: includes/AdminProductSubscriptionOptions.php:94
+msgid "Enable Subscription"
+msgstr "Enable Subscription"
+
+#: includes/AdminProductSubscriptionOptions.php:95
+msgid "check if you want to enable product subscription"
+msgstr "check if you want to enable product subscription"
+
+#: includes/AdminProductSubscriptionOptions.php:120
+msgid "Set Frquencies"
+msgstr "Set Frquencies"
+
+#: includes/WindroseActivateSubscription.php:83
+#: templates/WindroseAdminSubscriptionListTemplate.php:198
+msgid "Activate Subscription"
+msgstr "Activate Subscription"
+
+#: includes/WindroseAdminSubscriptionDetailView.php:31
+#: templates/WindroseSubscriptionDetailsTemplate.php:12
+#: templates/emails/windrose-subscription-admin-activated.php:29
+#: templates/emails/windrose-subscription-admin-paused.php:27
+msgid "Subscription Details"
+msgstr "Subscription Details"
+
+#: includes/WindroseAdminSubscriptionList.php:29
+#: includes/WindroseMyAccountInit.php:39
+#: templates/WindroseSubscriptionListTemplate.php:12
+msgid "Subscriptions"
+msgstr "Subscriptions"
+
+#: includes/WindroseCancelSubscription.php:15
+#: includes/WindrosePauseSubscription.php:16
+#: includes/WindroseReactivateSubscription.php:16
+#: includes/WindroseSkipSubscription.php:16
+#: includes/WindroseUpdateSubscription.php:19
+msgid "Invalid submission."
+msgstr "Invalid submission."
+
+#: includes/WindroseCancelSubscription.php:95
+#: includes/WindroseCancelSubscription.php:99
+msgid "The subscription has been cancelled!"
+msgstr "The subscription has been cancelled!"
+
+#: includes/WindroseCancelSubscription.php:104
+#: includes/WindroseCancelSubscription.php:106
+msgid "Subscription Not Canceld!"
+msgstr "Subscription Not Canceld!"
+
+#: includes/WindroseCancelSubscription.php:111
+#: includes/WindroseCancelSubscription.php:113
+#: includes/WindrosePauseSubscription.php:118
+#: includes/WindrosePauseSubscription.php:120
+#: includes/WindroseReactivateSubscription.php:93
+#: includes/WindroseReactivateSubscription.php:95
+#: includes/WindroseSkipSubscription.php:121
+#: includes/WindroseSkipSubscription.php:123
+#: includes/WindroseUpdateSubscription.php:119
+#: includes/WindroseUpdateSubscription.php:120
+#: templates/WindroseAdminSubscriptionDetailsTemplate.php:311
+#: templates/WindroseAdminSubscriptionDetailsTemplate.php:312
+msgid "Unauthorized Request!"
+msgstr "Unauthorized Request!"
+
+#: includes/WindroseModifyProductListingLoop.php:45
+#: includes/WindroseModifyProductSinglePage.php:40
+msgid "Choose Subscription Schedule"
+msgstr "Choose Subscription Schedule"
+
+#: includes/WindroseModifyProductListingLoop.php:67
+#: includes/WindroseModifyProductSinglePage.php:62
+msgid "You can adjust, pause or cancel at any time"
+msgstr "You can adjust, pause or cancel at any time"
+
+#: includes/WindroseModifyProductListingLoop.php:190
+msgid "You cannot purchase multiple subscriptions at the same time."
+msgstr "You cannot purchase multiple subscriptions at the same time."
+
+#: includes/WindroseModifyProductLoopData.php:23
+msgid "/ Week"
+msgstr "/ Week"
+
+#: includes/WindroseModifyProductLoopData.php:35
+msgid "Subscribe Now"
+msgstr "Subscribe Now"
+
+#: includes/WindrosePauseSubscription.php:102
+#: includes/WindrosePauseSubscription.php:106
+msgid "The subscription has been paused!"
+msgstr "The subscription has been paused!"
+
+#: includes/WindrosePauseSubscription.php:111
+#: includes/WindrosePauseSubscription.php:113
+msgid "Subscription Not Paused!"
+msgstr "Subscription Not Paused!"
+
+#: includes/WindroseReactivateSubscription.php:77
+#: includes/WindroseReactivateSubscription.php:81
+msgid "The subscription has been re-activated!"
+msgstr "The subscription has been re-activated!"
+
+#: includes/WindroseReactivateSubscription.php:85
+#: includes/WindroseReactivateSubscription.php:89
+msgid "The subscription is not re-activated!"
+msgstr "The subscription is not re-activated!"
+
+#: includes/WindroseRegisterShortcodes.php:63
+msgid "There is no subscription products available."
+msgstr "There is no subscription products available."
+
+#: includes/WindroseRegisterShortcodes.php:124
+msgid "There is no products available."
+msgstr "There is no products available."
+
+#: includes/WindroseSkipSubscription.php:103
+#: includes/WindroseSkipSubscription.php:107
+msgid "The subscription order has been skipped!"
+msgstr "The subscription order has been skipped!"
+
+#: includes/WindroseSkipSubscription.php:110
+#: includes/WindroseSkipSubscription.php:112
+msgid "Subscription Order Not Skipped!"
+msgstr "Subscription Order Not Skipped!"
+
+#: includes/WindroseSubscriptionCart.php:22
+msgid "Please select a subscription schedule."
+msgstr "Please select a subscription schedule."
+
+#: includes/WindroseSubscriptionCart.php:28
+msgid "Please login to subscribe a product."
+msgstr "Please login to subscribe a product."
+
+#: includes/WindroseSubscriptionCart.php:48
+msgid "Subscription Schedule"
+msgstr "Subscription Schedule"
+
+#: includes/WindroseSubscriptionLogs.php:118
+msgid "Total Entries"
+msgstr "Total Entries"
+
+#: includes/WindroseSubscriptionLogs.php:122
+msgid "Success Rate"
+msgstr "Success Rate"
+
+#: includes/WindroseSubscriptionLogs.php:126
+msgid "Failed"
+msgstr "Failed"
+
+#: includes/WindroseSubscriptionLogs.php:130
+msgid "Today's Entries"
+msgstr "Today's Entries"
+
+#: includes/WindroseSubscriptionLogs.php:139
+msgid "No payment logs found matching your criteria."
+msgstr "No payment logs found matching your criteria."
+
+#: includes/WindroseSubscriptionLogs.php:193
+#: templates/WindroseSubscriptionListTemplate.php:109
+msgid "View Details"
+msgstr "View Details"
+
+#: includes/WindroseSubscriptionLogs.php:211
+msgid "Previous"
+msgstr "Previous"
+
+#: includes/WindroseSubscriptionLogs.php:224
+msgid "Next"
+msgstr "Next"
+
+#: includes/WindroseSubscriptionLogs.php:237
+msgid "Payment Log Details"
+msgstr "Payment Log Details"
+
+#: includes/WindroseSubscriptionLogs.php:429
+msgid "WooCommerce Order"
+msgstr "WooCommerce Order"
+
+#: includes/WindroseSubscriptionLogs.php:441
+#: templates/emails/windrose-subscription-admin-activated.php:33
+#: templates/emails/windrose-subscription-admin-cancelled.php:32
+#: templates/emails/windrose-subscription-admin-order-failed.php:33
+#: templates/emails/windrose-subscription-admin-paused.php:32
+msgid "Customer"
+msgstr "Customer"
+
+#: includes/WindroseSubscriptionLogs.php:452
+msgid "Amount"
+msgstr "Amount"
+
+#: includes/WindroseSubscriptionLogs.php:456
+#: templates/WindroseSubscriptionListTemplate.php:41
+msgid "Status"
+msgstr "Status"
+
+#: includes/WindroseSubscriptionLogs.php:464
+msgid "Payment Mode"
+msgstr "Payment Mode"
+
+#: includes/WindroseSubscriptionLogs.php:468
+msgid "Integration ID"
+msgstr "Integration ID"
+
+#: includes/WindroseSubscriptionLogs.php:472
+msgid "Intention ID"
+msgstr "Intention ID"
+
+#: includes/WindroseSubscriptionLogs.php:476
+msgid "Transaction ID"
+msgstr "Transaction ID"
+
+#: includes/WindroseSubscriptionLogs.php:480
+msgid "Created"
+msgstr "Created"
+
+#: includes/WindroseSubscriptionLogs.php:484
+msgid "Updated"
+msgstr "Updated"
+
+#: includes/WindroseSubscriptionLogs.php:489
+msgid "Error Message"
+msgstr "Error Message"
+
+#: includes/WindroseSubscriptionLogs.php:495
+msgid "Paymob Response"
+msgstr "Paymob Response"
+
+#: includes/WindroseSubscriptionNotification.php:215
+msgid "(Unknown Product)"
+msgstr "(Unknown Product)"
+
+#: includes/WindroseSubscriptionNotification.php:223
+#: includes/emails/WindroseSubscriptionActivatedEmail.php:25
+#: includes/emails/WindroseSubscriptionActivatedEmail.php:81
+#: includes/emails/WindroseSubscriptionActivatedEmail.php:117
+msgid "Your subscription is now active"
+msgstr "Your subscription is now active"
+
+#: includes/WindroseSubscriptionNotification.php:224
+#, php-format
+msgid "Hello %s,\\n\\nYour subscription for %s is now active. Thank you!"
+msgstr "Hello %s,\\n\\nYour subscription for %s is now active. Thank you!"
+
+#: includes/WindroseSubscriptionNotification.php:227
+msgid "Your subscription order is processing"
+msgstr "Your subscription order is processing"
+
+#: includes/WindroseSubscriptionNotification.php:228
+#, php-format
+msgid ""
+"Hello %s,\\n\\nYour subscription order for %s is now processing after "
+"successful payment."
+msgstr ""
+"Hello %s,\\n\\nYour subscription order for %s is now processing after "
+"successful payment."
+
+#: includes/WindroseSubscriptionNotification.php:231
+#: includes/emails/WindroseSubscriptionAdminOrderFailedEmail.php:24
+#: includes/emails/WindroseSubscriptionAdminOrderFailedEmail.php:25
+msgid "Subscription order payment failed"
+msgstr "Subscription order payment failed"
+
+#: includes/WindroseSubscriptionNotification.php:232
+#, php-format
+msgid ""
+"Hello %s,\\n\\nPayment for your subscription order for %s has failed. "
+"\\n\\nReason: %s"
+msgstr ""
+"Hello %s,\\n\\nPayment for your subscription order for %s has failed. "
+"\\n\\nReason: %s"
+
+#: includes/WindroseSubscriptionNotification.php:235
+#: includes/emails/WindroseSubscriptionPausedEmail.php:24
+#: includes/emails/WindroseSubscriptionPausedEmail.php:25
+#: includes/emails/WindroseSubscriptionPausedEmail.php:80
+#: includes/emails/WindroseSubscriptionPausedEmail.php:87
+msgid "Your subscription has been paused"
+msgstr "Your subscription has been paused"
+
+#: includes/WindroseSubscriptionNotification.php:236
+#, php-format
+msgid "Hello %s,\\n\\nYour subscription for %s has been paused."
+msgstr "Hello %s,\\n\\nYour subscription for %s has been paused."
+
+#: includes/WindroseSubscriptionNotification.php:239
+#: includes/emails/WindroseSubscriptionCancelledEmail.php:24
+#: includes/emails/WindroseSubscriptionCancelledEmail.php:25
+#: includes/emails/WindroseSubscriptionCancelledEmail.php:80
+#: includes/emails/WindroseSubscriptionCancelledEmail.php:87
+msgid "Your subscription has been cancelled"
+msgstr "Your subscription has been cancelled"
+
+#: includes/WindroseSubscriptionNotification.php:240
+#, php-format
+msgid "Hello %s,\\n\\nYour subscription for %s has been cancelled."
+msgstr "Hello %s,\\n\\nYour subscription for %s has been cancelled."
+
+#: includes/WindroseSubscriptionNotification.php:243
+msgid "A subscription order was skipped"
+msgstr "A subscription order was skipped"
+
+#: includes/WindroseSubscriptionNotification.php:244
+#, php-format
+msgid "Hello %s,\\n\\nA subscription order for %s was skipped."
+msgstr "Hello %s,\\n\\nA subscription order for %s was skipped."
+
+#: includes/WindroseUpdateSubscription.php:82
+msgid "Subscription and Upcoming Order Updated Successfully!"
+msgstr "Subscription and Upcoming Order Updated Successfully!"
+
+#: includes/WindroseUpdateSubscription.php:85
+#: includes/WindroseUpdateSubscription.php:101
+#: includes/WindroseUpdateSubscription.php:104
+#: templates/WindroseAdminSubscriptionDetailsTemplate.php:288
+#: templates/WindroseAdminSubscriptionDetailsTemplate.php:291
+msgid "Subscription Updated Successfully!"
+msgstr "Subscription Updated Successfully!"
+
+#: includes/WindroseUpdateSubscription.php:95
+#: includes/WindroseUpdateSubscription.php:96
+#: includes/WindroseUpdateSubscription.php:111
+#: includes/WindroseUpdateSubscription.php:112
+#: templates/WindroseAdminSubscriptionDetailsTemplate.php:280
+#: templates/WindroseAdminSubscriptionDetailsTemplate.php:281
+#: templates/WindroseAdminSubscriptionDetailsTemplate.php:300
+#: templates/WindroseAdminSubscriptionDetailsTemplate.php:301
+msgid "Subscription Not Updated!"
+msgstr "Subscription Not Updated!"
+
+#: includes/emails/WindroseSubscriptionActivatedEmail.php:15
+msgid "Subscription Activated"
+msgstr "Subscription Activated"
+
+#: includes/emails/WindroseSubscriptionActivatedEmail.php:16
+msgid "This email is sent to the customer when their subscription is activated."
+msgstr ""
+"This email is sent to the customer when their subscription is activated."
+
+#: includes/emails/WindroseSubscriptionActivatedEmail.php:24
+#: includes/emails/WindroseSubscriptionActivatedEmail.php:88
+#: includes/emails/WindroseSubscriptionActivatedEmail.php:111
+msgid "Your subscription is now active!"
+msgstr "Your subscription is now active!"
+
+#: includes/emails/WindroseSubscriptionActivatedEmail.php:39
+#: includes/emails/WindroseSubscriptionCancelledEmail.php:39
+#: includes/emails/WindroseSubscriptionOrderFailedEmail.php:39
+#: includes/emails/WindroseSubscriptionOrderProcessedEmail.php:39
+#: includes/emails/WindroseSubscriptionPausedEmail.php:39
+#: includes/emails/WindroseSubscriptionSkippedEmail.php:39
+msgid "Enable/Disable"
+msgstr "Enable/Disable"
+
+#: includes/emails/WindroseSubscriptionActivatedEmail.php:41
+#: includes/emails/WindroseSubscriptionCancelledEmail.php:41
+#: includes/emails/WindroseSubscriptionOrderFailedEmail.php:41
+#: includes/emails/WindroseSubscriptionOrderProcessedEmail.php:41
+#: includes/emails/WindroseSubscriptionPausedEmail.php:41
+#: includes/emails/WindroseSubscriptionSkippedEmail.php:41
+msgid "Enable this email notification"
+msgstr "Enable this email notification"
+
+#: includes/emails/WindroseSubscriptionActivatedEmail.php:45
+#: includes/emails/WindroseSubscriptionCancelledEmail.php:45
+#: includes/emails/WindroseSubscriptionOrderFailedEmail.php:45
+#: includes/emails/WindroseSubscriptionOrderProcessedEmail.php:45
+#: includes/emails/WindroseSubscriptionPausedEmail.php:45
+#: includes/emails/WindroseSubscriptionSkippedEmail.php:45
+msgid "Subject"
+msgstr "Subject"
+
+#: includes/emails/WindroseSubscriptionActivatedEmail.php:47
+#: includes/emails/WindroseSubscriptionCancelledEmail.php:47
+#: includes/emails/WindroseSubscriptionOrderFailedEmail.php:47
+#: includes/emails/WindroseSubscriptionOrderProcessedEmail.php:47
+#: includes/emails/WindroseSubscriptionPausedEmail.php:47
+#: includes/emails/WindroseSubscriptionSkippedEmail.php:47
+msgid ""
+"This controls the email subject line. Leave blank to use the default subject."
+msgstr ""
+"This controls the email subject line. Leave blank to use the default subject."
+
+#: includes/emails/WindroseSubscriptionActivatedEmail.php:53
+#: includes/emails/WindroseSubscriptionCancelledEmail.php:52
+#: includes/emails/WindroseSubscriptionOrderFailedEmail.php:52
+#: includes/emails/WindroseSubscriptionOrderProcessedEmail.php:52
+#: includes/emails/WindroseSubscriptionPausedEmail.php:52
+#: includes/emails/WindroseSubscriptionSkippedEmail.php:52
+msgid "Email Heading"
+msgstr "Email Heading"
+
+#: includes/emails/WindroseSubscriptionActivatedEmail.php:55
+#: includes/emails/WindroseSubscriptionCancelledEmail.php:54
+#: includes/emails/WindroseSubscriptionOrderFailedEmail.php:54
+#: includes/emails/WindroseSubscriptionOrderProcessedEmail.php:54
+#: includes/emails/WindroseSubscriptionPausedEmail.php:54
+#: includes/emails/WindroseSubscriptionSkippedEmail.php:54
+msgid ""
+"This controls the main heading contained within the email notification. Leave "
+"blank to use the default heading."
+msgstr ""
+"This controls the main heading contained within the email notification. Leave "
+"blank to use the default heading."
+
+#: includes/emails/WindroseSubscriptionActivatedEmail.php:60
+#: includes/emails/WindroseSubscriptionCancelledEmail.php:59
+#: includes/emails/WindroseSubscriptionOrderFailedEmail.php:59
+#: includes/emails/WindroseSubscriptionOrderProcessedEmail.php:59
+#: includes/emails/WindroseSubscriptionPausedEmail.php:59
+#: includes/emails/WindroseSubscriptionSkippedEmail.php:59
+msgid "Email Heading (Arabic)"
+msgstr "Email Heading (Arabic)"
+
+#: includes/emails/WindroseSubscriptionActivatedEmail.php:62
+#: includes/emails/WindroseSubscriptionCancelledEmail.php:61
+#: includes/emails/WindroseSubscriptionOrderFailedEmail.php:61
+#: includes/emails/WindroseSubscriptionOrderProcessedEmail.php:61
+#: includes/emails/WindroseSubscriptionPausedEmail.php:61
+#: includes/emails/WindroseSubscriptionSkippedEmail.php:61
+msgid "Arabic version of the email heading."
+msgstr "Arabic version of the email heading."
+
+#: includes/emails/WindroseSubscriptionActivatedEmail.php:63
+#: includes/emails/WindroseSubscriptionActivatedEmail.php:64
+#: includes/emails/WindroseSubscriptionActivatedEmail.php:96
+msgid "اشتراكك نشط الآن!"
+msgstr "اشتراكك نشط الآن!"
+
+#: includes/emails/WindroseSubscriptionActivatedEmail.php:67
+#: includes/emails/WindroseSubscriptionCancelledEmail.php:66
+#: includes/emails/WindroseSubscriptionOrderFailedEmail.php:66
+#: includes/emails/WindroseSubscriptionOrderProcessedEmail.php:66
+#: includes/emails/WindroseSubscriptionPausedEmail.php:66
+#: includes/emails/WindroseSubscriptionSkippedEmail.php:66
+msgid "Email type"
+msgstr "Email type"
+
+#: includes/emails/WindroseSubscriptionActivatedEmail.php:69
+#: includes/emails/WindroseSubscriptionCancelledEmail.php:68
+#: includes/emails/WindroseSubscriptionOrderFailedEmail.php:68
+#: includes/emails/WindroseSubscriptionOrderProcessedEmail.php:68
+#: includes/emails/WindroseSubscriptionPausedEmail.php:68
+#: includes/emails/WindroseSubscriptionSkippedEmail.php:68
+msgid "Choose which format of email to send."
+msgstr "Choose which format of email to send."
+
+#: includes/emails/WindroseSubscriptionAdminActivatedEmail.php:15
+msgid "Subscription Activated (Admin)"
+msgstr "Subscription Activated (Admin)"
+
+#: includes/emails/WindroseSubscriptionAdminActivatedEmail.php:16
+msgid "This email is sent to the admin when a subscription is activated."
+msgstr "This email is sent to the admin when a subscription is activated."
+
+#: includes/emails/WindroseSubscriptionAdminActivatedEmail.php:24
+#: includes/emails/WindroseSubscriptionAdminActivatedEmail.php:25
+#: includes/emails/WindroseSubscriptionAdminActivatedEmail.php:60
+#: includes/emails/WindroseSubscriptionAdminActivatedEmail.php:61
+msgid "New subscription activated"
+msgstr "New subscription activated"
+
+#: includes/emails/WindroseSubscriptionAdminCancelledEmail.php:15
+msgid "Subscription Cancelled (Admin)"
+msgstr "Subscription Cancelled (Admin)"
+
+#: includes/emails/WindroseSubscriptionAdminCancelledEmail.php:16
+msgid "This email is sent to the admin when a subscription is cancelled."
+msgstr "This email is sent to the admin when a subscription is cancelled."
+
+#: includes/emails/WindroseSubscriptionAdminCancelledEmail.php:24
+#: includes/emails/WindroseSubscriptionAdminCancelledEmail.php:25
+msgid "Subscription cancelled"
+msgstr "Subscription cancelled"
+
+#: includes/emails/WindroseSubscriptionAdminOrderFailedEmail.php:15
+msgid "Subscription Order Failed (Admin)"
+msgstr "Subscription Order Failed (Admin)"
+
+#: includes/emails/WindroseSubscriptionAdminOrderFailedEmail.php:16
+msgid "This email is sent to the admin when a subscription order payment fails."
+msgstr ""
+"This email is sent to the admin when a subscription order payment fails."
+
+#: includes/emails/WindroseSubscriptionAdminPausedEmail.php:15
+msgid "Subscription Paused (Admin)"
+msgstr "Subscription Paused (Admin)"
+
+#: includes/emails/WindroseSubscriptionAdminPausedEmail.php:16
+msgid "This email is sent to the admin when a subscription is paused."
+msgstr "This email is sent to the admin when a subscription is paused."
+
+#: includes/emails/WindroseSubscriptionAdminPausedEmail.php:24
+#: includes/emails/WindroseSubscriptionAdminPausedEmail.php:25
+msgid "Subscription paused"
+msgstr "Subscription paused"
+
+#: includes/emails/WindroseSubscriptionAdminSkippedEmail.php:15
+msgid "Subscription Skipped (Admin)"
+msgstr "Subscription Skipped (Admin)"
+
+#: includes/emails/WindroseSubscriptionAdminSkippedEmail.php:16
+msgid "This email is sent to the admin when a subscription order is skipped."
+msgstr "This email is sent to the admin when a subscription order is skipped."
+
+#: includes/emails/WindroseSubscriptionAdminSkippedEmail.php:24
+#: includes/emails/WindroseSubscriptionAdminSkippedEmail.php:25
+msgid "Subscription order skipped"
+msgstr "Subscription order skipped"
+
+#: includes/emails/WindroseSubscriptionCancelledEmail.php:15
+msgid "Subscription Cancelled"
+msgstr "Subscription Cancelled"
+
+#: includes/emails/WindroseSubscriptionCancelledEmail.php:16
+msgid "This email is sent to the customer when their subscription is cancelled."
+msgstr ""
+"This email is sent to the customer when their subscription is cancelled."
+
+#: includes/emails/WindroseSubscriptionCancelledEmail.php:62
+#: includes/emails/WindroseSubscriptionCancelledEmail.php:63
+#: includes/emails/WindroseSubscriptionCancelledEmail.php:94
+msgid "تم إلغاء اشتراكك"
+msgstr "تم إلغاء اشتراكك"
+
+#: includes/emails/WindroseSubscriptionOrderFailedEmail.php:15
+msgid "Subscription Order Failed"
+msgstr "Subscription Order Failed"
+
+#: includes/emails/WindroseSubscriptionOrderFailedEmail.php:16
+msgid ""
+"This email is sent to the customer when their subscription order payment "
+"fails."
+msgstr ""
+"This email is sent to the customer when their subscription order payment "
+"fails."
+
+#: includes/emails/WindroseSubscriptionOrderFailedEmail.php:24
+#: includes/emails/WindroseSubscriptionOrderFailedEmail.php:25
+#: includes/emails/WindroseSubscriptionOrderFailedEmail.php:80
+#: includes/emails/WindroseSubscriptionOrderFailedEmail.php:87
+msgid "Your subscription order payment failed"
+msgstr "Your subscription order payment failed"
+
+#: includes/emails/WindroseSubscriptionOrderFailedEmail.php:62
+#: includes/emails/WindroseSubscriptionOrderFailedEmail.php:63
+#: includes/emails/WindroseSubscriptionOrderFailedEmail.php:94
+msgid "فشل دفع طلب اشتراكك"
+msgstr "فشل دفع طلب اشتراكك"
+
+#: includes/emails/WindroseSubscriptionOrderProcessedEmail.php:15
+msgid "Subscription Order Processed"
+msgstr "Subscription Order Processed"
+
+#: includes/emails/WindroseSubscriptionOrderProcessedEmail.php:16
+msgid ""
+"This email is sent to the customer when their subscription order is processed "
+"after successful payment."
+msgstr ""
+"This email is sent to the customer when their subscription order is processed "
+"after successful payment."
+
+#: includes/emails/WindroseSubscriptionOrderProcessedEmail.php:24
+#: includes/emails/WindroseSubscriptionOrderProcessedEmail.php:25
+#: includes/emails/WindroseSubscriptionOrderProcessedEmail.php:80
+#: includes/emails/WindroseSubscriptionOrderProcessedEmail.php:87
+msgid "Your subscription order is being processed"
+msgstr "Your subscription order is being processed"
+
+#: includes/emails/WindroseSubscriptionOrderProcessedEmail.php:62
+#: includes/emails/WindroseSubscriptionOrderProcessedEmail.php:63
+#: includes/emails/WindroseSubscriptionOrderProcessedEmail.php:94
+msgid "طلب اشتراكك قيد المعالجة"
+msgstr "طلب اشتراكك قيد المعالجة"
+
+#: includes/emails/WindroseSubscriptionPausedEmail.php:15
+msgid "Subscription Paused"
+msgstr "Subscription Paused"
+
+#: includes/emails/WindroseSubscriptionPausedEmail.php:16
+msgid "This email is sent to the customer when their subscription is paused."
+msgstr "This email is sent to the customer when their subscription is paused."
+
+#: includes/emails/WindroseSubscriptionPausedEmail.php:62
+#: includes/emails/WindroseSubscriptionPausedEmail.php:63
+#: includes/emails/WindroseSubscriptionPausedEmail.php:94
+msgid "تم إيقاف اشتراكك مؤقتاً"
+msgstr "تم إيقاف اشتراكك مؤقتاً"
+
+#: includes/emails/WindroseSubscriptionSkippedEmail.php:15
+msgid "Subscription Skipped"
+msgstr "Subscription Skipped"
+
+#: includes/emails/WindroseSubscriptionSkippedEmail.php:16
+msgid ""
+"This email is sent to the customer when their subscription order is skipped."
+msgstr ""
+"This email is sent to the customer when their subscription order is skipped."
+
+#: includes/emails/WindroseSubscriptionSkippedEmail.php:24
+#: includes/emails/WindroseSubscriptionSkippedEmail.php:25
+#: includes/emails/WindroseSubscriptionSkippedEmail.php:80
+#: includes/emails/WindroseSubscriptionSkippedEmail.php:87
+msgid "Your subscription order has been skipped"
+msgstr "Your subscription order has been skipped"
+
+#: includes/emails/WindroseSubscriptionSkippedEmail.php:62
+#: includes/emails/WindroseSubscriptionSkippedEmail.php:63
+#: includes/emails/WindroseSubscriptionSkippedEmail.php:94
+msgid "تم تخطي طلب اشتراكك"
+msgstr "تم تخطي طلب اشتراكك"
+
+#: templates/WindroseAdminSubscriptionDetailsTemplate.php:34
+#: templates/WindroseSubscriptionDetailsTemplate.php:47
+#: templates/WindroseSubscriptionListTemplate.php:64
+msgid "for"
+msgstr "for"
+
+#: templates/WindroseAdminSubscriptionDetailsTemplate.php:54
+#: templates/WindroseSubscriptionDetailsTemplate.php:70
+#: templates/WindroseSubscriptionListTemplate.php:89
+msgid "Quantity: "
+msgstr "Quantity: "
+
+#: templates/WindroseAdminSubscriptionDetailsTemplate.php:55
+msgid "WooCommerce Order ID:"
+msgstr "WooCommerce Order ID:"
+
+#: templates/WindroseAdminSubscriptionDetailsTemplate.php:75
+#: templates/WindroseSubscriptionDetailsTemplate.php:249
+msgid "No subscription found."
+msgstr "No subscription found."
+
+#: templates/WindroseAdminSubscriptionDetailsTemplate.php:119
+#: templates/WindroseSubscriptionDetailsTemplate.php:85
+msgid "Edit Subscription"
+msgstr "Edit Subscription"
+
+#: templates/WindroseAdminSubscriptionDetailsTemplate.php:130
+#: templates/WindroseAdminSubscriptionListTemplate.php:199
+#: templates/WindrosePauseSubscriptionTemplate.php:13
+#: templates/WindroseSubscriptionDetailsTemplate.php:92
+msgid "Pause Subscription"
+msgstr "Pause Subscription"
+
+#: templates/WindroseAdminSubscriptionDetailsTemplate.php:144
+#: templates/WindroseSubscriptionDetailsTemplate.php:102
+msgid "Re-activate Subscription"
+msgstr "Re-activate Subscription"
+
+#: templates/WindroseAdminSubscriptionDetailsTemplate.php:156
+#: templates/WindroseAdminSubscriptionListTemplate.php:200
+#: templates/WindroseCancelSubscriptionTemplate.php:12
+#: templates/WindroseSubscriptionDetailsTemplate.php:111
+msgid "Cancel Subscription"
+msgstr "Cancel Subscription"
+
+#: templates/WindroseAdminSubscriptionDetailsTemplate.php:168
+#: templates/WindroseUpdateSubscriptionTemplate.php:20
+#: templates/emails/windrose-subscription-admin-activated.php:52
+#: templates/emails/windrose-subscription-admin-cancelled.php:51
+#: templates/emails/windrose-subscription-admin-order-failed.php:52
+#: templates/emails/windrose-subscription-admin-paused.php:51
+msgid "Quantity"
+msgstr "Quantity"
+
+#: templates/WindroseAdminSubscriptionDetailsTemplate.php:171
+#: templates/WindroseUpdateSubscriptionTemplate.php:24
+msgid "Reduce quantity of"
+msgstr "Reduce quantity of"
+
+#: templates/WindroseAdminSubscriptionDetailsTemplate.php:172
+#: templates/WindroseUpdateSubscriptionTemplate.php:23
+msgid "Quantity of"
+msgstr "Quantity of"
+
+#: templates/WindroseAdminSubscriptionDetailsTemplate.php:172
+#: templates/WindroseUpdateSubscriptionTemplate.php:23
+msgid "in your subscription."
+msgstr "in your subscription."
+
+#: templates/WindroseAdminSubscriptionDetailsTemplate.php:173
+#: templates/WindroseUpdateSubscriptionTemplate.php:25
+msgid "Increase quantity of"
+msgstr "Increase quantity of"
+
+#: templates/WindroseAdminSubscriptionDetailsTemplate.php:178
+#: templates/WindroseUpdateSubscriptionTemplate.php:30
+msgid "Schedule"
+msgstr "Schedule"
+
+#: templates/WindroseAdminSubscriptionDetailsTemplate.php:201
+#: templates/WindroseUpdateSubscriptionTemplate.php:53
+msgid ""
+"Update upcoming order? By check this, the very next order will also get "
+"modified."
+msgstr ""
+"Update upcoming order? By check this, the very next order will also get "
+"modified."
+
+#: templates/WindroseAdminSubscriptionDetailsTemplate.php:505
+#: templates/WindroseSubscriptionDetailsTemplate.php:173
+msgid "Upcoming Order"
+msgstr "Upcoming Order"
+
+#: templates/WindroseAdminSubscriptionDetailsTemplate.php:512
+#: templates/WindroseAdminSubscriptionDetailsTemplate.php:568
+#: templates/WindroseAdminSubscriptionDetailsTemplate.php:587
+#: templates/WindroseSubscriptionDetailsTemplate.php:180
+#: templates/WindroseSubscriptionDetailsTemplate.php:206
+#: templates/WindroseSubscriptionDetailsTemplate.php:226
+msgid "Delivery"
+msgstr "Delivery"
+
+#: templates/WindroseAdminSubscriptionDetailsTemplate.php:524
+#: templates/WindroseSubscriptionDetailsTemplate.php:186
+msgid "Skip Delivery"
+msgstr "Skip Delivery"
+
+#: templates/WindroseAdminSubscriptionDetailsTemplate.php:557
+#: templates/WindroseSubscriptionDetailsTemplate.php:195
+msgid "Previous Orders"
+msgstr "Previous Orders"
+
+#: templates/WindroseAdminSubscriptionListTemplate.php:66
+msgid "Filter"
+msgstr "Filter"
+
+#: templates/WindroseAdminSubscriptionListTemplate.php:201
+msgid "Skip Upcoming Delivery"
+msgstr "Skip Upcoming Delivery"
+
+#: templates/WindroseCancelSubscriptionTemplate.php:16
+msgid "Do you really want to cancel the subscription? If yes, please confirm."
+msgstr "Do you really want to cancel the subscription? If yes, please confirm."
+
+#: templates/WindroseCancelSubscriptionTemplate.php:22
+#: templates/WindrosePauseSubscriptionTemplate.php:23
+#: templates/WindroseSkipSubscriptionTemplate.php:23
+msgid "Confirm"
+msgstr "Confirm"
+
+#: templates/WindroseCancelSubscriptionTemplate.php:25
+#: templates/WindrosePauseSubscriptionTemplate.php:26
+#: templates/WindroseSkipSubscriptionTemplate.php:26
+#: templates/WindroseUpdateSubscriptionTemplate.php:63
+msgid "Close"
+msgstr "Close"
+
+#: templates/WindrosePauseSubscriptionTemplate.php:17
+msgid "Do you really want to pause the subscription? If yes, please confirm."
+msgstr "Do you really want to pause the subscription? If yes, please confirm."
+
+#: templates/WindroseSkipSubscriptionTemplate.php:13
+msgid "Skip Subscription"
+msgstr "Skip Subscription"
+
+#: templates/WindroseSkipSubscriptionTemplate.php:17
+msgid "Do you really want to skip the subscription? If yes, please confirm."
+msgstr "Do you really want to skip the subscription? If yes, please confirm."
+
+#: templates/WindroseSubscriptionDetailsTemplate.php:71
+#: templates/emails/windrose-subscription-admin-skipped.php:34
+msgid "Subscription ID:"
+msgstr "Subscription ID:"
+
+#: templates/WindroseSubscriptionDetailsTemplate.php:118
+msgid "Continue Subscription"
+msgstr "Continue Subscription"
+
+#: templates/WindroseSubscriptionDetailsTemplate.php:245
+msgid "Illegal Access!"
+msgstr "Illegal Access!"
+
+#: templates/WindroseSubscriptionListTemplate.php:30
+msgid "Here is the list of all your subscriptions!"
+msgstr "Here is the list of all your subscriptions!"
+
+#: templates/WindroseSubscriptionListTemplate.php:37
+msgid "Subscription"
+msgstr "Subscription"
+
+#: templates/WindroseSubscriptionListTemplate.php:39
+msgid "Upcoming"
+msgstr "Upcoming"
+
+#: templates/WindroseSubscriptionListTemplate.php:43
+msgid "Actions"
+msgstr "Actions"
+
+#: templates/WindroseSubscriptionListTemplate.php:122
+msgid "Sorry! No Subscriptions Available."
+msgstr "Sorry! No Subscriptions Available."
+
+#: templates/WindroseUpdateSubscriptionTemplate.php:16
+msgid "Update Subscription"
+msgstr "Update Subscription"
+
+#: templates/WindroseUpdateSubscriptionTemplate.php:60
+msgid "Update"
+msgstr "Update"
+
+#: templates/emails/plain/windrose-subscription-activated.php:14
+#, php-format
+msgid "مرحباً، اشتراكك (الرقم: %d) نشط الآن."
+msgstr "مرحباً، اشتراكك (الرقم: %d) نشط الآن."
+
+#: templates/emails/plain/windrose-subscription-activated.php:16
+#, php-format
+msgid "المنتج: %s"
+msgstr "المنتج: %s"
+
+#: templates/emails/plain/windrose-subscription-activated.php:17
+#, php-format
+msgid "الكمية: %d"
+msgstr "الكمية: %d"
+
+#: templates/emails/plain/windrose-subscription-activated.php:18
+#, php-format
+msgid "الجدول الزمني: %s"
+msgstr "الجدول الزمني: %s"
+
+#: templates/emails/plain/windrose-subscription-activated.php:19
+#, php-format
+msgid "تاريخ التوصيل القادم: %s"
+msgstr "تاريخ التوصيل القادم: %s"
+
+#: templates/emails/plain/windrose-subscription-activated.php:21
+msgid "تم تفعيل اشتراكك بنجاح! ستتلقى تحديثات منتظمة حول حالة طلباتك."
+msgstr "تم تفعيل اشتراكك بنجاح! ستتلقى تحديثات منتظمة حول حالة طلباتك."
+
+#: templates/emails/plain/windrose-subscription-activated.php:22
+msgid "شكراً لك على اختيار خدمة الاشتراك لدينا!"
+msgstr "شكراً لك على اختيار خدمة الاشتراك لدينا!"
+
+#: templates/emails/plain/windrose-subscription-activated.php:28
+#, php-format
+msgid "Hello, your subscription (ID: %d) is now active."
+msgstr "Hello, your subscription (ID: %d) is now active."
+
+#: templates/emails/plain/windrose-subscription-activated.php:30
+#: templates/emails/plain/windrose-subscription-admin-activated.php:17
+#: templates/emails/plain/windrose-subscription-admin-cancelled.php:17
+#: templates/emails/plain/windrose-subscription-admin-order-failed.php:18
+#: templates/emails/plain/windrose-subscription-admin-paused.php:17
+#: templates/emails/plain/windrose-subscription-admin-skipped.php:18
+#: templates/emails/plain/windrose-subscription-cancelled.php:15
+#: templates/emails/plain/windrose-subscription-order-failed.php:15
+#: templates/emails/plain/windrose-subscription-order-processed.php:15
+#: templates/emails/plain/windrose-subscription-paused.php:15
+#: templates/emails/plain/windrose-subscription-skipped.php:16
+#, php-format
+msgid "Product: %s"
+msgstr "Product: %s"
+
+#: templates/emails/plain/windrose-subscription-activated.php:31
+#: templates/emails/plain/windrose-subscription-admin-activated.php:18
+#: templates/emails/plain/windrose-subscription-admin-cancelled.php:18
+#: templates/emails/plain/windrose-subscription-admin-order-failed.php:19
+#: templates/emails/plain/windrose-subscription-admin-paused.php:18
+#: templates/emails/plain/windrose-subscription-admin-skipped.php:19
+#: templates/emails/plain/windrose-subscription-cancelled.php:16
+#: templates/emails/plain/windrose-subscription-order-failed.php:16
+#: templates/emails/plain/windrose-subscription-order-processed.php:16
+#: templates/emails/plain/windrose-subscription-paused.php:16
+#: templates/emails/plain/windrose-subscription-skipped.php:17
+#, php-format
+msgid "Quantity: %d"
+msgstr "Quantity: %d"
+
+#: templates/emails/plain/windrose-subscription-activated.php:32
+#: templates/emails/plain/windrose-subscription-admin-activated.php:19
+#: templates/emails/plain/windrose-subscription-admin-cancelled.php:19
+#: templates/emails/plain/windrose-subscription-admin-order-failed.php:20
+#: templates/emails/plain/windrose-subscription-admin-paused.php:19
+#: templates/emails/plain/windrose-subscription-cancelled.php:17
+#: templates/emails/plain/windrose-subscription-order-failed.php:17
+#: templates/emails/plain/windrose-subscription-order-processed.php:17
+#: templates/emails/plain/windrose-subscription-paused.php:17
+#: templates/emails/plain/windrose-subscription-skipped.php:18
+#, php-format
+msgid "Schedule: %s"
+msgstr "Schedule: %s"
+
+#: templates/emails/plain/windrose-subscription-activated.php:33
+#: templates/emails/plain/windrose-subscription-admin-skipped.php:21
+#: templates/emails/plain/windrose-subscription-skipped.php:19
+#, php-format
+msgid "Next Delivery Date: %s"
+msgstr "Next Delivery Date: %s"
+
+#: templates/emails/plain/windrose-subscription-activated.php:35
+#: templates/emails/windrose-subscription-activated.php:216
+msgid ""
+"Your subscription has been successfully activated! You will receive regular "
+"updates about your order status."
+msgstr ""
+"Your subscription has been successfully activated! You will receive regular "
+"updates about your order status."
+
+#: templates/emails/plain/windrose-subscription-activated.php:36
+#: templates/emails/windrose-subscription-activated.php:217
+msgid "Thank you for choosing our subscription service!"
+msgstr "Thank you for choosing our subscription service!"
+
+#: templates/emails/plain/windrose-subscription-admin-activated.php:13
+#, php-format
+msgid "A new subscription (ID: %d) has been activated."
+msgstr "A new subscription (ID: %d) has been activated."
+
+#: templates/emails/plain/windrose-subscription-admin-activated.php:15
+#: templates/emails/plain/windrose-subscription-admin-cancelled.php:15
+#: templates/emails/plain/windrose-subscription-admin-order-failed.php:16
+#: templates/emails/plain/windrose-subscription-admin-paused.php:15
+#: templates/emails/plain/windrose-subscription-admin-skipped.php:16
+#, php-format
+msgid "Customer: %s"
+msgstr "Customer: %s"
+
+#: templates/emails/plain/windrose-subscription-admin-activated.php:16
+#: templates/emails/plain/windrose-subscription-admin-cancelled.php:16
+#: templates/emails/plain/windrose-subscription-admin-order-failed.php:17
+#: templates/emails/plain/windrose-subscription-admin-paused.php:16
+#: templates/emails/plain/windrose-subscription-admin-skipped.php:17
+#, php-format
+msgid "Customer Email: %s"
+msgstr "Customer Email: %s"
+
+#: templates/emails/plain/windrose-subscription-admin-activated.php:20
+#, php-format
+msgid "Activation Date: %s"
+msgstr "Activation Date: %s"
+
+#: templates/emails/plain/windrose-subscription-admin-cancelled.php:13
+#, php-format
+msgid "A subscription (ID: %d) has been cancelled."
+msgstr "A subscription (ID: %d) has been cancelled."
+
+#: templates/emails/plain/windrose-subscription-admin-cancelled.php:20
+#, php-format
+msgid "Cancellation Date: %s"
+msgstr "Cancellation Date: %s"
+
+#: templates/emails/plain/windrose-subscription-admin-order-failed.php:14
+#, php-format
+msgid "A subscription order payment has failed for subscription ID: %d."
+msgstr "A subscription order payment has failed for subscription ID: %d."
+
+#: templates/emails/plain/windrose-subscription-admin-order-failed.php:22
+#, php-format
+msgid "Failure Reason: %s"
+msgstr "Failure Reason: %s"
+
+#: templates/emails/plain/windrose-subscription-admin-order-failed.php:24
+#, php-format
+msgid "Failure Date: %s"
+msgstr "Failure Date: %s"
+
+#: templates/emails/plain/windrose-subscription-admin-paused.php:13
+#, php-format
+msgid "A subscription (ID: %d) has been paused."
+msgstr "A subscription (ID: %d) has been paused."
+
+#: templates/emails/plain/windrose-subscription-admin-paused.php:20
+#, php-format
+msgid "Pause Date: %s"
+msgstr "Pause Date: %s"
+
+#: templates/emails/plain/windrose-subscription-admin-skipped.php:13
+#, php-format
+msgid "A subscription order (ID: %d) has been skipped."
+msgstr "A subscription order (ID: %d) has been skipped."
+
+#: templates/emails/plain/windrose-subscription-admin-skipped.php:15
+#, php-format
+msgid "Subscription ID: %d"
+msgstr "Subscription ID: %d"
+
+#: templates/emails/plain/windrose-subscription-admin-skipped.php:20
+#, php-format
+msgid "Skip Date: %s"
+msgstr "Skip Date: %s"
+
+#: templates/emails/plain/windrose-subscription-cancelled.php:13
+#, php-format
+msgid "Hello, your subscription (ID: %d) has been cancelled."
+msgstr "Hello, your subscription (ID: %d) has been cancelled."
+
+#: templates/emails/plain/windrose-subscription-order-failed.php:13
+#, php-format
+msgid "Hello, your subscription order (ID: %d) payment has failed."
+msgstr "Hello, your subscription order (ID: %d) payment has failed."
+
+#: templates/emails/plain/windrose-subscription-order-failed.php:20
+#, php-format
+msgid "Reason: %s"
+msgstr "Reason: %s"
+
+#: templates/emails/plain/windrose-subscription-order-processed.php:13
+#, php-format
+msgid "Hello, your subscription order (ID: %d) has been processed successfully."
+msgstr ""
+"Hello, your subscription order (ID: %d) has been processed successfully."
+
+#: templates/emails/plain/windrose-subscription-paused.php:13
+#, php-format
+msgid "Hello, your subscription (ID: %d) has been paused."
+msgstr "Hello, your subscription (ID: %d) has been paused."
+
+#: templates/emails/plain/windrose-subscription-skipped.php:14
+#, php-format
+msgid "Hello, your subscription order (ID: %d) has been skipped."
+msgstr "Hello, your subscription order (ID: %d) has been skipped."
+
+#: templates/emails/plain/windrose-subscription-skipped.php:20
+#, php-format
+msgid "Sequence: %d"
+msgstr "Sequence: %d"
+
+#: templates/emails/windrose-subscription-activated.php:156
+msgid " المنتج  "
+msgstr " المنتج  "
+
+#: templates/emails/windrose-subscription-activated.php:160
+msgid "  الكمية  "
+msgstr "  الكمية  "
+
+#: templates/emails/windrose-subscription-activated.php:164
+#: templates/emails/windrose-subscription-order-failed.php:169
+msgid " جدول خطة الاشتراك  "
+msgstr " جدول خطة الاشتراك  "
+
+#: templates/emails/windrose-subscription-activated.php:168
+#: templates/emails/windrose-subscription-skipped.php:175
+msgid "  تاريخ التوصيل القادم  "
+msgstr "  تاريخ التوصيل القادم  "
+
+#: templates/emails/windrose-subscription-activated.php:176
+msgid "  تم تفعيل اشتراكك بنجاح! ستتلقى تحديثات منتظمة حول حالة طلبك.  "
+msgstr "  تم تفعيل اشتراكك بنجاح! ستتلقى تحديثات منتظمة حول حالة طلبك.  "
+
+#: templates/emails/windrose-subscription-activated.php:177
+msgid "  شكرًا لاختيارك خدمة الاشتراك لدينا!   "
+msgstr "  شكرًا لاختيارك خدمة الاشتراك لدينا!   "
+
+#: templates/emails/windrose-subscription-activated.php:191
+#, php-format
+msgid "Hello, your subscription (ID: %d) is now <strong>active</strong>."
+msgstr "Hello, your subscription (ID: %d) is now <strong>active</strong>."
+
+#: templates/emails/windrose-subscription-activated.php:197
+#: templates/emails/windrose-subscription-admin-skipped.php:47
+#: templates/emails/windrose-subscription-cancelled.php:194
+#: templates/emails/windrose-subscription-order-failed.php:206
+#: templates/emails/windrose-subscription-order-processed.php:197
+#: templates/emails/windrose-subscription-paused.php:197
+#: templates/emails/windrose-subscription-skipped.php:201
+msgid "Product:"
+msgstr "Product:"
+
+#: templates/emails/windrose-subscription-activated.php:201
+#: templates/emails/windrose-subscription-admin-skipped.php:57
+#: templates/emails/windrose-subscription-cancelled.php:198
+#: templates/emails/windrose-subscription-order-failed.php:210
+#: templates/emails/windrose-subscription-order-processed.php:201
+#: templates/emails/windrose-subscription-paused.php:201
+#: templates/emails/windrose-subscription-skipped.php:206
+msgid "Quantity:"
+msgstr "Quantity:"
+
+#: templates/emails/windrose-subscription-activated.php:205
+#: templates/emails/windrose-subscription-cancelled.php:202
+#: templates/emails/windrose-subscription-order-failed.php:214
+#: templates/emails/windrose-subscription-order-processed.php:205
+#: templates/emails/windrose-subscription-paused.php:205
+#: templates/emails/windrose-subscription-skipped.php:211
+msgid "Schedule:"
+msgstr "Schedule:"
+
+#: templates/emails/windrose-subscription-activated.php:209
+#: templates/emails/windrose-subscription-order-failed.php:218
+#: templates/emails/windrose-subscription-order-processed.php:209
+#: templates/emails/windrose-subscription-paused.php:209
+#: templates/emails/windrose-subscription-skipped.php:215
+msgid "Next Delivery Date:"
+msgstr "Next Delivery Date:"
+
+#: templates/emails/windrose-subscription-admin-activated.php:42
+#: templates/emails/windrose-subscription-admin-cancelled.php:41
+#: templates/emails/windrose-subscription-admin-order-failed.php:42
+#: templates/emails/windrose-subscription-admin-paused.php:41
+msgid "Product"
+msgstr "Product"
+
+#: templates/emails/windrose-subscription-admin-activated.php:56
+msgid "Activation Date"
+msgstr "Activation Date"
+
+#: templates/emails/windrose-subscription-admin-activated.php:68
+#: templates/emails/windrose-subscription-admin-cancelled.php:69
+#: templates/emails/windrose-subscription-admin-order-failed.php:77
+#: templates/emails/windrose-subscription-admin-paused.php:70
+#: templates/emails/windrose-subscription-admin-skipped.php:63
+msgid "This is an automated notification from your subscription system."
+msgstr "This is an automated notification from your subscription system."
+
+#: templates/emails/windrose-subscription-admin-cancelled.php:27
+#: templates/emails/windrose-subscription-admin-order-failed.php:28
+msgid "Subscription details"
+msgstr "Subscription details"
+
+#: templates/emails/windrose-subscription-admin-cancelled.php:57
+msgid "Cancellation Date"
+msgstr "Cancellation Date"
+
+#: templates/emails/windrose-subscription-admin-order-failed.php:58
+msgid "Failure Date"
+msgstr "Failure Date"
+
+#: templates/emails/windrose-subscription-admin-order-failed.php:73
+msgid "Failure details"
+msgstr "Failure details"
+
+#: templates/emails/windrose-subscription-admin-order-failed.php:74
+#: templates/emails/windrose-subscription-order-failed.php:226
+msgid "Reason:"
+msgstr "Reason:"
+
+#: templates/emails/windrose-subscription-admin-paused.php:57
+msgid "Pause Date"
+msgstr "Pause Date"
+
+#: templates/emails/windrose-subscription-admin-skipped.php:26
+msgid "Order Details"
+msgstr "Order Details"
+
+#: templates/emails/windrose-subscription-admin-skipped.php:30
+msgid "Order ID:"
+msgstr "Order ID:"
+
+#: templates/emails/windrose-subscription-admin-skipped.php:38
+msgid "Customer:"
+msgstr "Customer:"
+
+#: templates/emails/windrose-subscription-cancelled.php:153
+#, php-format
+msgid ""
+" تم إلغاء  (الرقم  : %d)  اشتراكك\n"
+" "
+msgstr ""
+" تم إلغاء  (الرقم  : %d)  اشتراكك\n"
+" "
+
+#: templates/emails/windrose-subscription-cancelled.php:160
+#: templates/emails/windrose-subscription-order-failed.php:161
+#: templates/emails/windrose-subscription-order-processed.php:159
+#: templates/emails/windrose-subscription-paused.php:159
+#: templates/emails/windrose-subscription-skipped.php:160
+msgid "المنتج:"
+msgstr "المنتج:"
+
+#: templates/emails/windrose-subscription-cancelled.php:164
+#: templates/emails/windrose-subscription-order-failed.php:165
+#: templates/emails/windrose-subscription-order-processed.php:163
+#: templates/emails/windrose-subscription-paused.php:163
+#: templates/emails/windrose-subscription-skipped.php:165
+msgid "الكمية:"
+msgstr "الكمية:"
+
+#: templates/emails/windrose-subscription-cancelled.php:168
+#: templates/emails/windrose-subscription-order-processed.php:167
+#: templates/emails/windrose-subscription-paused.php:167
+msgid " جدول خطة الاشتراك "
+msgstr " جدول خطة الاشتراك "
+
+#: templates/emails/windrose-subscription-cancelled.php:175
+msgid "تم إلغاء اشتراكك. إذا كان لديك أي أسئلة، يرجى الاتصال بفريق الدعم لدينا."
+msgstr ""
+"تم إلغاء اشتراكك. إذا كان لديك أي أسئلة، يرجى الاتصال بفريق الدعم لدينا."
+
+#: templates/emails/windrose-subscription-cancelled.php:188
+#, php-format
+msgid "Your subscription (ID: %d) has been <strong>cancelled</strong>."
+msgstr "Your subscription (ID: %d) has been <strong>cancelled</strong>."
+
+#: templates/emails/windrose-subscription-cancelled.php:209
+msgid ""
+"Your subscription has been cancelled. If you have any questions, please "
+"contact our support team."
+msgstr ""
+"Your subscription has been cancelled. If you have any questions, please "
+"contact our support team."
+
+#: templates/emails/windrose-subscription-order-failed.php:154
+#, php-format
+msgid " فشل دفع طلب اشتراكك (الرقم  :%d).  "
+msgstr " فشل دفع طلب اشتراكك (الرقم  :%d).  "
+
+#: templates/emails/windrose-subscription-order-failed.php:155
+msgid "يرجى تسجيل الدخول إلى حسابك لتحديث وسيلة الدفع.  "
+msgstr "يرجى تسجيل الدخول إلى حسابك لتحديث وسيلة الدفع.  "
+
+#: templates/emails/windrose-subscription-order-failed.php:173
+#: templates/emails/windrose-subscription-order-processed.php:171
+#: templates/emails/windrose-subscription-paused.php:171
+msgid "تاريخ التوصيل القادم:"
+msgstr "تاريخ التوصيل القادم:"
+
+#: templates/emails/windrose-subscription-order-failed.php:181
+msgid "السبب:"
+msgstr "السبب:"
+
+#: templates/emails/windrose-subscription-order-failed.php:186
+msgid ""
+"يرجى مراجعة معلومات الدفع الخاصة بك والمحاولة مرة أخرى. إذا استمرت المشكلة، "
+"يرجى الاتصال بفريق الدعم لدينا."
+msgstr ""
+"يرجى مراجعة معلومات الدفع الخاصة بك والمحاولة مرة أخرى. إذا استمرت المشكلة، "
+"يرجى الاتصال بفريق الدعم لدينا."
+
+#: templates/emails/windrose-subscription-order-failed.php:199
+#, php-format
+msgid ""
+"Payment for your subscription order (ID: %d) has <strong>failed</strong>."
+msgstr ""
+"Payment for your subscription order (ID: %d) has <strong>failed</strong>."
+
+#: templates/emails/windrose-subscription-order-failed.php:200
+msgid "Please login to your account to update your payment method."
+msgstr "Please login to your account to update your payment method."
+
+#: templates/emails/windrose-subscription-order-failed.php:231
+msgid ""
+"Please review your payment information and try again. If the problem "
+"persists, please contact our support team."
+msgstr ""
+"Please review your payment information and try again. If the problem "
+"persists, please contact our support team."
+
+#: templates/emails/windrose-subscription-order-processed.php:153
+#, php-format
+msgid " طلب اشتراك (الرقم   :%d) قيد المعالجة بعد اتمام عملية الدفع  "
+msgstr " طلب اشتراك (الرقم   :%d) قيد المعالجة بعد اتمام عملية الدفع  "
+
+#: templates/emails/windrose-subscription-order-processed.php:178
+msgid "تم استلام طلبك بنجاح وسيتم معالجته قريباً. ستتلقى تحديثات حول حالة طلبك."
+msgstr "تم استلام طلبك بنجاح وسيتم معالجته قريباً. ستتلقى تحديثات حول حالة طلبك."
+
+#: templates/emails/windrose-subscription-order-processed.php:191
+#, php-format
+msgid ""
+"Your subscription order (ID: %d) is now <strong>processing</strong> after "
+"successful payment."
+msgstr ""
+"Your subscription order (ID: %d) is now <strong>processing</strong> after "
+"successful payment."
+
+#: templates/emails/windrose-subscription-order-processed.php:216
+msgid ""
+"Your order has been received successfully and will be processed soon. You "
+"will receive updates about your order status."
+msgstr ""
+"Your order has been received successfully and will be processed soon. You "
+"will receive updates about your order status."
+
+#: templates/emails/windrose-subscription-paused.php:153
+#, php-format
+msgid " تم إيقاف  (الرقم  : %d) الاشتراك مؤقتًا   "
+msgstr " تم إيقاف  (الرقم  : %d) الاشتراك مؤقتًا   "
+
+#: templates/emails/windrose-subscription-paused.php:178
+msgid ""
+"تم إيقاف اشتراكك مؤقتاً. يمكنك إعادة تفعيله في أي وقت من لوحة التحكم الخاصة بك."
+msgstr ""
+"تم إيقاف اشتراكك مؤقتاً. يمكنك إعادة تفعيله في أي وقت من لوحة التحكم الخاصة بك."
+
+#: templates/emails/windrose-subscription-paused.php:191
+#, php-format
+msgid "Your subscription (ID: %d) has been <strong>paused</strong>."
+msgstr "Your subscription (ID: %d) has been <strong>paused</strong>."
+
+#: templates/emails/windrose-subscription-paused.php:216
+msgid ""
+"Your subscription has been paused. You can reactivate it anytime from your "
+"dashboard."
+msgstr ""
+"Your subscription has been paused. You can reactivate it anytime from your "
+"dashboard."
+
+#: templates/emails/windrose-subscription-skipped.php:154
+msgid "  تم تخطي طلب اشتراك    ( الرقم  12345)   "
+msgstr "  تم تخطي طلب اشتراك    ( الرقم  12345)   "
+
+#: templates/emails/windrose-subscription-skipped.php:170
+msgid "جدول خطة الاشتراك    "
+msgstr "جدول خطة الاشتراك    "
+
+#: templates/emails/windrose-subscription-skipped.php:182
+msgid ""
+"  تم تخطي هذا الطلب. إذا كانت لديك أي أسئلة حول سبب تخطيه، يرجى التواصل مع "
+"فريق الدعم لدينا.  "
+msgstr ""
+"  تم تخطي هذا الطلب. إذا كانت لديك أي أسئلة حول سبب تخطيه، يرجى التواصل مع "
+"فريق الدعم لدينا.  "
+
+#: templates/emails/windrose-subscription-skipped.php:195
+#, php-format
+msgid "A subscription order (ID: #%d) has been <strong>skipped</strong>."
+msgstr "A subscription order (ID: #%d) has been <strong>skipped</strong>."
+
+#: templates/emails/windrose-subscription-skipped.php:222
+msgid ""
+"This order has been skipped. If you have any questions about why it was "
+"skipped, please contact our support team."
+msgstr ""
+"This order has been skipped. If you have any questions about why it was "
+"skipped, please contact our support team."
+
+#: windrose-main.php:189
+msgid "st"
+msgstr "st"
+
+#: windrose-main.php:190
+msgid "nd"
+msgstr "nd"
+
+#: windrose-main.php:191
+msgid "rd"
+msgstr "rd"
+
+#: windrose-main.php:194
+msgid "th"
+msgstr "th"
+
+#: windrose-main.php:323
+msgid "No upcoming deliveries"
+msgstr "No upcoming deliveries"

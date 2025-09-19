@@ -15,7 +15,7 @@ class WindroseAdminSubscriptionDetailView {
 
     public function subscription_details_menu() {
         add_submenu_page(
-            null, 
+            '', 
             'Subscriptions',
             'Subscriptions',
             'manage_woocommerce',

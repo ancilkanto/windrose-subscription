@@ -9,9 +9,7 @@ class WindroseSubscriptionDetailsTemplate {
     
     public function subscription_details($subscription_id) {
 
-        echo '<h2 class="woocommerce-order-details__title">' . __( 'Subscription Details', 'windros-subscription' ) . '</h2>';
         
-
         wp_enqueue_style('windrose-myaccount', WINDROS_URL .'assets/stylesheets/my-account.css'); 
         wp_enqueue_script('windrose-my-account', WINDROS_URL .'assets/javascripts/my-account.js', array('jquery'), '1.0', true); 
         
