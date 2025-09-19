@@ -13,7 +13,7 @@ defined( 'WINDROS_INIT' ) || exit;      // Exit if accessed directly.
 
             add_filter( 'woocommerce_product_add_to_cart_text', [$this, 'windros__WC_add_to_cart_button_text'], 10, 2);  
             
-            add_filter( 'woocommerce_product_single_add_to_cart_text', [$this, 'windros__WC_add_to_cart_button_text'], 10, 2);  
+            // add_filter( 'woocommerce_product_single_add_to_cart_text', [$this, 'windros__WC_add_to_cart_button_text'], 10, 2);  
 
         }
 

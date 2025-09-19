@@ -9,8 +9,9 @@ defined( 'WINDROS_INIT' ) || exit;
 class WindroseModifyProductListingLoop {
     public function __construct() {
         // Add custom select field to product listing loop
-        // add_action( 'woocommerce_after_shop_loop_item', [$this, 'add_custom_select_to_product_loop'], 10 );
-        add_action( 'woocommerce_after_shop_loop_item', [$this, 'add_short_description_to_product_loop'], 10 );
+        
+        // add_action( 'woocommerce_after_shop_loop_item', [$this, 'add_short_description_to_product_loop'], 10 );
+        add_action( 'woocommerce_after_shop_loop_item_title', [$this, 'add_short_description_to_product_loop'], 11 );
         add_filter( 'woocommerce_loop_add_to_cart_args', [$this, 'add_ajax_subscription_custom_class'], 10, 2 );
 
         // Add custom script to include select field value in AJAX request
