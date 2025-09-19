@@ -30,6 +30,81 @@ if (class_exists('WC_Email')) {
             $this->ensure_email_enabled();
         }
 
+        /**
+         * Initialize form fields for WooCommerce email settings
+         */
+        public function init_form_fields() {
+            $this->form_fields = array(
+                'enabled' => array(
+                    'title'         => __( 'Enable/Disable', 'windros-subscription' ),
+                    'type'          => 'checkbox',
+                    'label'         => __( 'Enable this email notification', 'windros-subscription' ),
+                    'default'       => 'yes'
+                ),
+                'recipient' => array(
+                    'title'         => __( 'Recipient(s)', 'windros-subscription' ),
+                    'type'          => 'text',
+                    'description'   => __( 'Enter recipients (comma separated) for this email. Defaults to admin email.', 'windros-subscription' ),
+                    'placeholder'   => get_option('admin_email'),
+                    'default'       => get_option('admin_email'),
+                    'desc_tip'    => true,
+                ),
+                'subject' => array(
+                    'title'         => __( 'Subject', 'windros-subscription' ),
+                    'type'          => 'text',
+                    'description'   => __( 'This controls the email subject line. Leave blank to use the default subject.', 'windros-subscription' ),
+                    'placeholder'   => $this->get_default_subject(),
+                    'default'       => '',
+                    'desc_tip'    => true,
+                ),
+                'heading' => array(
+                    'title'         => __( 'Email Heading', 'windros-subscription' ),
+                    'type'          => 'text',
+                    'description'   => __( 'This controls the main heading contained within the email notification. Leave blank to use the default heading.', 'windros-subscription' ),
+                    'placeholder'   => $this->get_default_heading(),
+                    'default'       => '',
+                    'desc_tip'    => true,
+                ),
+                'email_type' => array(
+                    'title'         => __( 'Email type', 'windros-subscription' ),
+                    'type'          => 'select',
+                    'description'   => __( 'Choose which format of email to send.', 'windros-subscription' ),
+                    'default'       => 'html',
+                    'class'         => 'email_type wc-enhanced-select',
+                    'options'       => $this->get_email_type_options()
+                )
+            );
+        }
+
+        /**
+         * Get default subject
+         */
+        public function get_default_subject() {
+            return __( 'New subscription activated', 'windros-subscription' );
+        }
+
+        /**
+         * Get default heading
+         */
+        public function get_default_heading() {
+            return __( 'New subscription activated', 'windros-subscription' );
+        }
+
+        /**
+         * Get recipient email addresses
+         * Handles comma-separated email addresses
+         */
+        public function get_recipient() {
+            $recipient = $this->get_option('recipient', get_option('admin_email'));
+            
+            // If recipient is empty, fallback to admin email
+            if (empty($recipient)) {
+                $recipient = get_option('admin_email');
+            }
+            
+            return $recipient;
+        }
+
         private function ensure_email_enabled() {
             $enabled_emails = get_option('woocommerce_email_settings', array());
             $email_key = 'windrose_subscription_admin_activated';
@@ -52,8 +127,8 @@ if (class_exists('WC_Email')) {
                 return;
             }
             
-            // Set admin email as recipient
-            $this->recipient = get_option('admin_email');
+            // Set recipient from settings or fallback to admin email
+            $this->recipient = $this->get_recipient();
             $this->object = $subscription;
             
             // Explicitly set heading and subject

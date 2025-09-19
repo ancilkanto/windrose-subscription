@@ -251,6 +251,9 @@ class WindroseCronManager {
                 $order->set_payment_method('paymob-pixel');
                 $order->set_payment_method_title('Debit/Credit Card Payment');
 
+                // Set the order origin to show "Created via CRON" in WordPress dashboard
+                $order->set_created_via('cron');
+                
                 // Calculate totals and save
                 $order->calculate_totals();
                 $order->save();

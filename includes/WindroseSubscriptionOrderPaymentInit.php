@@ -74,18 +74,18 @@ class WindroseSubscriptionOrderPaymentInit {
                     $billing_state_name = 'N/A';
                 }
             }
-
+            
             $billing_address = array(
                 'first_name' => $order->get_billing_first_name() ?: 'Customer',
                 'last_name' => $order->get_billing_last_name() ?: 'Name',
-                'phone_number' => '+91' . $order->get_billing_phone() ?: '0000000000',
+                'phone_number' => str_replace('-', '', $order->get_billing_phone()) ?: '0000000000',
                 'city' => $order->get_billing_city() ?: 'Unknown',
                 'country' => $billing_country_name,
                 'email' => $order->get_billing_email() ?: 'customer@example.com',
                 'state' => $billing_state_name,
                 'street' => $order->get_billing_address_1() ?: 'Unknown Street',
-                'building' => 'dummy',
-                'floor' => 'dummy',
+                'building' => 'NA',
+                'floor' => 'NA',
                 'apartment' => $order->get_billing_address_2() ?: 'dummy',
             );
             
@@ -436,6 +436,8 @@ class WindroseSubscriptionOrderPaymentInit {
 
         $order->update_meta_data('PaymobTransactionId', $payment_response['id'] ?? '');
         $order->update_meta_data('PaymobMerchantOrderID', $payment_response['merchant_order_id'] ?? '');
+        
+        $order->set_created_via('Created via CRON');
         
         $order->save();
     }

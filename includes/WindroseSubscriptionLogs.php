@@ -115,19 +115,19 @@ class WindroseSubscriptionLogs {
             <!-- Statistics -->
             <div class="windrose-logs-stats">
                 <div class="stat-card">
-                    <h3>Total Logs</h3>
+                    <h3><?php echo __('Total Entries', 'windrose-subscription'); ?></h3>
                     <span class="stat-number"><?php echo number_format($logs_data['total_count']); ?></span>
                 </div>
                 <div class="stat-card">
-                    <h3>Success Rate</h3>
+                    <h3><?php echo __('Success Rate', 'windrose-subscription'); ?></h3>
                     <span class="stat-number"><?php echo $logs_data['success_rate']; ?>%</span>
                 </div>
                 <div class="stat-card">
-                    <h3>Failed</h3>
-                    <span class="stat-number"><?php echo $logs_data['failed_count']; ?></span>
+                    <h3><?php echo __('Failed', 'windrose-subscription'); ?></h3>
+                    <span class="stat-number"><?php echo (100 - $logs_data['success_rate']); ?>%</span>
                 </div>
                 <div class="stat-card">
-                    <h3>Today's Logs</h3>
+                    <h3><?php echo __('Today\'s Entries', 'windrose-subscription'); ?></h3>
                     <span class="stat-number"><?php echo $logs_data['today_count']; ?></span>
                 </div>
             </div>
@@ -136,7 +136,7 @@ class WindroseSubscriptionLogs {
             <div class="windrose-logs-table">
                 <?php if (empty($logs_data['logs'])): ?>
                     <div class="no-logs">
-                        <p>No payment logs found matching your criteria.</p>
+                        <p><?php echo __('No payment logs found matching your criteria.', 'windrose-subscription'); ?></p>
                     </div>
                 <?php else: ?>
                     <table class="wp-list-table widefat fixed striped">
@@ -190,7 +190,7 @@ class WindroseSubscriptionLogs {
                                     </td>
                                     <td>
                                         <a href="#" class="button button-small view-log-details" data-log-id="<?php echo esc_attr($log->id); ?>">
-                                            View Details
+                                            <?php echo __('View Details', 'windrose-subscription'); ?>
                                         </a>
                                     </td>
                                 </tr>
@@ -208,7 +208,7 @@ class WindroseSubscriptionLogs {
                             // Previous page
                             if ($current_page > 1) {
                                 $prev_url = add_query_arg('paged', $current_page - 1, $_SERVER['REQUEST_URI']);
-                                echo '<a href="' . esc_url($prev_url) . '" class="button">&laquo; Previous</a>';
+                                echo '<a href="' . esc_url($prev_url) . '" class="button">&laquo; ' . __('Previous', 'windrose-subscription') . '</a>';
                             }
                             
                             // Page numbers
@@ -221,7 +221,7 @@ class WindroseSubscriptionLogs {
                             // Next page
                             if ($current_page < $total_pages) {
                                 $next_url = add_query_arg('paged', $current_page + 1, $_SERVER['REQUEST_URI']);
-                                echo '<a href="' . esc_url($next_url) . '" class="button">Next &raquo;</a>';
+                                echo '<a href="' . esc_url($next_url) . '" class="button">' . __('Next', 'windrose-subscription') . ' &raquo;</a>';
                             }
                             ?>
                         </div>
@@ -234,7 +234,7 @@ class WindroseSubscriptionLogs {
         <div id="log-details-modal" class="windrose-modal">
             <div class="windrose-modal-content">
                 <span class="windrose-modal-close">&times;</span>
-                <h2>Payment Log Details</h2>
+                <h2><?php echo __('Payment Log Details', 'windrose-subscription'); ?></h2>
                 <div id="log-details-content"></div>
             </div>
         </div>
@@ -426,7 +426,7 @@ class WindroseSubscriptionLogs {
                     <td><?php echo esc_html($log->id); ?></td>
                 </tr>
                 <tr>
-                    <th>WooCommerce Order</th>
+                    <th><?php echo __('WooCommerce Order', 'windrose-subscription'); ?></th>
                     <td>
                         <?php if ($order): ?>
                             <a href="<?php echo admin_url('post.php?post=' . $log->wc_order_id . '&action=edit'); ?>" target="_blank">
@@ -438,7 +438,7 @@ class WindroseSubscriptionLogs {
                     </td>
                 </tr>
                 <tr>
-                    <th>Customer</th>
+                    <th><?php echo __('Customer', 'windrose-subscription'); ?></th>
                     <td>
                         <?php if ($user): ?>
                             <?php echo esc_html($user->display_name); ?><br>
@@ -449,11 +449,11 @@ class WindroseSubscriptionLogs {
                     </td>
                 </tr>
                 <tr>
-                    <th>Amount</th>
+                    <th><?php echo __('Amount', 'windrose-subscription'); ?></th>
                     <td><?php echo esc_html($log->currency); ?> <?php echo number_format($log->amount_cents / 1000, 2); ?></td>
                 </tr>
                 <tr>
-                    <th>Status</th>
+                    <th><?php echo __('Status', 'windrose-subscription'); ?></th>
                     <td>
                         <span class="status-badge status-<?php echo esc_attr($log->status); ?>">
                             <?php echo esc_html(ucfirst($log->status)); ?>
@@ -461,38 +461,38 @@ class WindroseSubscriptionLogs {
                     </td>
                 </tr>
                 <tr>
-                    <th>Payment Mode</th>
+                    <th><?php echo __('Payment Mode', 'windrose-subscription'); ?></th>
                     <td><?php echo esc_html(ucfirst($log->payment_mode)); ?></td>
                 </tr>
                 <tr>
-                    <th>Integration ID</th>
+                    <th><?php echo __('Integration ID', 'windrose-subscription'); ?></th>
                     <td><?php echo esc_html($log->integration_id ?: 'N/A'); ?></td>
                 </tr>
                 <tr>
-                    <th>Intention ID</th>
+                    <th><?php echo __('Intention ID', 'windrose-subscription'); ?></th>
                     <td><?php echo esc_html($log->intention_id ?: 'N/A'); ?></td>
                 </tr>
                 <tr>
-                    <th>Transaction ID</th>
+                    <th><?php echo __('Transaction ID', 'windrose-subscription'); ?></th>
                     <td><?php echo esc_html($log->transaction_id ?: 'N/A'); ?></td>
                 </tr>
                 <tr>
-                    <th>Created</th>
+                    <th><?php echo __('Created', 'windrose-subscription'); ?></th>
                     <td><?php echo esc_html(date('Y-m-d H:i:s', strtotime($log->created_at))); ?></td>
                 </tr>
                 <tr>
-                    <th>Updated</th>
+                    <th><?php echo __('Updated', 'windrose-subscription'); ?></th>
                     <td><?php echo esc_html(date('Y-m-d H:i:s', strtotime($log->updated_at))); ?></td>
                 </tr>
                 <?php if ($log->error_message): ?>
                 <tr>
-                    <th>Error Message</th>
+                    <th><?php echo __('Error Message', 'windrose-subscription'); ?></th>
                     <td><?php echo esc_html($log->error_message); ?></td>
                 </tr>
                 <?php endif; ?>
                 <?php if ($log->paymob_response): ?>
                 <tr>
-                    <th>Paymob Response</th>
+                    <th><?php echo __('Paymob Response', 'windrose-subscription'); ?></th>
                     <td>
                         <?php 
                         // Try to decode and format JSON

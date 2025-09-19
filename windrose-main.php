@@ -97,58 +97,7 @@ function windrose_manual_flush_rewrite_rules() {
 }
 add_action( 'admin_init', 'windrose_manual_flush_rewrite_rules' );
 
-// Test subscription activation email function
-function windrose_test_subscription_email() {
-    if ( isset( $_GET['windrose_test_email'] ) && current_user_can( 'manage_options' ) ) {
-        $subscription_id = intval( $_GET['subscription_id'] ?? 1 );
-        WindroseSubscription\Includes\WindroseSubscriptionNotification::test_subscription_activation_email($subscription_id);
-        wp_redirect( admin_url( 'admin.php?page=wc-settings&windrose_email_tested=1' ) );
-        exit;
-    }
-}
-add_action( 'admin_init', 'windrose_test_subscription_email' );
 
-// Test all subscription email types
-function windrose_test_all_subscription_emails() {
-    if ( isset( $_GET['windrose_test_all_emails'] ) && current_user_can( 'manage_options' ) ) {
-        $subscription_id = intval( $_GET['subscription_id'] ?? 1 );
-        $subscription_order_id = intval( $_GET['subscription_order_id'] ?? 1 );
-        
-        // Test all email types
-        WindroseSubscription\Includes\WindroseSubscriptionNotification::test_subscription_activation_email($subscription_id);
-        WindroseSubscription\Includes\WindroseSubscriptionNotification::test_subscription_order_processed_email($subscription_id);
-        WindroseSubscription\Includes\WindroseSubscriptionNotification::test_subscription_order_failed_email($subscription_id, 'Test failure reason');
-        WindroseSubscription\Includes\WindroseSubscriptionNotification::test_subscription_paused_email($subscription_id);
-        WindroseSubscription\Includes\WindroseSubscriptionNotification::test_subscription_cancelled_email($subscription_id);
-        WindroseSubscription\Includes\WindroseSubscriptionNotification::test_subscription_skipped_email($subscription_order_id);
-        
-        wp_redirect( admin_url( 'admin.php?page=wc-settings&windrose_all_emails_tested=1' ) );
-        exit;
-    }
-}
-add_action( 'admin_init', 'windrose_test_all_subscription_emails' );
-
-// Test email system directly
-function windrose_test_email_system_directly() {
-    if ( isset( $_GET['windrose_test_email_direct'] ) && current_user_can( 'manage_options' ) ) {
-        $subscription_id = intval( $_GET['subscription_id'] ?? 1 );
-        WindroseSubscription\Includes\WindroseSubscriptionNotification::test_email_system_directly($subscription_id);
-        wp_redirect( admin_url( 'admin.php?page=wc-settings&windrose_email_direct_tested=1' ) );
-        exit;
-    }
-}
-add_action( 'admin_init', 'windrose_test_email_system_directly' );
-
-// Test HTML email specifically
-function windrose_test_html_email() {
-    if ( isset( $_GET['windrose_test_html_email'] ) && current_user_can( 'manage_options' ) ) {
-        $subscription_id = intval( $_GET['subscription_id'] ?? 1 );
-        WindroseSubscription\Includes\WindroseSubscriptionNotification::test_html_email_directly($subscription_id);
-        wp_redirect( admin_url( 'admin.php?page=wc-settings&windrose_html_email_tested=1' ) );
-        exit;
-    }
-}
-add_action( 'admin_init', 'windrose_test_html_email' );
 
 require_once 'vendor/autoload.php';
 
@@ -303,13 +252,14 @@ function windrose_get_customers() {
 }
 
 
-function windrose_get_timestamp_object($offest = 0) {
+function windrose_get_timestamp_object($offest = 0, $date = null) {
     // Always use GMT+0
     $timezone = 'Etc/GMT';
     date_default_timezone_set($timezone);
 
-    // Get today's date in GMT+0
-    $date = date('Y-m-d H:i:s');
+    // Get the base date - use provided date or current date
+    $base_date = $date ? $date : date('Y-m-d');
+    $current_date = date('Y-m-d H:i:s');
 
     // Get the daily cron time option (format: 'HH:MM')
     $cron_time = get_option('windrose_daily_cron_time', '03:00');
@@ -323,9 +273,9 @@ function windrose_get_timestamp_object($offest = 0) {
         $target_hour += 24;
     }
 
-    // Build the timestamp for today at (cron_time - 3 hours)
+    // Build the timestamp for the base date at (cron_time - 3 hours)
     $target_time = sprintf('%02d:%02d:00', $target_hour, $cron_minute);
-    $target_datetime = date('Y-m-d') . ' ' . $target_time;
+    $target_datetime = $base_date . ' ' . $target_time;
     $timestamp = strtotime($target_datetime);
 
     // Add offset days if needed
@@ -334,7 +284,7 @@ function windrose_get_timestamp_object($offest = 0) {
     }
 
     return (object) array(
-        'date' => $date,
+        'date' => $current_date,
         'timestamp' => $timestamp
     );
 }
@@ -375,23 +325,7 @@ if (!function_exists('windrose_get_next_delivery_date')) {
     }
 }
 
-// Enqueue checkout save card script
-function windrose_enqueue_checkout_scripts() {
-    // Only enqueue on checkout page
-    if (!is_checkout()) {
-        return;
-    }
-    
-    // Enqueue the checkout save card script
-    wp_enqueue_script(
-        'windrose-checkout-save-card',
-        plugin_dir_url(__FILE__) . 'assets/js/checkout-save-card.js',
-        array('jquery'),
-        '1.0.0',
-        true // Load in footer
-    );
-}
-add_action('wp_enqueue_scripts', 'windrose_enqueue_checkout_scripts');
+
 
 function windrose_register_email_classes($emails) {
     // Customer emails
@@ -414,3 +348,91 @@ function windrose_register_email_classes($emails) {
 add_filter('woocommerce_email_classes', 'windrose_register_email_classes');
 
 
+function windrose_get_arabic_product_title($product_id) {
+    if ($product_id == null || $product_id == '12345'){
+        return null;
+    }
+
+    $product = wc_get_product($product_id);
+    if(!$product){
+        return null;
+    }
+
+    $sku = $product->get_sku();
+    $arabic_title = '';
+    if ($sku) {
+        // Get products with same SKU excluding current product ID
+        $args = array(
+            'post_type' => 'product',
+            'post_status' => 'publish',
+            'posts_per_page' => -1,
+            'post__not_in' => array($product_id),
+            'meta_query' => array(
+                array(
+                    'key' => '_sku',
+                    'value' => $sku,
+                    'compare' => '='
+                )
+            )
+        );
+        
+        $products = get_posts($args);
+        
+        // Get Arabic title from first matching product
+        if (!empty($products)) {
+            $arabic_title = get_the_title($products[0]->ID);
+        }
+    }
+    return $arabic_title;
+}
+
+function windrose_get_arabic_date($date_string) {
+    if ($date_string == null){
+        return $date_string;
+    }
+
+    if (class_exists('IntlDateFormatter')) {
+        $formatter = new IntlDateFormatter(
+            'ar', // Arabic locale
+            IntlDateFormatter::LONG, // Date type
+            IntlDateFormatter::NONE  // Time type
+        );
+        
+        $timestamp = strtotime($date_string);
+        return $formatter->format($timestamp);
+    }
+    
+    // Fallback to basic Arabic month names
+    $months = [
+        'January' => 'يناير',
+        'February' => 'فبراير',
+        'March' => 'مارس',
+        'April' => 'أبريل',
+        'May' => 'مايو',
+        'June' => 'يونيو',
+        'July' => 'يوليو',
+        'August' => 'أغسطس',
+        'September' => 'سبتمبر',
+        'October' => 'أكتوبر',
+        'November' => 'نوفمبر',
+        'December' => 'ديسمبر'
+    ];
+    
+    $date = date('j F Y', strtotime($date_string));
+    foreach ($months as $english => $arabic) {
+        $date = str_replace($english, $arabic, $date);
+    }
+    
+    // Convert numbers to Arabic numerals
+    $arabic_numerals = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+    $english_numerals = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    
+    return str_replace($english_numerals, $arabic_numerals, $date);
+}
+
+add_filter('woocommerce_order_created_via', function($via, $order){
+    if ($order->get_created_via() === 'cron') {
+        return 'Created via CRON';
+    }
+    return $via;
+}, 10, 2);
